@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import { unique } from 'next/dist/build/utils';
-import { unstable_act } from 'react/cjs/react.production.min';
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
