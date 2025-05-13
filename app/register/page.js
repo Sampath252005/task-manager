@@ -1,24 +1,65 @@
 "use client";
-import { useForm } from "react-hook-form";
 import React from "react";
 import Image from "next/image";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import Alert from "../components/Alert";
 
 const Register = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [alertType, setAlertType] = React.useState("");
+  const [alertMessage, setAlertMessage] = React.useState("");
+  const [alertVisible, setAlertVisible] = React.useState(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
+  const showAlert = (type, message) => {
+    setAlertType(type);
+    setAlertMessage(message);
+    setAlertVisible(true);
+    setTimeout(() => setAlertVisible(false), 3000);
   };
 
-  const toggleConfirmPasswordVisibility = () => {
+  const checkUsername = async (username) => {
+    const res = await fetch("/api/check-username", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username }),
+    });
+
+    if (res.status === 409) {
+      const data = await res.json();
+      showAlert(data.type, data.message);
+      return false;
+    }
+
+    // parse the success JSON if you need it
+    await res.json();
+    return true;
+  };
+
+  const checkEmail = async (email) => {
+    const res = await fetch("/api/check-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+
+    if (res.status === 409) {
+      const data = await res.json();
+      showAlert(data.type, data.message);
+      return false;
+    }
+
+    await res.json();
+    return true;
+  };
+
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const toggleConfirmPasswordVisibility = () =>
     setShowConfirmPassword(!showConfirmPassword);
-  };
 
   const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -28,29 +69,41 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     const { username, email, password } = data;
+    const validUsername = await checkUsername(username);
+    const validEmail = await checkEmail(email);
+    if (!validUsername || !validEmail) return;
 
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password }),
       });
 
       if (response.ok) {
+        showAlert("success", "Registration successful! Please log in.");
         router.push("/loginPage");
       } else {
-        console.error("Registration failed");
+        showAlert("error", "Registration failed. Please try again.");
       }
-    } catch (error) {
-      console.error("Error:", error);
+    } catch (err) {
+      console.error(err);
+      showAlert("error", "An error occurred. Try again later.");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center p-4">
-      <h1 className="absolute top-30 text-4xl font-extrabold">TaskVault</h1>
+    <div className="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center p-4 relative">
+      {alertVisible && (
+        <div className="absolute top-30 -left-20 w-full max-w-md">
+          <Alert type={alertType} message={alertMessage} />
+        </div>
+      )}
+
+      <h1 className="absolute top-12 text-4xl font-extrabold text-white drop-shadow-md tracking-wide">
+        TaskVault
+      </h1>
+
       <div className="bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row max-w-4xl w-full">
         {/* Image Section */}
         <div className="relative w-full md:w-1/2 h-64 md:h-auto">
@@ -76,13 +129,15 @@ const Register = () => {
                 Username
               </label>
               <input
-                {...register("username", { required: true })}
+                {...register("username", { required: "Username is required" })}
                 type="text"
                 placeholder="Enter username"
-                className="text-black w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
               />
               {errors.username && (
-                <span className="text-red-500">This field is required</span>
+                <p className="text-red-500 text-sm">
+                  {errors.username.message}
+                </p>
               )}
             </div>
 
@@ -93,7 +148,7 @@ const Register = () => {
               </label>
               <input
                 {...register("email", {
-                  required: true,
+                  required: "Email is required",
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                     message: "Invalid email address",
@@ -101,7 +156,7 @@ const Register = () => {
                 })}
                 type="email"
                 placeholder="Enter email"
-                className="text-black w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -124,7 +179,7 @@ const Register = () => {
                   })}
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter password"
-                  className="text-black w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
                 />
                 <span
                   onClick={togglePasswordVisibility}
@@ -152,13 +207,13 @@ const Register = () => {
               <div className="relative">
                 <input
                   {...register("confirmPassword", {
-                    required: "Confirm Password is required",
-                    validate: (value) =>
-                      value === watch("password") || "Passwords do not match",
+                    required: "Confirm password is required",
+                    validate: (val) =>
+                      val === watch("password") || "Passwords do not match",
                   })}
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm password"
-                  className="text-black w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
                 />
                 <span
                   onClick={toggleConfirmPasswordVisibility}
@@ -179,7 +234,10 @@ const Register = () => {
             </div>
 
             {/* Submit Button */}
-            <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md transition duration-200 cursor-pointer">
+            <button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md transition duration-200"
+            >
               Register
             </button>
           </form>
