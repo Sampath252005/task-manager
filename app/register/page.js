@@ -95,23 +95,26 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center p-4 relative">
       {alertVisible && (
-        <div className="absolute top-30 -left-20 w-full max-w-md">
+        <div className="absolute top-5 md:top-25 left-1/2 transform -translate-x-1/2 w-full max-w-md z-50">
           <Alert type={alertType} message={alertMessage} />
         </div>
       )}
 
-      <h1 className="absolute top-12 text-4xl font-extrabold text-white drop-shadow-md tracking-wide">
+      <h1 className="absolute top-12 text-4xl font-extrabold text-white drop-shadow-md tracking-wide ">
         TaskVault
       </h1>
 
-      <div className="bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row max-w-4xl w-full">
+      <div className="bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row max-w-4xl w-full ">
         {/* Image Section */}
-        <div className="relative w-full md:w-1/2 h-64 md:h-auto">
+        <div className="relative w-full md:w-1/2 h-[1000px] md:h-auto">
           <Image
             src="/loginPage_image.jpg"
+            
             alt="Register"
             layout="fill"
             objectFit="cover"
+            sizes="100vw"
+            className="object-cover"
             priority
           />
         </div>
@@ -236,10 +239,19 @@ const Register = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md transition duration-200"
+              className="w-full text-white bg-gradient-to-br from-purple-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
             >
               Register
             </button>
+            <p className="text-sm text-center text-gray-500">
+              Already have an account?{" "}
+              <a
+                href="/loginPage"
+                className="font-semibold text-blue-500 hover:text-blue-700"
+              >
+                Log in
+              </a>
+            </p>
           </form>
         </div>
       </div>

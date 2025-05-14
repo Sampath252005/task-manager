@@ -19,7 +19,7 @@ const LoginPage = () => {
   } = useForm();
   const router = useRouter();
   const onSubmit = async (data) => {
-    const {  email, password } = data;
+    const { email, password } = data;
     try {
       const response = await fetch("/api/auth/login", {
         method: "POST",
@@ -64,6 +64,8 @@ const LoginPage = () => {
               alt="Login Visual"
               layout="fill"
               objectFit="cover"
+              sizes="100vw"
+              className="object-cover"
               priority
             />
           </div>
@@ -75,7 +77,7 @@ const LoginPage = () => {
             </h2>
 
             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-              <div>
+              {/* <div>
                 <label className="block text-sm font-semibold text-gray-700 ">
                   Username
                 </label>
@@ -88,7 +90,7 @@ const LoginPage = () => {
                 {errors.username && (
                   <span className="text-red-500">This field is required</span>
                 )}
-              </div>
+              </div> */}
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700">
@@ -146,9 +148,18 @@ const LoginPage = () => {
                 )}
               </div>
 
-              <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 rounded-md transition duration-200 cursor-pointer">
+              <button className="w-full text-white bg-gradient-to-br from-purple-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800  rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 font-bold cursor-pointer">
                 Login
               </button>
+              <p className="text-sm text-center text-gray-500">
+                Don't have an account?{" "}
+                <a
+                  href="/register"
+                  className="font-semibold text-blue-500 hover:text-blue-700"
+                >
+                  Register
+                </a>
+              </p>
             </form>
           </div>
         </div>
