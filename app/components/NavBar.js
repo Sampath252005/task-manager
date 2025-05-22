@@ -1,16 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
-const NavBar = () => {
-  const [NavbarShow, setNavbarShow] = useState(true);
+const NavBar = ({ NavbarShow, setNavbarShow }) => {
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   return (
     <>
       {/* Toggle Button - Always Visible */}
       <div
-        className="fixed top-4 left-4 z-50 p-2 bg-gray-800 rounded-full cursor-pointer hover:bg-gray-700"
+        className="fixed top-4 left-4 z-50 p-2 mb-5 bg-gray-800  cursor-pointer hover:bg-gray-700 rounded-2xl"
         onClick={() => setNavbarShow(!NavbarShow)}
       >
         <Image src="/layers.png" alt="Toggle Sidebar" width={30} height={30} />
@@ -18,8 +21,8 @@ const NavBar = () => {
 
       {/* Sidebar */}
       {NavbarShow && (
-        <div className="fixed top-0 left-0 flex flex-col justify-between items-center h-screen bg-gray-800 p-4 w-20 z-40">
-          <div className="flex flex-col items-center space-y-8 mt-10">
+        <div className="fixed top-0 left-0 flex flex-col justify-between items-center h-screen bg-gray-800 p-5 w-20 z-40 ">
+          <div className="flex flex-col items-center space-y-10 mt-20">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -94,13 +97,45 @@ const NavBar = () => {
             </motion.button>
           </div>
 
-          <div className="flex flex-col items-center space-y-2 hover:bg-gray-700 rounded-full p-1 md:p-0">
-            <span className="p-2 cursor-pointer">
-              <Image src="/moon.png" alt="Dark Mode" width={30} height={30} />
-            </span>
-            <span className="p-2 cursor-pointer">
-              <Image src="/sunny.png" alt="Light Mode" width={30} height={30} />
-            </span>
+          <div
+            className="flex flex-col items-center space-y-2 bg-gray-700 cursor-pointer rounded-full p-1"
+            onClick={toggleDarkMode}
+          >
+            <AnimatePresence mode="wait">
+              {isDarkMode ? (
+                <motion.span
+                  key="moon"
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 90 }}
+                  transition={{ duration: 0.3 }}
+                  className="p-2 bg-blue-300 rounded-full"
+                >
+                  <Image
+                    src="/moon.png"
+                    alt="Dark Mode"
+                    width={30}
+                    height={30}
+                  />
+                </motion.span>
+              ) : (
+                <motion.span
+                  key="sun"
+                  initial={{ opacity: 0, rotate: 90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: -90 }}
+                  transition={{ duration: 0.3 }}
+                  className="p-2 bg-blue-300 rounded-full"
+                >
+                  <Image
+                    src="/sunny.png"
+                    alt="Light Mode"
+                    width={30}
+                    height={30}
+                  />
+                </motion.span>
+              )}
+            </AnimatePresence>
           </div>
         </div>
       )}
