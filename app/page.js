@@ -12,7 +12,7 @@ export default function Home() {
       <NavBar NavbarShow={NavbarShow} setNavbarShow={setNavbarShow} />
 
       <div
-        className={`flex bg-gray-800 p-4 ${
+        className={`flex bg-gray-800 p-2 ${
           NavbarShow ? "ml-20 w-[calc(100%-5rem)]" : "w-full"
         }`}
       >
