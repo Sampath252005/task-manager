@@ -13,132 +13,146 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
     <>
       {/* Toggle Button - Always Visible */}
       <div
-        className="fixed top-4 left-4 z-50 p-2 mb-5 bg-gray-800  cursor-pointer hover:bg-gray-700 rounded-2xl"
+        className="fixed top-2 md:top-4 left-2 md:left-4 z-50 p-2 mb-5 bg-gray-800 cursor-pointer hover:bg-gray-700 rounded-2xl"
         onClick={() => setNavbarShow(!NavbarShow)}
       >
         <Image src="/layers.png" alt="Toggle Sidebar" width={30} height={30} />
       </div>
 
-      {/* Sidebar */}
-      {NavbarShow && (
-        <div className="fixed top-0 left-0 flex flex-col justify-between items-center h-screen bg-gray-800 p-5 w-20 z-40 ">
-          <div className="flex flex-col items-center space-y-10 mt-20">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="text-white bg-transparent rounded cursor-pointer"
-            >
-              <Image src="/blue-file.png" alt="Files" width={30} height={40} />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="text-white bg-transparent rounded cursor-pointer hover:bg-gray-700 p-2"
-            >
-              <Image
-                src="/blue-message.png"
-                alt="Messages"
-                width={30}
-                height={40}
-              />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="text-white bg-transparent rounded cursor-pointer"
-            >
-              <Image
-                src="/color-calendar.png"
-                alt="Calendar"
-                width={30}
-                height={40}
-              />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="text-white bg-transparent rounded cursor-pointer"
-            >
-              <Image
-                src="/blue-open-folder.png"
-                alt="Folder"
-                width={30}
-                height={40}
-              />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="text-white bg-transparent rounded cursor-pointer"
-            >
-              <Image
-                src="/color-notification.png"
-                alt="Notifications"
-                width={30}
-                height={40}
-              />
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="text-white bg-transparent rounded cursor-pointer"
-            >
-              <Image
-                src="/pie-chart.png"
-                alt="Analytics"
-                width={30}
-                height={40}
-              />
-            </motion.button>
-          </div>
-
-          <div
-            className="flex flex-col items-center space-y-2 bg-gray-700 cursor-pointer rounded-full p-1"
-            onClick={toggleDarkMode}
+      {/* Sidebar with smooth animation */}
+      <AnimatePresence>
+        {NavbarShow && (
+          <motion.div
+            initial={{ x: -100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -100, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 left-0 flex flex-col justify-between items-center min-h-screen bg-gray-800 p-2 md:p-5 w-15 md:w-20 z-40"
           >
-            <AnimatePresence mode="wait">
-              {isDarkMode ? (
-                <motion.span
-                  key="moon"
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: 90 }}
-                  transition={{ duration: 0.3 }}
-                  className="p-2 bg-blue-300 rounded-full"
-                >
-                  <Image
-                    src="/moon.png"
-                    alt="Dark Mode"
-                    width={30}
-                    height={30}
-                  />
-                </motion.span>
-              ) : (
-                <motion.span
-                  key="sun"
-                  initial={{ opacity: 0, rotate: 90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  exit={{ opacity: 0, rotate: -90 }}
-                  transition={{ duration: 0.3 }}
-                  className="p-2 bg-blue-300 rounded-full"
-                >
-                  <Image
-                    src="/sunny.png"
-                    alt="Light Mode"
-                    width={30}
-                    height={30}
-                  />
-                </motion.span>
-              )}
-            </AnimatePresence>
-          </div>
-        </div>
-      )}
+            <div className="flex flex-col items-center space-y-10 mt-20">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white bg-transparent rounded cursor-pointer"
+              >
+                <Image
+                  src="/blue-file.png"
+                  alt="Files"
+                  width={30}
+                  height={40}
+                />
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white bg-transparent rounded cursor-pointer hover:bg-gray-700 p-2"
+              >
+                <Image
+                  src="/blue-message.png"
+                  alt="Messages"
+                  width={30}
+                  height={40}
+                />
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white bg-transparent rounded cursor-pointer"
+              >
+                <Image
+                  src="/color-calendar.png"
+                  alt="Calendar"
+                  width={30}
+                  height={40}
+                />
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white bg-transparent rounded cursor-pointer"
+              >
+                <Image
+                  src="/blue-open-folder.png"
+                  alt="Folder"
+                  width={30}
+                  height={40}
+                />
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white bg-transparent rounded cursor-pointer"
+              >
+                <Image
+                  src="/color-notification.png"
+                  alt="Notifications"
+                  width={30}
+                  height={40}
+                />
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white bg-transparent rounded cursor-pointer"
+              >
+                <Image
+                  src="/pie-chart.png"
+                  alt="Analytics"
+                  width={30}
+                  height={40}
+                />
+              </motion.button>
+            </div>
+
+            {/* Dark Mode Toggle */}
+            <div
+              className="flex flex-col items-center space-y-2 bg-gray-700 cursor-pointer rounded-full p-1"
+              onClick={toggleDarkMode}
+            >
+              <AnimatePresence mode="wait">
+                {isDarkMode ? (
+                  <motion.span
+                    key="moon"
+                    initial={{ opacity: 0, rotate: -90 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    exit={{ opacity: 0, rotate: 90 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-2 bg-blue-300 rounded-full"
+                  >
+                    <Image
+                      src="/moon.png"
+                      alt="Dark Mode"
+                      width={30}
+                      height={30}
+                    />
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="sun"
+                    initial={{ opacity: 0, rotate: 90 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    exit={{ opacity: 0, rotate: -90 }}
+                    transition={{ duration: 0.3 }}
+                    className="p-2 bg-blue-300 rounded-full"
+                  >
+                    <Image
+                      src="/sunny.png"
+                      alt="Light Mode"
+                      width={30}
+                      height={30}
+                    />
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };
