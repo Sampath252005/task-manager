@@ -37,9 +37,9 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
     >
       {/* Left nav links */}
       <div className="hidden md:flex md:gap-4 md:font-bold md:text-white">
-        <span className="cursor-pointer hover:text-purple-600">Projects</span>
-        <span className="cursor-pointer hover:text-purple-600">Tasks</span>
-        <span className="cursor-pointer hover:text-purple-600">Calendar</span>
+        <span className="cursor-pointer hover:text-blue-400">Projects</span>
+        <span className="cursor-pointer hover:text-blue-400">Tasks</span>
+        <span className="cursor-pointer hover:text-blue-400">Calendar</span>
       </div>
 
       {/* Search form */}
@@ -122,7 +122,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
         <div className="flex items-center gap-4">
           <div className="relative inline-block text-left" ref={ProfileRef}>
             <span
-              className="flex items-center gap-5 bg-gray-900 p-2 text-white rounded-full cursor-pointer"
+              className="flex items-center gap-5 bg-gray-800 border border-blue-500 p-2 text-white rounded-full cursor-pointer"
               onClick={() => setOpenProfile(!OpenProfile)}
             >
               <h2 className="hidden md:block font-bold">Sampath</h2>

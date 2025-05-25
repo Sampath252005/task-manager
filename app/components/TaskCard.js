@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const TaskCard = ({ title, subtitle, tagsList = [], description, image }) => {
   return (
-    <div className="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
+    <div className="bg-white dark:bg-[#071E3D] shadow-md rounded-lg p-4">
       <div className="mb-2">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">
           {title}

@@ -13,10 +13,10 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
     <>
       {/* Toggle Button - Always Visible */}
       <div
-        className="fixed top-2 md:top-4 left-2 md:left-4 z-50 p-2 mb-5 bg-gray-800 cursor-pointer hover:bg-gray-700 rounded-2xl"
+        className="fixed top-2 md:top-4 left-2 md:left-4 z-50 p-2 mb-5 bg-gray-900 cursor-pointer hover:bg-gray-700 rounded-2xl"
         onClick={() => setNavbarShow(!NavbarShow)}
       >
-        <Image src="/layers.png" alt="Toggle Sidebar" width={30} height={30} />
+        <Image src="/layers.png" alt="Toggle Sidebar"  width={25} height={25} height={25} />
       </div>
 
       {/* Sidebar with smooth animation */}
@@ -27,9 +27,9 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: -100, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed top-0 left-0 flex flex-col justify-between items-center min-h-screen bg-gray-800 p-2 md:p-5 w-15 md:w-20 z-40"
+            className="fixed top-0 left-0 flex flex-col justify-between items-center min-h-screen bg-gray-800 p-2  md:p-5 w-15 md:w-20 z-40"
           >
-            <div className="flex flex-col items-center space-y-10 mt-20">
+            <div className="flex flex-col items-center space-y-10 mt-20 ">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -38,8 +38,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/blue-file.png"
                   alt="Files"
-                  width={30}
-                  height={40}
+                   width={25} height={25}
+                 
                 />
               </motion.button>
 
@@ -51,8 +51,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/blue-message.png"
                   alt="Messages"
-                  width={30}
-                  height={40}
+                   width={25} height={25}
+                 
                 />
               </motion.button>
 
@@ -64,8 +64,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/color-calendar.png"
                   alt="Calendar"
-                  width={30}
-                  height={40}
+                   width={25} height={25}
+                 
                 />
               </motion.button>
 
@@ -77,8 +77,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/blue-open-folder.png"
                   alt="Folder"
-                  width={30}
-                  height={40}
+                   width={25} height={25}
+                 
                 />
               </motion.button>
 
@@ -90,8 +90,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/color-notification.png"
                   alt="Notifications"
-                  width={30}
-                  height={40}
+                   width={25} height={25}
+                 
                 />
               </motion.button>
 
@@ -103,8 +103,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/pie-chart.png"
                   alt="Analytics"
-                  width={30}
-                  height={40}
+                   width={25} height={25}
+                 
                 />
               </motion.button>
             </div>
@@ -122,13 +122,13 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                     animate={{ opacity: 1, rotate: 0 }}
                     exit={{ opacity: 0, rotate: 90 }}
                     transition={{ duration: 0.3 }}
-                    className="p-2 bg-blue-300 rounded-full"
+                    className="p-2 bg-blue-250 rounded-full"
                   >
                     <Image
                       src="/moon.png"
                       alt="Dark Mode"
-                      width={30}
-                      height={30}
+                       width={25} height={25}
+                      height={25}
                     />
                   </motion.span>
                 ) : (
@@ -138,13 +138,13 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                     animate={{ opacity: 1, rotate: 0 }}
                     exit={{ opacity: 0, rotate: -90 }}
                     transition={{ duration: 0.3 }}
-                    className="p-2 bg-blue-300 rounded-full"
+                    className="p-2 bg-blue-250 rounded-full"
                   >
                     <Image
                       src="/sunny.png"
                       alt="Light Mode"
-                      width={30}
-                      height={30}
+                       width={25} height={25}
+                      height={25}
                     />
                   </motion.span>
                 )}
