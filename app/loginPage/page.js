@@ -1,6 +1,6 @@
 // app/login/page.js or wherever this file is
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Head from "next/head";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,20 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm();
   const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const isExpired = payload.exp * 1000 < Date.now();
+        if (!isExpired) {
+          router.push("/");
+        }
+      } catch (err) {
+        console.error("Invalid token:", err);
+      }
+    }
+  }, []);
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
@@ -29,6 +43,9 @@ const LoginPage = () => {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
+        const result = await response.json();
+        localStorage.setItem("token", result.token);
+
         router.push("/");
       } else {
         console.error("Login failed");

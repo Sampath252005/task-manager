@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React ,{useEffect}from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -60,6 +60,20 @@ const Register = () => {
     setShowConfirmPassword(!showConfirmPassword);
 
   const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        const isExpired = payload.exp * 1000 < Date.now();
+        if (!isExpired) {
+          router.push("/home");
+        }
+      } catch (err) {
+        console.error("Invalid token:", err);
+      }
+    }
+  }, []);
   const {
     register,
     handleSubmit,
@@ -82,6 +96,8 @@ const Register = () => {
 
       if (response.ok) {
         showAlert("success", "Registration successful! Please log in.");
+        const result = await response.json();
+        localStorage.setItem("token", result.token);
         router.push("/loginPage");
       } else {
         showAlert("error", "Registration failed. Please try again.");
@@ -109,7 +125,6 @@ const Register = () => {
         <div className="relative w-full md:w-1/2 h-[1000px] md:h-auto">
           <Image
             src="/loginPage_image.jpg"
-            
             alt="Register"
             layout="fill"
             objectFit="cover"
