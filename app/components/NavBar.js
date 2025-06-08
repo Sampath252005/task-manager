@@ -16,7 +16,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
         className="fixed top-2 md:top-4 left-2 md:left-4 z-50 p-2 mb-5 bg-gray-900 cursor-pointer hover:bg-gray-700 rounded-2xl"
         onClick={() => setNavbarShow(!NavbarShow)}
       >
-        <Image src="/layers.png" alt="Toggle Sidebar"  width={25} height={25} height={25} />
+        <Image src="/layers.png" alt="Toggle Sidebar" width={25} height={25} />
       </div>
 
       {/* Sidebar with smooth animation */}
@@ -38,8 +38,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/blue-file.png"
                   alt="Files"
-                   width={25} height={25}
-                 
+                  width={25}
+                  height={25}
                 />
               </motion.button>
 
@@ -51,8 +51,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/blue-message.png"
                   alt="Messages"
-                   width={25} height={25}
-                 
+                  width={25}
+                  height={25}
                 />
               </motion.button>
 
@@ -64,8 +64,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/color-calendar.png"
                   alt="Calendar"
-                   width={25} height={25}
-                 
+                  width={25}
+                  height={25}
                 />
               </motion.button>
 
@@ -77,8 +77,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/blue-open-folder.png"
                   alt="Folder"
-                   width={25} height={25}
-                 
+                  width={25}
+                  height={25}
                 />
               </motion.button>
 
@@ -90,8 +90,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/color-notification.png"
                   alt="Notifications"
-                   width={25} height={25}
-                 
+                  width={25}
+                  height={25}
                 />
               </motion.button>
 
@@ -103,8 +103,8 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 <Image
                   src="/pie-chart.png"
                   alt="Analytics"
-                   width={25} height={25}
-                 
+                  width={25}
+                  height={25}
                 />
               </motion.button>
             </div>
@@ -127,7 +127,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                     <Image
                       src="/moon.png"
                       alt="Dark Mode"
-                       width={25} height={25}
+                      width={25}
                       height={25}
                     />
                   </motion.span>
@@ -143,7 +143,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                     <Image
                       src="/sunny.png"
                       alt="Light Mode"
-                       width={25} height={25}
+                      width={25}
                       height={25}
                     />
                   </motion.span>

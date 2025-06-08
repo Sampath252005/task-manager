@@ -1,5 +1,5 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion"; // Import framer-motion
@@ -27,6 +27,10 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const router= useRouter();
+  const handleAddTask = () => {
+    router.push("/add-task");
+  };
   return (
     <motion.div
       className="flex justify-between flex-wrap gap-4 relative min-w-full items-center"
@@ -115,7 +119,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
 
       {/* Add Task and Profile Section */}
       <div className="relative flex items-center gap-10 justify-center">
-        <button className="hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br md:focus:ring-4 md:focus:ring-blue-300 md:shadow-lg md:shadow-blue-500/50 md:dark:shadow-lg md:dark:shadow-blue-800/80 md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2">
+        <button onClick={handleAddTask} className=" cursor-pointer hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br   md:dark:shadow-lg  md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2">
           Add Task
         </button>
 
