@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from 'next/navigation'
 
 const NavBar = ({ NavbarShow, setNavbarShow }) => {
+  const router = useRouter();
   const [isDarkMode, setIsDarkMode] = useState(true);
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
@@ -16,7 +18,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
         className="fixed top-2 md:top-4 left-2 md:left-4 z-50 p-2 mb-5 bg-gray-900 cursor-pointer hover:bg-gray-700 rounded-2xl"
         onClick={() => setNavbarShow(!NavbarShow)}
       >
-        <Image src="/layers.png" alt="Toggle Sidebar" width={25} height={25} />
+        <Image src="/layers.png" alt="Toggle Sidebar" width={25} height={25} onClick={()=>router.push("/")} />
       </div>
 
       {/* Sidebar with smooth animation */}
@@ -33,13 +35,15 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="text-white bg-transparent rounded cursor-pointer"
+                className="  text-white bg-transparent rounded cursor-pointer"
+                onClick={() => router.push('/tasks')}
               >
                 <Image
                   src="/blue-file.png"
                   alt="Files"
                   width={25}
                   height={25}
+                  className="tasks"
                 />
               </motion.button>
 
