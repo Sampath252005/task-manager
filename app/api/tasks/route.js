@@ -2,13 +2,19 @@ import dbConnect from "@/lib/db";
 import Task from "@/models/Task";
 import { verifyToken } from "@/lib/auth";
 
+// ✅ GET - Fetch tasks for user
 export async function GET(req) {
   try {
     await dbConnect();
     const token = req.headers.get("authorization")?.split(" ")[1];
     if (!token) return new Response("Unauthorized", { status: 401 });
 
-    const { userId } = verifyToken(token);
+    const decoded = verifyToken(token);
+    if (!decoded || !decoded.id) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+    const userId = decoded.id;
+
     const tasks = await Task.find({ userId });
     return Response.json(tasks);
   } catch (error) {
@@ -17,15 +23,20 @@ export async function GET(req) {
   }
 }
 
+// ✅ POST - Create a new task
 export async function POST(req) {
   try {
     await dbConnect();
     const token = req.headers.get("authorization")?.split(" ")[1];
     if (!token) return new Response("Unauthorized", { status: 401 });
 
-    const { userId } = verifyToken(token);
-    const body = await req.json();
+    const decoded = verifyToken(token);
+    if (!decoded || !decoded.id) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+    const userId = decoded.id;
 
+    const body = await req.json();
     const task = await Task.create({ ...body, userId });
     return Response.json(task);
   } catch (error) {
@@ -34,15 +45,20 @@ export async function POST(req) {
   }
 }
 
+// ✅ PUT - Update task
 export async function PUT(req) {
   try {
     await dbConnect();
     const token = req.headers.get("authorization")?.split(" ")[1];
     if (!token) return new Response("Unauthorized", { status: 401 });
 
-    const { userId } = verifyToken(token);
-    const { taskId, ...updates } = await req.json();
+    const decoded = verifyToken(token);
+    if (!decoded || !decoded.id) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+    const userId = decoded.id;
 
+    const { taskId, ...updates } = await req.json();
     const task = await Task.findOneAndUpdate({ _id: taskId, userId }, updates, {
       new: true,
     });
@@ -58,15 +74,20 @@ export async function PUT(req) {
   }
 }
 
+// ✅ DELETE - Delete task
 export async function DELETE(req) {
   try {
     await dbConnect();
     const token = req.headers.get("authorization")?.split(" ")[1];
     if (!token) return new Response("Unauthorized", { status: 401 });
 
-    const { userId } = verifyToken(token);
-    const { taskId } = await req.json();
+    const decoded = verifyToken(token);
+    if (!decoded || !decoded.id) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+    const userId = decoded.id;
 
+    const { taskId } = await req.json();
     const deletedTask = await Task.findOneAndDelete({ _id: taskId, userId });
 
     if (!deletedTask) {

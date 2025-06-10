@@ -3,7 +3,7 @@ import Image from "next/image";
 import NavBar from "./components/NavBar";
 import SearchBar from "./components/SearchBar";
 import { useState } from "react";
-import CardList from "./components/CardList";
+import TaskList from "./components/TaskList";
 
 export default function Home() {
   const [NavbarShow, setNavbarShow] = useState(true);
@@ -46,15 +46,15 @@ export default function Home() {
         <div className="justify-center items-center w-full h-full px-4 py-5">
           <div className="backlog p-3 mt-5 bg-[#323643] border-l-2 border-red-500">
             <h1 className="text-2xl font-bold text-red-500 p-3">Backlog</h1>
-            <CardList />
+            <TaskList />
           </div>
           <div className="Inprogress p-3 mt-5 bg-[#323643] border-l-2 border-yellow-500">
             <h1 className="text-2xl font-bold text-yellow-500 p-3">Inprogrss</h1>
-            <CardList />
+            <TaskList />
           </div>
           <div className="completed p-3 mt-5 bg-[#323643] border-l-2 border-green-500">
             <h1 className="text-2xl font-bold text-green-500 p-3">Completed</h1>
-            <CardList />
+            <TaskList />
           </div>
         </div>
       </div>
