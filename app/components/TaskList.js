@@ -3,7 +3,7 @@
 import React from "react";
 import TaskCard from "./TaskCard"; // ✅ Correct import
 import { useEffect,useState } from "react";
-
+import Loading from "./Loading";
 
 const TaskList = () => {
   const[tasks, setTasks] = useState([]);
@@ -12,7 +12,6 @@ const TaskList = () => {
     const fetchTasks= async ()=>{
       try{
         const token = localStorage.getItem("token");
-        console.log("Token:", token);
         const response = await fetch("/api/tasks", {
           method: "GET",
           headers:{
@@ -24,7 +23,7 @@ const TaskList = () => {
         }
         const data = await response.json();
         setTasks(data);
-        console.log("Fetched tasks:", data);
+       
       }
       catch(error){ 
         console.error("Error fetching tasks:", error);
@@ -36,7 +35,7 @@ const TaskList = () => {
     fetchTasks();
   },[]);
 
-  if (loading) return <div>Loading tasks...</div>;
+  if (loading) return <Loading />;
 
   if (tasks.length === 0) return <div>No tasks found</div>;
 

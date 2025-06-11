@@ -1,12 +1,14 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-const addTask = ({ showAddTask, setShowAddTask }) => {
+
+const AddTask = ({ close }) => {
+  const [showloading, setShowLoading] = useState(false);
   const {
     register,
     handleSubmit,
     reset,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -16,10 +18,12 @@ const addTask = ({ showAddTask, setShowAddTask }) => {
       priority: "low",
     },
   });
+
   const onSubmit = async (data) => {
     console.log(data);
     const { title, description, tag, priority } = data;
     try {
+      setShowLoading(true);
       const response = await fetch("/api/tasks", {
         method: "POST",
         headers: {
@@ -28,50 +32,56 @@ const addTask = ({ showAddTask, setShowAddTask }) => {
         },
         body: JSON.stringify({ title, description, tag, priority }),
       });
+
       if (response.ok) {
         console.log("Task added successfully");
+        setShowLoading(false);
+        close();
       } else {
         console.error("Failed to add task");
       }
     } catch (error) {
       console.error("Error adding task:", error);
     } finally {
-      console.log("Task submission completed");
-      reset(); // Reset the form after submission
+      reset();
     }
   };
+
   return (
-    <div className="relative bg-gradient-to-r from-cyan-500 to-blue-500 flex p-5 flex-col rounded-lg w-[90%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white z-50">
+    <div className="relative bg-gradient-to-r from-cyan-500 to-blue-500 flex flex-col p-5 rounded-lg w-[95%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white z-50 max-h-[90vh] overflow-auto">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-extrabold text-3xl pl-2 pb-2 text-blue-900">
+        <h2 className="font-extrabold text-2xl md:text-3xl pl-2 pb-2 text-blue-900">
           Add New Task
         </h2>
         <Image
           src="/close.png"
-          alt="close"
-          width={20}
-          height={20}
-          className="cursor-pointer"
-          onClick={() => setShowAddTask(false)}
+          alt="Close"
+          width={30}
+          height={30}
+          className="cursor-pointer p-2 hover:bg-blue-400 rounded-3xl"
+          onClick={close}
         />
       </div>
+
       <form
-        className="space-y-4 flex justify-between bg-white p-2 rounded-3xl text-black"
+        className="flex flex-col lg:flex-row justify-between bg-white p-4 rounded-3xl text-black gap-6"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="flex flex-col gap-4 p-2  text-blue-900">
+        {/* Left side form */}
+        <div className="flex flex-col gap-4 flex-1">
           <div>
             <label className="font-extrabold">Title</label>
             <input
               {...register("title", { required: "Title is required" })}
               type="text"
               placeholder="Enter task title"
-              className="w-full mt-1 p-2 border border-gray rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
             {errors.title && (
               <p className="text-red-500 text-sm">{errors.title.message}</p>
             )}
           </div>
+
           <div>
             <label className="font-extrabold">Description</label>
             <input
@@ -79,8 +89,8 @@ const addTask = ({ showAddTask, setShowAddTask }) => {
                 required: "Description is required",
               })}
               type="text"
-              placeholder="Enter task descrption"
-              className="w-full mt-1 p-2 border border-gray rounded-md text-black"
+              placeholder="Enter task description"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
             />
             {errors.description && (
               <p className="text-red-500 text-sm">
@@ -88,26 +98,30 @@ const addTask = ({ showAddTask, setShowAddTask }) => {
               </p>
             )}
           </div>
-          <div className="flex gap-4">
-            <div>
+
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1">
               <label className="font-extrabold">Tags</label>
               <input
-                {...register("tag", { required: "tag is required" })}
+                {...register("tag", { required: "Tag is required" })}
                 type="text"
-                placeholder="Enter task title"
-                className="w-full mt-1 p-2 border  border-grey rounded-md  text-black"
+                placeholder="Enter task tag"
+                className="w-full mt-1 p-2 border border-gray-300 rounded-md"
               />
               {errors.tag && (
-                <p className="text-red-500 text-sm">{errors.title.message}</p>
+                <p className="text-red-500 text-sm">{errors.tag.message}</p>
               )}
             </div>
-            <div>
+
+            <div className="flex-1">
               <label className="font-extrabold">Priority</label>
               <input
-                {...register("priority", { required: "priority is required" })}
+                {...register("priority", {
+                  required: "Priority is required",
+                })}
                 type="text"
                 placeholder="Enter task priority"
-                className="w-full mt-1 p-2 border  border-grey rounded-md  text-black"
+                className="w-full mt-1 p-2 border border-gray-300 rounded-md"
               />
               {errors.priority && (
                 <p className="text-red-500 text-sm">
@@ -116,27 +130,47 @@ const addTask = ({ showAddTask, setShowAddTask }) => {
               )}
             </div>
           </div>
-          <div className="flex justify-between items-center">
-            <button className="text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" >
+
+          <div className="flex justify-between items-center mt-2">
+            <button
+              type="button"
+              onClick={close}
+              className="cursor-pointer text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 rounded-lg text-sm px-5 py-2.5"
+            >
               Cancel
             </button>
-            <button className="text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-              Add task
+            <button
+              type="submit"
+              className="cursor-pointer text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 rounded-lg text-sm px-5 py-2.5"
+            >
+              Add Task
             </button>
           </div>
         </div>
-        <div className="flex items-center justify-center p-5">
-          <Image
-            src="/taskimage1.jpg"
-            alt="Add Task"
-            width={600}
-            height={600}
-            className=" rounded-lg"
-          />
+
+        {/* Right side image */}
+        <div className="flex justify-center items-center flex-1">
+          {showloading ? (
+            <Image
+              src="/loading.gif"
+              alt="Loading"
+              width={500}
+              height={500}
+              className="rounded-lg max-h-[250px] object-contain md:max-h-[300px]"
+            />
+          ) : (
+            <Image
+              src="/taskimage1.jpg"
+              alt="Add Task"
+              width={500}
+              height={500}
+              className="rounded-lg max-h-[250px] object-contain md:max-h-[300px]"
+            />
+          )}
         </div>
       </form>
     </div>
   );
 };
 
-export default addTask;
+export default AddTask;

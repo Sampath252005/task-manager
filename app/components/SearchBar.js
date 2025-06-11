@@ -36,9 +36,15 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   return (
     <>
       {showAddTask && (
-        <div className="fixed inset-10  bg-opacity-10 backdrop-blur-xs flex items-center justify-center z-50">
-          <AddTask showAddTask={showAddTask} setShowAddTask={setShowAddTask} />
-        </div>
+        <motion.div
+          className="fixed inset-10 bg-opacity-10 backdrop-blur-xs flex items-center justify-center z-50"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.3 }}
+        >
+          <AddTask close={() => setShowAddTask(false)} />
+        </motion.div>
       )}
 
       <motion.div
@@ -130,12 +136,14 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
 
         {/* Add Task and Profile Section */}
         <div className="relative flex items-center gap-10 justify-center">
-          <button
+          <motion.button
             onClick={handleAddTask}
-            className=" cursor-pointer hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br   md:dark:shadow-lg  md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="cursor-pointer hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br md:dark:shadow-lg md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2"
           >
             Add Task
-          </button>
+          </motion.button>
 
           <div className="flex items-center gap-4">
             <div className="relative inline-block text-left" ref={ProfileRef}>
