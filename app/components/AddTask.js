@@ -16,50 +16,102 @@ const addTask = () => {
       priority: "low",
     },
   });
+  const onSubmit =async (data) => {
+    console.log(data);
+    const{title, description, tag, priority} = data;
+    try{
+
+      const response= await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ title, description, tag, priority }),
+      });
+      if (response.ok) {
+        console.log("Task added successfully");
+      } else {
+        console.error("Failed to add task");
+      }
+    }
+    catch (error) {
+      console.error("Error adding task:", error);
+    }
+    finally {
+      console.log("Task submission completed");
+       reset(); // Reset the form after submission
+    }
+   
+  };
   return (
-    <div className="bg-[#0C74E8] absolute flex p-5  flex-col  rounded-lg w-3xl text-white top-[50%] left-[50%] ">
-      <h2 className="font-extrabold text-2xl pl-2 pb-2 ">Add New Task</h2>
-      <form className="space-y-4 flex justify-between bg-[#00BDFF] p-2 rounded-3xl text-black">
-        <div className="flex flex-col gap-4 p-2">
+    <div className="bg-gradient-to-r from-cyan-500 to-blue-500 absolute flex p-5  flex-col  rounded-lg w-3xl text-white top-[30%] left-[50%] ">
+      <h2 className="font-extrabold text-3xl pl-2 pb-2 text-blue-900">
+        Add New Task
+      </h2>
+      <form className="space-y-4 flex justify-between bg-white p-2 rounded-3xl text-black" onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-4 p-2  text-blue-900">
           <div>
-            <label>Title</label>
+            <label className="font-extrabold">Title</label>
             <input
               {...register("title", { required: "Title is required" })}
               type="text"
               placeholder="Enter task title"
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
+              className="w-full mt-1 p-2 border border-gray rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
             />
             {errors.title && (
               <p className="text-red-500 text-sm">{errors.title.message}</p>
             )}
           </div>
           <div>
-            <label>Description</label>
+            <label className="font-extrabold">Description</label>
             <input
               {...register("description", {
                 required: "Description is required",
               })}
               type="text"
               placeholder="Enter task descrption"
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
+              className="w-full mt-1 p-2 border border-gray rounded-md text-black"
             />
-            {errors.title && (
+            {errors.description && (
               <p className="text-red-500 text-sm">
                 {errors.description.message}
               </p>
             )}
           </div>
-          <div>
-            <label>Title</label>
-            <input
-              {...register("tag", { regis: "Title is required" })}
-              type="text"
-              placeholder="Enter task title"
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
-            />
-            {errors.title && (
-              <p className="text-red-500 text-sm">{errors.title.message}</p>
-            )}
+          <div className="flex gap-4">
+            <div >
+              <label className="font-extrabold">Tags</label>
+              <input
+                {...register("tag", { required: "tag is required" })}
+                type="text"
+                placeholder="Enter task title"
+                className="w-full mt-1 p-2 border  border-grey rounded-md  text-black"
+              />
+              {errors.tag && (
+                <p className="text-red-500 text-sm">{errors.title.message}</p>
+              )}
+            </div>
+            <div >
+              <label className="font-extrabold">Priority</label>
+              <input
+                {...register("priority", { required: "priority is required" })}
+                type="text"
+                placeholder="Enter task priority"
+                className="w-full mt-1 p-2 border  border-grey rounded-md  text-black"
+              />
+              {errors.priority && (
+                <p className="text-red-500 text-sm">{errors.priority.message}</p>
+              )}
+            </div>
+          </div>
+          <div className="flex justify-between items-center">
+            <button className="text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+              Cancel
+            </button>
+            <button className="text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800  rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+              Add task
+            </button>
           </div>
         </div>
         <div className="flex items-center justify-center p-5">
