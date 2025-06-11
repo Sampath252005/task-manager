@@ -14,9 +14,7 @@ export default function Home() {
                     text-transparent bg-clip-text text-sm font-bold mb-3">
         Manage your tasks efficiently!
       </p>
-      <div>
-        <Addtask />
-      </div>
+
     </div>
   );
 }
