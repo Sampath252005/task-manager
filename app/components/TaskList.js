@@ -8,7 +8,7 @@ import Loading from "./Loading";
 const TaskList = () => {
   const[tasks, setTasks] = useState([]);
   const[loading,setLoading] = useState(true);
-  useEffect(() => {
+  
     const fetchTasks= async ()=>{
       try{
         const token = localStorage.getItem("token");
@@ -32,6 +32,7 @@ const TaskList = () => {
         setLoading(false);
       }
     }
+    useEffect(() => {
     fetchTasks();
   },[]);
 
@@ -44,10 +45,12 @@ const TaskList = () => {
       {tasks.map((task) => (
         <TaskCard
           key={task._id}
+          taskId={task._id}
           title={task.title}
           subtitle={task.subtitle}
           tagsList={task.tagsList}
           description={task.description}
+          refreshTasks={fetchTasks}
         />
       ))}
     </div>

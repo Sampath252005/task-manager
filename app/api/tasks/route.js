@@ -78,6 +78,7 @@ export async function PUT(req) {
 export async function DELETE(req) {
   try {
     await dbConnect();
+
     const token = req.headers.get("authorization")?.split(" ")[1];
     if (!token) return new Response("Unauthorized", { status: 401 });
 
@@ -85,15 +86,20 @@ export async function DELETE(req) {
     if (!decoded || !decoded.id) {
       return new Response("Unauthorized", { status: 401 });
     }
-    const userId = decoded.id;
 
+    const userId = decoded.id;
     const { taskId } = await req.json();
+
+
+
     const deletedTask = await Task.findOneAndDelete({ _id: taskId, userId });
 
     if (!deletedTask) {
+      console.log("❌ Task not found or not owned by user.");
       return new Response("Task not found or unauthorized", { status: 404 });
     }
 
+   
     return Response.json({ message: "Task deleted successfully" });
   } catch (error) {
     console.error("DELETE error:", error);
