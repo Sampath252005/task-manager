@@ -8,7 +8,7 @@ export async function GET(req) {
     await dbConnect();
     const token = req.headers.get("authorization")?.split(" ")[1];
     if (!token) return new Response("Unauthorized", { status: 401 });
-
+    
     const decoded = verifyToken(token);
     if (!decoded || !decoded.id) {
       return new Response("Unauthorized", { status: 401 });

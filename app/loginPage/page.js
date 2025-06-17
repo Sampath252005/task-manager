@@ -44,7 +44,7 @@ const LoginPage = () => {
       });
       if (response.ok) {
         const result = await response.json();
-        localStorage.setItem("token", result.token);
+        localStorage.setItem("token", result);
 
         router.push("/");
       } else {
