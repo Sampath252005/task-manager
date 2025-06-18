@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import UpdateTask from "./UpdateTask";
 
 const TaskCard = ({
   taskId,
@@ -12,8 +13,11 @@ const TaskCard = ({
   image,
   refreshTasks,
 }) => {
+  const [showUpdateTask, setShowUpdateTask] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-
+const handleUpdateTask = () => {
+    setShowUpdateTask(true);
+  };
   const deleteTask = async (taskId) => {
     try {
       const token = localStorage.getItem("token");
@@ -69,6 +73,18 @@ const TaskCard = ({
           </div>
         </div>
       )}
+      {showUpdateTask && (
+        <motion.div
+          className="fixed inset-10 bg-opacity-10 backdrop-blur-xs flex items-center justify-center z-50"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.3 }}
+        >
+          <UpdateTask close={() => setShowUpdateTask(false)} taskId={taskId} />
+        </motion.div>
+      )}
+
 
       <div className="mb-4">
         <div className="flex justify-between items-start gap-4 flex-wrap">
@@ -87,6 +103,7 @@ const TaskCard = ({
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
               className="text-white bg-transparent rounded hover:bg-gray-200 dark:hover:bg-gray-700 p-2 transition"
+              onClick={handleUpdateTask}
             >
               <Image src="/update1.png" alt="Update" width={24} height={24} />
             </motion.button>

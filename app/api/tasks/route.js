@@ -48,8 +48,10 @@ export async function POST(req) {
 // ✅ PUT - Update task
 export async function PUT(req) {
   try {
+    console.log("PUT /api/tasks hit"); 
     await dbConnect();
     const token = req.headers.get("authorization")?.split(" ")[1];
+    console.log("token :",token)
     if (!token) return new Response("Unauthorized", { status: 401 });
 
     const decoded = verifyToken(token);
@@ -57,11 +59,14 @@ export async function PUT(req) {
       return new Response("Unauthorized", { status: 401 });
     }
     const userId = decoded.id;
+   
 
     const { taskId, ...updates } = await req.json();
+
     const task = await Task.findOneAndUpdate({ _id: taskId, userId }, updates, {
       new: true,
     });
+ 
 
     if (!task) {
       return new Response("Task not found or unauthorized", { status: 404 });
