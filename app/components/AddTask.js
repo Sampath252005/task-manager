@@ -2,8 +2,11 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
+import { useTasks } from "../hooks/useTasks";
 
 const AddTask = ({ close }) => {
+   const { tasks, loading, refreshTasks } = useTasks();
+  
   const [showloading, setShowLoading] = useState(false);
   const {
     register,
@@ -44,6 +47,7 @@ const AddTask = ({ close }) => {
       console.error("Error adding task:", error);
     } finally {
       reset();
+      refreshTasks(); // Refresh tasks after adding a new one
     }
   };
 
