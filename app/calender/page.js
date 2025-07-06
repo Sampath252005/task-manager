@@ -10,7 +10,6 @@ const Page = () => {
 
   return (
      <>
-     <TaskDoneAnimation/>
     <div className="p-4">
       <Calendar onChange={onChange} value={value} />
     </div>

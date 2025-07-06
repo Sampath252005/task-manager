@@ -29,12 +29,22 @@ const AddTask = ({ close }) => {
       setShowLoading(true);
       const response = await fetch("/api/tasks", {
         method: "POST",
+        
         headers: {
           "Content-Type": "application/json",
+          
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        
         body: JSON.stringify({ title, description, tag, priority }),
       });
+      const token = localStorage.getItem("token");
+if (!token) {
+  console.error("❌ No token found. User may not be logged in.");
+  return;
+}
+
+
 
       if (response.ok) {
         console.log("Task added successfully");

@@ -12,7 +12,10 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   const ProfileRef = useRef(null);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(" ");
-
+   const user = JSON.parse(localStorage.getItem('user'));
+   function capitalizeFirstLetter(val) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -151,7 +154,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
                 className="flex items-center gap-5 bg-gray-800 border border-blue-500 p-2 text-white rounded-full cursor-pointer"
                 onClick={() => setOpenProfile(!OpenProfile)}
               >
-                <h2 className="hidden md:block font-bold">Sampath</h2>
+                <h2 className="hidden md:block font-bold">{capitalizeFirstLetter(user?.username)}</h2>
                 <Image
                   className="w-6 md:w-10 h-6 md:h-10 rounded-full cursor-pointer"
                   src="/profile.png"
@@ -163,10 +166,13 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
 
               {OpenProfile && (
                 <div className="absolute z-10 mt-2 right-0 top-14 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
-                  <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                    <div>Bonnie Green</div>
+                  <div
+                    className="px-4 py-3 text-sm text-gray-900 dark:text-white cursor-pointer  hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    onClick={() => router.push("/profile")}
+                  >
+                    <div>{capitalizeFirstLetter(user?.username)}</div>
                     <div className="font-medium truncate">
-                      name@flowbite.com
+                      {user?.email}
                     </div>
                   </div>
                   <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">

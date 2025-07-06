@@ -28,9 +28,12 @@ export async function POST(req) {
   try {
     await dbConnect();
     const token = req.headers.get("authorization")?.split(" ")[1];
+    console.log("Token:", token);
+    // Check if token is present
     if (!token) return new Response("Unauthorized", { status: 401 });
 
     const decoded = verifyToken(token);
+     console.log("Decoded token:", decoded);
     if (!decoded || !decoded.id) {
       return new Response("Unauthorized", { status: 401 });
     }
@@ -53,6 +56,8 @@ export async function PUT(req) {
     if (!token) return new Response("Unauthorized", { status: 401 });
 
     const decoded = verifyToken(token);
+   
+    // Check if decoded token is valid
     if (!decoded || !decoded.id) {
       return new Response("Unauthorized", { status: 401 });
     }

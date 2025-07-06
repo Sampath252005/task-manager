@@ -70,6 +70,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   alt="Calendar"
                   width={25}
                   height={25}
+                  onClick={()=>router.push('/calender')}
                 />
               </motion.button>
 

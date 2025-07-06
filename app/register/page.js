@@ -1,5 +1,5 @@
 "use client";
-import React ,{useEffect}from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -62,15 +62,20 @@ const Register = () => {
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
         const isExpired = payload.exp * 1000 < Date.now();
+
         if (!isExpired) {
-          router.push("/home");
+          router.replace("/"); // ✅ Use replace to prevent going back
+        } else {
+          localStorage.removeItem("token"); // ❌ Remove expired token
         }
       } catch (err) {
-        console.error("Invalid token:", err);
+        console.error("Invalid token format:", err);
+        localStorage.removeItem("token"); // ❌ Remove invalid token
       }
     }
   }, []);
@@ -94,13 +99,24 @@ const Register = () => {
         body: JSON.stringify({ username, email, password }),
       });
 
+      const result = await response.json();
+
       if (response.ok) {
         showAlert("success", "Registration successful! Please log in.");
-        const result = await response.json();
+
+        // ✅ Store token
         localStorage.setItem("token", result.token);
+
+        // ✅ Store user info (you need to include it in the backend response too)
+        localStorage.setItem("user", JSON.stringify(result.user));
+        localStorage.setItem("userId", result.user._id);
+
         router.push("/loginPage");
       } else {
-        showAlert("error", "Registration failed. Please try again.");
+        showAlert(
+          "error",
+          result.message || "Registration failed. Please try again."
+        );
       }
     } catch (err) {
       console.error(err);
