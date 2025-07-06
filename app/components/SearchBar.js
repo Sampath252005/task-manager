@@ -60,11 +60,9 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         {/* Left nav links */}
-        <div className="hidden md:flex md:gap-4 md:font-bold md:text-white">
-          <span className="cursor-pointer hover:text-blue-400">Projects</span>
-          <span className="cursor-pointer hover:text-blue-400">Tasks</span>
-          <span className="cursor-pointer hover:text-blue-400">Calendar</span>
-        </div>
+       <div>
+        <h1>add  app logo here</h1>
+       </div>
 
         {/* Search form */}
         <form className="max-w-lg mx-auto">

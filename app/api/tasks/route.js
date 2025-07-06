@@ -8,12 +8,12 @@ export async function GET(req) {
     await dbConnect();
     const token = req.headers.get("authorization")?.split(" ")[1];
     if (!token) return new Response("Unauthorized", { status: 401 });
-    
+
     const decoded = verifyToken(token);
-    if (!decoded || !decoded.id) {
+    if (!decoded || !decoded.userId) {
       return new Response("Unauthorized", { status: 401 });
     }
-    const userId = decoded.id;
+    const userId = decoded.userId;
 
     const tasks = await Task.find({ userId });
     return Response.json(tasks);
@@ -29,15 +29,16 @@ export async function POST(req) {
     await dbConnect();
     const token = req.headers.get("authorization")?.split(" ")[1];
     console.log("Token:", token);
-    // Check if token is present
+
     if (!token) return new Response("Unauthorized", { status: 401 });
 
     const decoded = verifyToken(token);
-     console.log("Decoded token:", decoded);
-    if (!decoded || !decoded.id) {
+    console.log("Decoded token:", decoded);
+
+    if (!decoded || !decoded.userId) {
       return new Response("Unauthorized", { status: 401 });
     }
-    const userId = decoded.id;
+    const userId = decoded.userId;
 
     const body = await req.json();
     const task = await Task.create({ ...body, userId });
@@ -56,20 +57,16 @@ export async function PUT(req) {
     if (!token) return new Response("Unauthorized", { status: 401 });
 
     const decoded = verifyToken(token);
-   
-    // Check if decoded token is valid
-    if (!decoded || !decoded.id) {
+    if (!decoded || !decoded.userId) {
       return new Response("Unauthorized", { status: 401 });
     }
-    const userId = decoded.id;
-   
+    const userId = decoded.userId;
 
     const { taskId, ...updates } = await req.json();
 
     const task = await Task.findOneAndUpdate({ _id: taskId, userId }, updates, {
       new: true,
     });
- 
 
     if (!task) {
       return new Response("Task not found or unauthorized", { status: 404 });
@@ -91,14 +88,12 @@ export async function DELETE(req) {
     if (!token) return new Response("Unauthorized", { status: 401 });
 
     const decoded = verifyToken(token);
-    if (!decoded || !decoded.id) {
+    if (!decoded || !decoded.userId) {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const userId = decoded.id;
+    const userId = decoded.userId;
     const { taskId } = await req.json();
-
-
 
     const deletedTask = await Task.findOneAndDelete({ _id: taskId, userId });
 
@@ -107,7 +102,6 @@ export async function DELETE(req) {
       return new Response("Task not found or unauthorized", { status: 404 });
     }
 
-   
     return Response.json({ message: "Task deleted successfully" });
   } catch (error) {
     console.error("DELETE error:", error);
