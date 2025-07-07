@@ -1,9 +1,9 @@
 "use client";
-import { useRouter } from "next/navigation";
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion"; // Import framer-motion
 import AddTask from "./AddTask"; // Import the Addtask component
+import { useRouter } from "next/navigation";
 
 const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   const [SearchBardropdownOpen, setSearchBarDropdownOpen] = useState(false);
@@ -35,6 +35,14 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   const router = useRouter();
   const handleAddTask = () => {
     setShowAddTask(true);
+  };
+  // Function to handle sign out
+    const router1 = useRouter();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    router1.push("/loginPage");
   };
   return (
     <>
@@ -203,6 +211,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
                     <a
                       href="#"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      onClick={handleSignOut}
                     >
                       Sign out
                     </a>
