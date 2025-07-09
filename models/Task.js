@@ -21,6 +21,10 @@ const TaskSchema = new mongoose.Schema(
     dueDate: {
       type: Date,
     },
+    Date:{
+      type: Date,
+      default: Date.now, // Automatically set to current date if not provided
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

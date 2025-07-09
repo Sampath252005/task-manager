@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useTasks } from "../hooks/useTasks";
 
-const AddTask = ({ close }) => {
+const AddTask = ({ close,selectedDate }) => {
    const { tasks, loading, refreshTasks } = useTasks();
   
   const [showloading, setShowLoading] = useState(false);
@@ -19,6 +19,7 @@ const AddTask = ({ close }) => {
       description: "",
       tag: "nothing",
       priority: "low",
+      Date: selectedDate ? selectedDate.toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
     },
   });
 
