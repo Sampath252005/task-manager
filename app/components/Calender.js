@@ -1,4 +1,5 @@
-import { useState } from "react";
+"use client";
+import { useState, useEffect } from "react";
 import {
   format,
   startOfMonth,
@@ -11,9 +12,15 @@ import {
   isSameMonth,
   isSameDay,
 } from "date-fns";
+import { motion } from "framer-motion";
 
 export default function Calendar({ selectedDate, onDateSelect }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [showAddButton, setShowAddButton] = useState(false);
+
+  useEffect(() => {
+    setShowAddButton(!!selectedDate);
+  }, [selectedDate]);
 
   const renderHeader = () => (
     <div className="flex justify-between items-center mb-4 px-4">
@@ -65,7 +72,7 @@ export default function Calendar({ selectedDate, onDateSelect }) {
         const isToday = isSameDay(day, new Date());
         const isSelected = selectedDate && isSameDay(day, selectedDate);
 
-        const baseStyle = `flex items-center justify-center h-10 w-10 mx-auto rounded-full cursor-pointer transition`;
+        const baseStyle = `flex flex-col items-center justify-center h-16 w-16 mx-auto rounded-full cursor-pointer transition`;
         const notCurrentMonthStyle = !isSameMonth(day, monthStart)
           ? "text-gray-300"
           : "text-gray-700";
@@ -75,8 +82,8 @@ export default function Calendar({ selectedDate, onDateSelect }) {
           : "";
 
         const selectedStyle = isSelected
-          ? "bg-blue-600 text-white hover:bg-blue-700"
-          : "hover:bg-blue-100";
+          ? "bg-blue-100 ring-2 ring-blue-400"
+          : "hover:bg-blue-50";
 
         days.push(
           <div
@@ -84,14 +91,15 @@ export default function Calendar({ selectedDate, onDateSelect }) {
             onClick={() => onDateSelect(cloneDay)}
             className={`${baseStyle} ${notCurrentMonthStyle} ${todayStyle} ${selectedStyle}`}
           >
-            {format(day, dateFormat)}
+            <div>{format(day, dateFormat)}</div>
           </div>
         );
+
         day = addDays(day, 1);
       }
 
       rows.push(
-        <div className="grid grid-cols-7 gap-y-1 py-1" key={day}>
+        <div className="grid grid-cols-7 " key={day}>
           {days}
         </div>
       );
@@ -102,10 +110,25 @@ export default function Calendar({ selectedDate, onDateSelect }) {
   };
 
   return (
-    <div className="w-full h-full max-h-[90%] max-w-[90%] bg-white p-5 rounded-2xl shadow-xl border border-gray-200 transition-all duration-300">
+    <div className="w-full max-w-[90%] bg-white  rounded-2xl shadow-xl border border-gray-200 flex flex-col">
       {renderHeader()}
       {renderDays()}
       {renderCells()}
+
+      {/* Add Task Button at Bottom Left */}
+      {showAddButton && (
+        <motion.button
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          onClick={() => onDateSelect(selectedDate, true)} // true = open AddTask
+          className="mr-5 mb-3. cursor-pointer bg-blue-600 text-white px-4 py-2 text-2xl rounded-[50%] hover:bg-blue-700 transition self-end-safe"
+        >
+          + 
+        </motion.button>
+      )}
     </div>
   );
 }
