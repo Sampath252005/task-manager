@@ -14,28 +14,29 @@ import {
 } from "date-fns";
 import { motion } from "framer-motion";
 
-export default function Calendar({ selectedDate, onDateSelect }) {
+export default function Calendar({ selectedDate, onDateSelect,refreshTasks }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [showAddButton, setShowAddButton] = useState(false);
 
   useEffect(() => {
     setShowAddButton(!!selectedDate);
+    refreshTasks();
   }, [selectedDate]);
 
   const renderHeader = () => (
-    <div className="flex justify-between items-center mb-4 px-4">
+    <div className="flex justify-between items-center mb-4 px-4 text-blue-200">
       <button
         onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-        className="text-gray-600 hover:text-blue-500 transition"
+        className="hover:text-cyan-400 transition"
       >
         &larr;
       </button>
-      <h2 className="text-lg font-semibold text-gray-800">
+      <h2 className="text-lg font-bold tracking-wide">
         {format(currentMonth, "MMMM yyyy")}
       </h2>
       <button
         onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-        className="text-gray-600 hover:text-blue-500 transition"
+        className="hover:text-cyan-400 transition"
       >
         &rarr;
       </button>
@@ -45,7 +46,7 @@ export default function Calendar({ selectedDate, onDateSelect }) {
   const renderDays = () => {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     return (
-      <div className="grid grid-cols-7 text-xs text-center text-gray-500 font-semibold px-2">
+      <div className="grid grid-cols-7 text-xs text-center text-blue-300 font-semibold px-2 mb-1">
         {days.map((day) => (
           <div key={day} className="py-1 tracking-wide uppercase">
             {day}
@@ -72,18 +73,19 @@ export default function Calendar({ selectedDate, onDateSelect }) {
         const isToday = isSameDay(day, new Date());
         const isSelected = selectedDate && isSameDay(day, selectedDate);
 
-        const baseStyle = `flex flex-col items-center justify-center h-16 w-16 mx-auto rounded-full cursor-pointer transition`;
+        const baseStyle =
+          "flex flex-col items-center justify-center h-14 w-14 mx-auto rounded-full cursor-pointer transition duration-200";
         const notCurrentMonthStyle = !isSameMonth(day, monthStart)
-          ? "text-gray-300"
-          : "text-gray-700";
+          ? "text-gray-500"
+          : "text-blue-100";
 
         const todayStyle = isToday
-          ? "border-2 border-green-500 text-blue-600 font-bold"
+          ? "border-2 border-cyan-400 text-cyan-300 font-bold"
           : "";
 
         const selectedStyle = isSelected
-          ? "bg-blue-100 ring-2 ring-blue-400"
-          : "hover:bg-blue-50";
+          ? "bg-cyan-500 text-white font-semibold shadow-md"
+          : "hover:bg-cyan-800";
 
         days.push(
           <div
@@ -91,7 +93,7 @@ export default function Calendar({ selectedDate, onDateSelect }) {
             onClick={() => onDateSelect(cloneDay)}
             className={`${baseStyle} ${notCurrentMonthStyle} ${todayStyle} ${selectedStyle}`}
           >
-            <div>{format(day, dateFormat)}</div>
+            {format(day, dateFormat)}
           </div>
         );
 
@@ -99,7 +101,7 @@ export default function Calendar({ selectedDate, onDateSelect }) {
       }
 
       rows.push(
-        <div className="grid grid-cols-7 " key={day}>
+        <div className="grid grid-cols-7 gap-y-2 py-1" key={day}>
           {days}
         </div>
       );
@@ -110,23 +112,23 @@ export default function Calendar({ selectedDate, onDateSelect }) {
   };
 
   return (
-    <div className="w-full max-w-[90%] bg-white  rounded-2xl shadow-xl border border-gray-200 flex flex-col">
+    <div className="w-full max-w-[90%] bg-[#1e293b] p-5 rounded-2xl shadow-2xl border border-blue-900 flex flex-col relative">
       {renderHeader()}
       {renderDays()}
       {renderCells()}
 
-      {/* Add Task Button at Bottom Left */}
+      {/* Floating Add Task Button at bottom-right of calendar box */}
       {showAddButton && (
         <motion.button
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          onClick={() => onDateSelect(selectedDate, true)} // true = open AddTask
-          className="mr-5 mb-3. cursor-pointer bg-blue-600 text-white px-4 py-2 text-2xl rounded-[50%] hover:bg-blue-700 transition self-end-safe"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => onDateSelect(selectedDate, true)}
+          className="absolute bottom-4 right-4 bg-cyan-500 text-white text-2xl font-bold px-4 py-2 rounded-full shadow-lg hover:bg-cyan-400 transition"
         >
-          + 
+          +
         </motion.button>
       )}
     </div>

@@ -21,7 +21,7 @@ const TaskSchema = new mongoose.Schema(
     dueDate: {
       type: Date,
     },
-    Date:{
+    date:{
       type: Date,
       default: Date.now, // Automatically set to current date if not provided
     },

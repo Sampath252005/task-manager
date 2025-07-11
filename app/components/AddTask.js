@@ -1,13 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useTasks } from "../hooks/useTasks";
 
-const AddTask = ({ close,selectedDate }) => {
-   const { tasks, loading, refreshTasks } = useTasks();
-  
+const AddTask = ({ close, selectedDate }) => {
+  const { refreshTasks } = useTasks();
   const [showloading, setShowLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -19,46 +19,58 @@ const AddTask = ({ close,selectedDate }) => {
       description: "",
       tag: "nothing",
       priority: "low",
-      Date: selectedDate ? selectedDate.toISOString().split("T")[0] : new Date().toISOString().split("T")[0],
+      date: selectedDate
+        ? selectedDate.toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0],
     },
   });
 
+  // 🔁 Update form when selectedDate changes
+  useEffect(() => {
+    reset({
+      title: "",
+      description: "",
+      tag: "nothing",
+      priority: "low",
+      date: selectedDate
+        ? selectedDate.toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0],
+    });
+  }, [selectedDate, reset]);
+
   const onSubmit = async (data) => {
-    console.log(data);
     const { title, description, tag, priority } = data;
+    const date = (selectedDate || new Date()).toISOString(); // 🧠 fallback to now if undefined
+
     try {
       setShowLoading(true);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("❌ No token found. User may not be logged in.");
+        return;
+      }
+
       const response = await fetch("/api/tasks", {
         method: "POST",
-        
         headers: {
           "Content-Type": "application/json",
-          
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
-        
-        body: JSON.stringify({ title, description, tag, priority }),
+        body: JSON.stringify({ title, description, tag, priority, date }),
       });
-      const token = localStorage.getItem("token");
-if (!token) {
-  console.error("❌ No token found. User may not be logged in.");
-  return;
-}
-
-
 
       if (response.ok) {
-        console.log("Task added successfully");
-        setShowLoading(false);
+        console.log("✅ Task added successfully");
+        refreshTasks();
         close();
       } else {
-        console.error("Failed to add task");
+        console.error("❌ Failed to add task");
       }
     } catch (error) {
-      console.error("Error adding task:", error);
+      console.error("❌ Error adding task:", error);
     } finally {
+      setShowLoading(false);
       reset();
-      refreshTasks(); // Refresh tasks after adding a new one
     }
   };
 
@@ -82,7 +94,7 @@ if (!token) {
         className="flex flex-col lg:flex-row justify-between bg-white p-4 rounded-3xl text-black gap-6"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {/* Left side form */}
+        {/* Left Side Form */}
         <div className="flex flex-col gap-4 flex-1">
           <div>
             <label className="font-extrabold">Title</label>
@@ -146,6 +158,9 @@ if (!token) {
             </div>
           </div>
 
+          {/* ✅ Hidden input for selected date */}
+          <input type="hidden" {...register("date")} />
+
           <div className="flex justify-between items-center mt-2">
             <button
               type="button"
@@ -163,7 +178,7 @@ if (!token) {
           </div>
         </div>
 
-        {/* Right side image */}
+        {/* Right Side Image */}
         <div className="flex justify-center items-center flex-1">
           {showloading ? (
             <Image

@@ -38,10 +38,16 @@ export async function POST(req) {
     if (!decoded || !decoded.userId) {
       return new Response("Unauthorized", { status: 401 });
     }
-    const userId = decoded.userId;
 
+    const userId = decoded.userId;
     const body = await req.json();
-    const task = await Task.create({ ...body, userId });
+
+    const task = await Task.create({
+      ...body,
+      date: new Date(body.date), // ✅ Fix is here
+      userId,
+    });
+
     return Response.json(task);
   } catch (error) {
     console.error("POST error:", error);
