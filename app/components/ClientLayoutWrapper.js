@@ -25,7 +25,7 @@ const ClientLayoutWrapper = ({ children }) => {
     <div className="flex">
       <NavBar NavbarShow={NavbarShow} setNavbarShow={setNavbarShow} />
       <div
-        className={`flex flex-col bg-gray-900 min-h-screen ${
+        className={`flex flex-col bg-gray-900  md:min-h-screen  w-full ${
           NavbarShow
             ? "md:ml-20 ml-15 w-[calc(100%-5rem)] md:w-[calc(100%-5rem)]"
             : "w-full"

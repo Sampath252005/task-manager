@@ -7,6 +7,7 @@ import { useTasks } from "../hooks/useTasks";
 import { AnimatePresence, motion } from "framer-motion";
 import { isSameDay } from "date-fns";
 import Image from "next/image";
+import Searchanimation from "../components/SearchIanimation";
 
 export default function TaskPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -57,13 +58,7 @@ export default function TaskPage() {
         <div className="mt-4 w-full max-w-3xl space-y-2">
           {loading ? (
             <div className="flex justify-center items-center h-64">
-              <Image
-                src="/Searching.gif"
-                alt="searching"
-                width={500}
-                height={500}
-                className="rounded-lg max-h-[250px] object-contain md:max-h-[300px]"
-              />
+              <Searchanimation />
             </div>
           ) : tasksForSelectedDate.length === 0 ? (
             <p className="text-gray-400 italic">No tasks for this day.</p>

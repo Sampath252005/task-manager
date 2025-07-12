@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 import Alert from "../components/Alert";
+import { motion } from "framer-motion";
 
 const Register = () => {
+  const [darkMode, setDarkMode] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const [alertType, setAlertType] = React.useState("");
@@ -125,98 +127,103 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-500 to-indigo-700 flex items-center justify-center p-4 relative">
+     <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className={`min-h-screen transition-colors duration-500 ${
+        darkMode
+          ? "bg-gray-900 text-white"
+          : "bg-gradient-to-br from-violet-500 to-indigo-700"
+      } flex items-center justify-center px-4 py-10 relative`}
+    >
+      <button
+        onClick={() => setDarkMode(!darkMode)}
+        className="absolute top-4 right-4 p-2 bg-gray-800 text-white rounded shadow-md z-50"
+      >
+        {darkMode ? "Light Mode" : "Dark Mode"}
+      </button>
+
       {alertVisible && (
-        <div className="absolute top-5 md:top-25 left-1/2 transform -translate-x-1/2 w-full max-w-md z-50">
+        <div className="absolute top-5 left-1/2 transform -translate-x-1/2 w-full max-w-md z-50">
           <Alert type={alertType} message={alertMessage} />
         </div>
       )}
 
-      <h1 className="absolute top-12 text-4xl font-extrabold text-white drop-shadow-md tracking-wide ">
+      <h1 className="absolute top-10 text-3xl md:text-4xl font-extrabold text-white drop-shadow-md tracking-wide text-center">
         TaskVault
       </h1>
 
-      <div className="bg-white rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row max-w-4xl w-full ">
+      <motion.div
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex flex-col md:flex-row max-w-4xl w-full mt-24"
+      >
         {/* Image Section */}
-        <div className="relative w-full md:w-1/2 h-[1000px] md:h-auto">
+        <div className="relative hidden md:block md:w-1/2 h-96 md:h-auto">
           <Image
             src="/loginPage_image.jpg"
             alt="Register"
             layout="fill"
             objectFit="cover"
-            sizes="100vw"
             className="object-cover"
             priority
           />
         </div>
 
         {/* Form Section */}
-        <div className="w-full md:w-1/2 p-8 bg-white">
-          <h1 className="text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 mb-6">
+        <div className="w-full md:w-1/2 p-6 sm:p-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500 dark:text-white mb-6">
             Create Account
-          </h1>
+          </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            {/* Username */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700">
-                Username
-              </label>
+              <label className="block text-sm font-semibold">Username</label>
               <input
                 {...register("username", { required: "Username is required" })}
-                type="text"
-                placeholder="Enter username"
-                className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
+                className="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 text-black dark:text-white dark:bg-gray-700 dark:border-gray-600"
               />
               {errors.username && (
-                <p className="text-red-500 text-sm">
-                  {errors.username.message}
-                </p>
+                <p className="text-red-500 text-sm">{errors.username.message}</p>
               )}
             </div>
 
-            {/* Email */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700">
-                Email
-              </label>
+              <label className="block text-sm font-semibold">Email</label>
               <input
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: "Invalid email address",
+                    message: "Invalid email",
                   },
                 })}
                 type="email"
-                placeholder="Enter email"
-                className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
+                className="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 text-black dark:text-white dark:bg-gray-700 dark:border-gray-600"
               />
               {errors.email && (
                 <p className="text-red-500 text-sm">{errors.email.message}</p>
               )}
             </div>
 
-            {/* Password */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700">
-                Password
-              </label>
+              <label className="block text-sm font-semibold">Password</label>
               <div className="relative">
                 <input
                   {...register("password", {
                     required: "Password is required",
                     minLength: {
                       value: 6,
-                      message: "Password must be at least 6 characters",
+                      message: "Minimum 6 characters",
                     },
                   })}
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
-                  className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
+                  className="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 text-black dark:text-white dark:bg-gray-700 dark:border-gray-600"
                 />
                 <span
-                  onClick={togglePasswordVisibility}
+                  onClick={() => setShowPassword(!showPassword)}
                   className="absolute top-1/2 right-2 transform -translate-y-1/2 cursor-pointer"
                 >
                   {showPassword ? (
@@ -227,30 +234,23 @@ const Register = () => {
                 </span>
               </div>
               {errors.password && (
-                <p className="text-red-500 text-sm">
-                  {errors.password.message}
-                </p>
+                <p className="text-red-500 text-sm">{errors.password.message}</p>
               )}
             </div>
 
-            {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700">
-                Confirm Password
-              </label>
+              <label className="block text-sm font-semibold">Confirm Password</label>
               <div className="relative">
                 <input
                   {...register("confirmPassword", {
                     required: "Confirm password is required",
-                    validate: (val) =>
-                      val === watch("password") || "Passwords do not match",
+                    validate: (val) => val === watch("password") || "Passwords do not match",
                   })}
                   type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirm password"
-                  className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-black"
+                  className="w-full mt-1 p-2 border rounded-md focus:outline-none focus:ring-2 text-black dark:text-white dark:bg-gray-700 dark:border-gray-600"
                 />
                 <span
-                  onClick={toggleConfirmPasswordVisibility}
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute top-1/2 right-2 transform -translate-y-1/2 cursor-pointer"
                 >
                   {showConfirmPassword ? (
@@ -267,15 +267,14 @@ const Register = () => {
               )}
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
-              className="w-full text-white bg-gradient-to-br from-purple-400 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+              className="w-full text-white bg-gradient-to-br from-purple-400 to-blue-500 hover:from-purple-500 hover:to-indigo-600 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-sm px-5 py-2.5"
             >
               Register
             </button>
-            <p className="text-sm text-center text-gray-500">
-              Already have an account?{" "}
+            <p className="text-sm text-center text-gray-600 dark:text-gray-300">
+              Already have an account?{' '}
               <a
                 href="/loginPage"
                 className="font-semibold text-blue-500 hover:text-blue-700"
@@ -285,8 +284,8 @@ const Register = () => {
             </p>
           </form>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
