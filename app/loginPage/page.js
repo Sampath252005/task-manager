@@ -46,12 +46,14 @@ const LoginPage = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-      if (response.ok) {
-        const result = await response.json();
-        localStorage.setItem("token", result.token);
+if (response.ok) {
+  const result = await response.json();
+  localStorage.setItem("token", result.token);
+  localStorage.setItem("user", JSON.stringify({ username: result.username, email })); // ✅ Save as JSON
+  router.push("/");
+}
 
-        router.push("/");
-      } else {
+ else {
         console.error("Login failed");
       }
     } catch (error) {

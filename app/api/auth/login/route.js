@@ -15,6 +15,7 @@ export async function POST(req) {
   const token = signToken(user);
   return Response.json({ 
     token, 
-    username: user.username  // ⬅️ Include username here
+    username: user.username ,
+    email:user.email // ⬅️ Include username here
   });
 }

@@ -1,20 +1,41 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion"; // Import framer-motion
-import AddTask from "./AddTask"; // Import the Addtask component
+import { motion } from "framer-motion";
+import AddTask from "./AddTask";
 import { useRouter } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
 
-
-
 const SearchBar = ({ NavbarShow, setNavbarShow }) => {
-
   const isMdOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
 
   const paddingLeft = isMdOrLarger
-    ? NavbarShow ? "2.5rem" : "4.5rem"
-    : NavbarShow ? "1rem" : "4rem";
+    ? NavbarShow
+      ? "2.5rem"
+      : "4.5rem"
+    : NavbarShow
+    ? "1rem"
+    : "4rem";
+
+  const [user, setUser] = useState(null);
+
+useEffect(() => {
+  try {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsed = JSON.parse(storedUser);
+      setUser(parsed);
+    } else {
+      setUser(null);
+    }
+  } catch (err) {
+    console.error("Failed to parse user from localStorage", err);
+    localStorage.removeItem("user");
+    setUser(null);
+  }
+}, []);
+
+
 
   const [SearchBardropdownOpen, setSearchBarDropdownOpen] = useState(false);
   const [showAddTask, setShowAddTask] = useState(false);
@@ -22,10 +43,10 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   const ProfileRef = useRef(null);
   const [OpenProfile, setOpenProfile] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(" ");
-   const user = JSON.parse(localStorage.getItem('user'));
-   function capitalizeFirstLetter(val) {
-    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
-}
+
+  const capitalizeFirstLetter = (val) =>
+    String(val).charAt(0).toUpperCase() + String(val).slice(1);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -43,17 +64,17 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   }, []);
 
   const router = useRouter();
+
   const handleAddTask = () => {
     setShowAddTask(true);
   };
-  // Function to handle sign out
-    const router1 = useRouter();
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    router1.push("/loginPage");
+    router.push("/loginPage");
   };
+
   return (
     <>
       {showAddTask && (
@@ -75,9 +96,6 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
         animate={{ paddingLeft }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
-        {/* Left nav links */}
-      
-
         {/* Search form */}
         <form className="max-w-lg mx-auto">
           <div className="flex" ref={SearchBardropdownRef}>
@@ -87,7 +105,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
               onClick={() => setSearchBarDropdownOpen(!SearchBardropdownOpen)}
             >
               <Image
-                className="shrink-0 w-6 md:w-10 h-6 md:h-10 md:z cursor-pointer"
+                className="shrink-0 w-6 md:w-10 h-6 md:h-10 cursor-pointer"
                 src="/category.png"
                 alt="User dropdown"
                 width={20}
@@ -166,7 +184,9 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
                 className="flex items-center gap-5 bg-gray-800 border border-blue-500 p-2 text-white rounded-full cursor-pointer"
                 onClick={() => setOpenProfile(!OpenProfile)}
               >
-                <h2 className="hidden md:block font-bold">{capitalizeFirstLetter(user?.username)}</h2>
+                <h2 className="hidden md:block font-bold">
+                  {user ? capitalizeFirstLetter(user.username) : ""}
+                </h2>
                 <Image
                   className="w-6 md:w-10 h-6 md:h-10 rounded-full cursor-pointer"
                   src="/profile.png"
@@ -179,12 +199,14 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
               {OpenProfile && (
                 <div className="absolute z-10 mt-2 right-0 top-14 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
                   <div
-                    className="px-4 py-3 text-sm text-gray-900 dark:text-white cursor-pointer  hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    className="px-4 py-3 text-sm text-gray-900 dark:text-white cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     onClick={() => router.push("/profile")}
                   >
-                    <div>{capitalizeFirstLetter(user?.username)}</div>
+                    <div>
+                      {user ? capitalizeFirstLetter(user.username) : ""}
+                    </div>
                     <div className="font-medium truncate">
-                      {user?.email}
+                      {user?.email || ""}
                     </div>
                   </div>
                   <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
@@ -204,7 +226,6 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
                         Settings
                       </a>
                     </li>
-    
                   </ul>
                   <div className="py-1">
                     <a
