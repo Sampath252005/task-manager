@@ -14,7 +14,7 @@ const TaskList = () => {
   }, []);
 
   if (loading) return <Loading />;
-  if (!tasks||tasks.length === 0) return <div className="min-h-[70vh] justify-center items-center"><AddTaskAnimation/></div>;
+  if (!tasks||tasks.length === 0) return <div className="min-h-[80vh] justify-center items-center"><AddTaskAnimation/></div>;
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-2">

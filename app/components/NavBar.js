@@ -15,10 +15,10 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
     <>
       {/* Toggle Button - Always Visible */}
       <div
-        className="fixed top-2 md:top-4 left-2 md:left-4 z-50 p-2 mb-5 mt-3 md:mt-0 bg-gray-900 cursor-pointer hover:bg-gray-700 rounded-2xl"
+        className="fixed top-2 md:top-4 left-2  md:left-4 z-50 p-2 mb-5 mt-3 md:mt-0 bg-gray-900 cursor-pointer hover:bg-gray-700 rounded-2xl"
         onClick={() => setNavbarShow(!NavbarShow)}
       >
-        <Image src="/layers.png" alt="Toggle Sidebar" width={25} height={25} onClick={()=>router.push("/")} />
+        <Image src="/layers.png" alt="Toggle Sidebar" width={25} height={25}  />
       </div>
 
       {/* Sidebar with smooth animation */}
@@ -31,7 +31,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
             transition={{ duration: 0.3 }}
             className="fixed top-0 left-0 flex flex-col justify-between items-center min-h-screen bg-gray-800 p-2  md:p-5 w-15 md:w-20 z-40"
           >
-            <div className="flex flex-col items-center space-y-15 md:space-y-10 mt-20 ">
+            <div className="flex flex-col items-center space-y-10 md:space-y-10 mt-20 ">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -116,7 +116,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
 
             {/* Dark Mode Toggle */}
             <div
-              className="flex flex-col items-center space-y-2 bg-gray-700 cursor-pointer rounded-full p-1 mb-20 md:mb-0"
+              className="flex flex-col items-center space-y-2 bg-gray-700 cursor-pointer rounded-full p-1 mb-3 md:mb-0"
               onClick={toggleDarkMode}
             >
               <AnimatePresence mode="wait">

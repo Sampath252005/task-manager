@@ -73,7 +73,7 @@ const LoginPage = () => {
                    flex items-center justify-center p-4 font-[Poppins]"
         style={{ fontFamily: "'Poppins', sans-serif" }}
       >
-        <h1 className="absolute top-40 text-4xl font-extrabold text-white drop-shadow-md tracking-wide">
+        <h1 className="absolute top-20 md:top-40 text-4xl font-extrabold text-white drop-shadow-md tracking-wide">
           TaskVault
         </h1>
 

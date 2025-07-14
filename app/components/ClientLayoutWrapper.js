@@ -27,21 +27,21 @@ const ClientLayoutWrapper = ({ children }) => {
       <div
         className={`flex flex-col bg-gray-900  md:min-h-screen  w-full ${
           NavbarShow
-            ? "md:ml-20 ml-15 w-[calc(100%-5rem)] md:w-[calc(100%-5rem)]"
+            ? "md:ml-20 ml-15 w-[calc(100%-5rem)] md:w-[calc(100%-5rem)] "
             : "w-full"
         }`}
       >
         <div
           className={`flex justify-between items-center p-4 bg-gray-900 fixed top-0 ${
             NavbarShow ? "left-15" : "left-0"
-          } right-0 z-10`}
+          } md:right-0  z-10`}
         >
           <SearchBar
             NavbarShow={NavbarShow}
             setNavbarShow={setNavbarShow}
           />
         </div>
-        <div className="mt-24 px-5">{children}</div>
+        <div className="mt-10 md:px-4 pl-4 pr-1">{children}</div>
       </div>
     </div>
   );

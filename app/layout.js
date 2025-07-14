@@ -5,7 +5,7 @@ import ClientLayoutWrapper from "./components/ClientLayoutWrapper"; // 👈 crea
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" lang="hi">
       <body>
         <ReduxProvider>
           <ClientLayoutWrapper>{children}</ClientLayoutWrapper>

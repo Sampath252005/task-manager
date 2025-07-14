@@ -25,7 +25,8 @@
     "react-calendar": "^6.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.3",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "react-responsive": "^10.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

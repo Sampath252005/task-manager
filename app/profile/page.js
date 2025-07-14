@@ -24,9 +24,9 @@ const ProfilePage = () => {
   }, []);
 
   return (
-    <div className="flex flex-col md:flex-row bg-gradient-to-tr from-gray-900 via-slate-800 to-slate-900 min-h-screen w-full p-6 text-white">
+    <div className="flex flex-col md:flex-row bg-gradient-to-tr from-gray-900 via-slate-800 to-slate-900 min-h-screen w-full p-10 text-white mt-5 border border-amber-50">
       {/* Left Panel */}
-      <div className="flex-1 bg-[#111827] rounded-2xl p-8 shadow-lg">
+      <div className="flex-1 bg-[#111827] rounded-2xl p-8 shadow-lg  " >
         {/* Profile Picture & Name */}
         <div className="flex items-center gap-6 mb-8">
           <div>

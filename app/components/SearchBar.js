@@ -4,8 +4,18 @@ import Image from "next/image";
 import { motion } from "framer-motion"; // Import framer-motion
 import AddTask from "./AddTask"; // Import the Addtask component
 import { useRouter } from "next/navigation";
+import { useMediaQuery } from "react-responsive";
+
+
 
 const SearchBar = ({ NavbarShow, setNavbarShow }) => {
+
+  const isMdOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
+
+  const paddingLeft = isMdOrLarger
+    ? NavbarShow ? "2.5rem" : "4.5rem"
+    : NavbarShow ? "1rem" : "4rem";
+
   const [SearchBardropdownOpen, setSearchBarDropdownOpen] = useState(false);
   const [showAddTask, setShowAddTask] = useState(false);
   const SearchBardropdownRef = useRef(null);
@@ -59,18 +69,14 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
       )}
 
       <motion.div
-        className={`flex justify-between flex-wrap gap-4 relative min-w-full items-center transition duration-300 ${
+        className={`flex justify-between flex-wrap gap-10 relative min-w-full items-center transition duration-300 ${
           showAddTask ? "blur-sm pointer-events-none select-none" : ""
         }`}
-        animate={{
-          paddingLeft: NavbarShow ? "2.5rem" : "4.5rem", // md:pl-10 vs md:pl-18
-        }}
+        animate={{ paddingLeft }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
         {/* Left nav links */}
-       <div>
-        <h1>add  app logo here</h1>
-       </div>
+      
 
         {/* Search form */}
         <form className="max-w-lg mx-auto">
@@ -198,14 +204,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
                         Settings
                       </a>
                     </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Earnings
-                      </a>
-                    </li>
+    
                   </ul>
                   <div className="py-1">
                     <a

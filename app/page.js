@@ -31,7 +31,7 @@ export default function Home() {
 
   
   return (
-      <div className="mt-10 w-full ">
+      <div className="mt-25 md:mt-20 w-full ">
       <h1 className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 
                      text-transparent bg-clip-text text-3xl font-bold">
         Welcome to the Task Manager

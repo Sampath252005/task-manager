@@ -38,8 +38,8 @@ export default function TaskPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="min-h-screen bg-[#0f172a] text-white flex flex-col items-center p-6">
-        <h1 className="text-3xl font-bold mb-6">📅 Task Manager</h1>
+      <div className="min-h-screen bg-[#0f172a] text-white flex flex-col items-center md:p-6">
+        <h1 className="text-3xl font-bold mb-6 mt-15">📅 Task Manager</h1>
         {/* Calendar */}
         <Calendar
           selectedDate={selectedDate}
@@ -61,7 +61,9 @@ export default function TaskPage() {
               <Searchanimation />
             </div>
           ) : tasksForSelectedDate.length === 0 ? (
-            <p className="text-gray-400 italic">No tasks for this day.</p>
+            <p className="text-center text-xl sm:text-2xl  font-semibold italic text-red-500 mt-10">
+              🚫 No tasks scheduled for today.
+            </p>
           ) : (
             <AnimatePresence>
               {tasksForSelectedDate.map((task) => (
