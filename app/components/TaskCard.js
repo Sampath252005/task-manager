@@ -102,13 +102,13 @@ const TaskCard = ({
                   deleteTask(taskId);
                   setConfirmDelete(false);
                 }}
-                className="bg-red-600 text-white px-4 py-2 text-sm rounded hover:bg-red-700 transition"
+                className="cursor-pointer bg-red-600 text-white px-4 py-2 text-sm rounded hover:bg-red-700 transition"
               >
                 Yes
               </button>
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="bg-gray-300 text-black px-4 py-2 text-sm rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 transition"
+                className="cursor-pointer bg-gray-300 text-black px-4 py-2 text-sm rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 transition"
               >
                 Cancel
               </button>
@@ -146,7 +146,7 @@ const TaskCard = ({
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="text-white bg-transparent rounded hover:bg-gray-200 dark:hover:bg-gray-700 p-2 transition"
+                className="cursor-pointer text-white bg-transparent rounded hover:bg-gray-200 dark:hover:bg-gray-700 p-2 transition"
                 onClick={handleUpdateTask}
               >
                 <Image src="/update1.png" alt="Update" width={24} height={24} />
@@ -154,7 +154,7 @@ const TaskCard = ({
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="text-white bg-transparent rounded hover:bg-gray-200 dark:hover:bg-gray-700 p-2 transition"
+                className="cursor-pointer text-white bg-transparent rounded hover:bg-gray-200 dark:hover:bg-gray-700 p-2 transition"
                 onClick={() => setConfirmDelete(true)}
               >
                 <Image src="/delete.png" alt="Delete" width={24} height={24} />
@@ -209,7 +209,7 @@ const TaskCard = ({
             onClick={handleTaskDone}
             className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
           >
-            <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            <span className=" cursor-pointer relative px-2 py-2 md:px-5 md:py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
               Task Done
             </span>
           </motion.button>

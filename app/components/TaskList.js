@@ -13,11 +13,11 @@ const TaskList = () => {
     refreshTasks();
   }, []);
 
-  if (loading) return <Loading />;
+  if (loading) return<div className="flex justify-center items-center w-full h-full"><Loading /></div> ;
   if (!tasks||tasks.length === 0) return <div className="min-h-[80vh] justify-center items-center"><AddTaskAnimation/></div>;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-2">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-2 ">
       {tasks.map((task) => (
         <TaskCard
           key={task._id}
