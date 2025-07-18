@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import UploadForm from "../components/UploadForm";
 
 const capitalizeFirstLetter = (str) => {
   if (!str) return "";
@@ -10,34 +11,42 @@ const capitalizeFirstLetter = (str) => {
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
+  const [profilePic, setProfilePic] = useState("");
   const router = useRouter();
 
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+     localStorage.removeItem("profilePic");
     router.push("/loginPage");
   };
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
-  }, []);
+    const userId = localStorage.getItem("userId");
 
+    const fetchUser = async () => {
+      const res = await fetch(`/api/user-profile?userId=${userId}`);
+      const data = await res.json();
+      setUser(data);
+      setProfilePic(data.profile || "/profile.png");
+    };
+
+    if (userId) fetchUser();
+  }, []);
   return (
     <div className="flex flex-col md:flex-row bg-gradient-to-tr from-gray-900 via-slate-800 to-slate-900 min-h-screen w-full p-10 text-white mt-5 border border-amber-50">
       {/* Left Panel */}
-      <div className="flex-1 bg-[#111827] rounded-2xl p-8 shadow-lg  " >
+      <div className="flex-1 bg-[#111827] rounded-2xl p-8 shadow-lg  ">
         {/* Profile Picture & Name */}
         <div className="flex items-center gap-6 mb-8">
-          <div>
-            <Image
-              className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover"
-              src="/profile.png"
-              alt="Profile"
-              width={128}
-              height={128}
+          <div className="p-6">
+            <UploadForm
+              userId={user?._id}
+              onUpload={(url) => setProfilePic(url)}
+              currentPhoto={profilePic}
             />
           </div>
+
           <div className="flex flex-col">
             <span className="text-sm text-gray-400 bg-slate-700 px-3 py-1 rounded-full w-fit mb-2">
               Owner
