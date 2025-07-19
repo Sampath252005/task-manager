@@ -5,8 +5,10 @@ import { motion } from "framer-motion";
 import AddTask from "./AddTask";
 import { useRouter } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
+import { useSelector } from "react-redux";
 
 const SearchBar = ({ NavbarShow, setNavbarShow }) => {
+  const profilePic = useSelector((state) => state.user.profilePic);
   const isMdOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
 
   const paddingLeft = isMdOrLarger
@@ -184,7 +186,7 @@ useEffect(() => {
             onClick={handleAddTask}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="cursor-pointer hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br md:dark:shadow-lg md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2"
+            className="cursor-pointer hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br md:dark:shadow-lg md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2 w-full"
           >
             Add Task
           </motion.button>
@@ -200,7 +202,7 @@ useEffect(() => {
                 </h2>
                 <Image
                   className="w-6 md:w-10 h-6 md:h-10 rounded-full cursor-pointer"
-                  src="/profile.png"
+                  src={profilePic || "/profile.png"}
                   alt="User dropdown"
                   width={40}
                   height={40}

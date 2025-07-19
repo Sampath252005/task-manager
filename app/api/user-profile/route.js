@@ -8,7 +8,7 @@ export async function GET(req) {
   const userId = searchParams.get("userId");
 
   await connectDB();
-  const user = await User.findById(userId).select("username email profile");
+  const user = await User.findById(userId).select("username email profilePic");
   console.log("Fetched user:", user);
 
   return NextResponse.json(user);

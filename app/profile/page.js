@@ -1,4 +1,5 @@
 "use client";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -21,99 +22,125 @@ const ProfilePage = () => {
     router.push("/loginPage");
   };
 
-  useEffect(() => {
+ useEffect(() => {
     const userId = localStorage.getItem("userId");
 
     const fetchUser = async () => {
-      const res = await fetch(`/api/user-profile?userId=${userId}`);
-      const data = await res.json();
-      setUser(data);
-      setProfilePic(data.profile || "/profile.png");
+      try {
+        const res = await fetch(`/api/user-profile?userId=${userId}`);
+        if (!res.ok) {
+          console.error("Failed to fetch user");
+          return;
+        }
+
+        const data = await res.json();
+        setUser(data);
+
+        const localPhoto = localStorage.getItem("profilePic");
+        setProfilePic( localPhoto || "/profile.png");
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
     };
 
     if (userId) fetchUser();
   }, []);
   return (
-    <div className="flex flex-col md:flex-row bg-gradient-to-tr from-gray-900 via-slate-800 to-slate-900 min-h-screen w-full p-10 text-white mt-5 border border-amber-50">
-      {/* Left Panel */}
-      <div className="flex-1 bg-[#111827] rounded-2xl p-8 shadow-lg  ">
-        {/* Profile Picture & Name */}
-        <div className="flex items-center gap-6 mb-8">
-          <div className="p-6">
-            <UploadForm
-              userId={user?._id}
-              onUpload={(url) => setProfilePic(url)}
-              currentPhoto={profilePic}
-            />
-          </div>
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.6 }}
+    className="flex flex-col md:flex-row bg-gradient-to-tr from-gray-900 via-slate-800 to-slate-900 min-h-screen w-full md:p-10 text-white mt-5 border border-amber-50"
+  >
+    {/* Left Panel */}
+    <motion.div
+      initial={{ y: 40, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="flex-1 bg-[#111827] rounded-2xl p-8 shadow-lg"
+    >
+      {/* Profile Picture & Name */}
+      <div className="flex items-center gap-6 mb-8">
+        <div className="p-6">
+          <UploadForm
+            userId={user?._id}
+            onUpload={(url) => setProfilePic(url)}
+            currentPhoto={profilePic}
+          />
+        </div>
+        <div className="flex flex-col">
+          <span className="text-sm text-gray-400 bg-slate-700 px-3 py-1 rounded-full w-fit mb-2">
+            Owner
+          </span>
+          <h2 className="text-sm md:text-2xl font-semibold">
+            {capitalizeFirstLetter(user?.username)}
+          </h2>
+        </div>
+      </div>
 
-          <div className="flex flex-col">
-            <span className="text-sm text-gray-400 bg-slate-700 px-3 py-1 rounded-full w-fit mb-2">
-              Owner
+      {/* Name & Email */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
+        <div className="flex flex-col">
+          <label className="mb-2 text-sm text-gray-400">Name</label>
+          <div className="bg-[#1f2937] p-3 rounded-3xl border border-gray-600 cursor-not-allowed">
+            {capitalizeFirstLetter(user?.username)}
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <label className="mb-2 text-sm text-gray-400">Email</label>
+          <div className="relative bg-[#1f2937] p-3 rounded-3xl border border-gray-600 cursor-not-allowed hover:border-red-500 hover:border">
+            {user?.email}
+            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+              🔒
             </span>
-            <h2 className="text-2xl font-semibold">
-              {capitalizeFirstLetter(user?.username)}
-            </h2>
           </div>
-        </div>
-
-        {/* Name & Email */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-10">
-          {/* Name Field */}
-          <div className="flex flex-col">
-            <label className="mb-2 text-sm text-gray-400 ">Name</label>
-            <div className="bg-[#1f2937] p-3 rounded-3xl border border-gray-600 cursor-not-allowed">
-              {capitalizeFirstLetter(user?.username)}
-            </div>
-          </div>
-
-          {/* Email Field */}
-          <div className="flex flex-col">
-            <label className="mb-2 text-sm text-gray-400">Email</label>
-            <div className="relative bg-[#1f2937] p-3 rounded-3xl border border-gray-600 cursor-not-allowed hover:border-red-500 hover:border">
-              {user?.email}
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
-                🔒
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <button className="flex items-center justify-center gap-2 bg-[#1f2937] rounded-2xl px-5 py-4 border border-gray-600 hover:bg-gray-800 transition cursor-pointer ">
-            🔒 Change password
-          </button>
-          <button
-            className="flex items-center justify-center gap-2 bg-[#1f2937] rounded-2xl px-5 py-4 border border-gray-600 hover:bg-gray-800 transition cursor-pointer"
-            onClick={handleSignOut}
-          >
-            👤 log out
-          </button>
-        </div>
-
-        {/* Delete account */}
-        <div className="mt-8 border border-gray-600 rounded-2xl p-4 text-sm text-gray-400">
-          <p className="mb-1 font-semibold text-white">Delete account</p>
-          Contact our{" "}
-          <span className="text-blue-400 underline cursor-pointer">
-            support team
-          </span>{" "}
-          to process the deletion of your account.
         </div>
       </div>
 
-      {/* Right Panel */}
-      <div className="flex-1 p-8">
-        {/* Add streaks, day progress, graphs etc. here */}
-        <div className="h-full border border-gray-700 rounded-2xl p-6 text-center">
-          <p className="text-lg text-gray-400">
-            Coming Soon: Streaks & Progress
-          </p>
-        </div>
+      {/* Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center justify-center gap-2 bg-[#1f2937] rounded-2xl px-5 py-4 border border-gray-600 hover:bg-gray-800 transition cursor-pointer"
+        >
+          🔒 Change password
+        </motion.button>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={handleSignOut}
+          className="flex items-center justify-center gap-2 bg-[#1f2937] rounded-2xl px-5 py-4 border border-gray-600 hover:bg-gray-800 transition cursor-pointer"
+        >
+          👤 Log out
+        </motion.button>
       </div>
-    </div>
-  );
+
+      {/* Delete account */}
+      <div className="mt-8 border border-gray-600 rounded-2xl p-4 text-sm text-gray-400">
+        <p className="mb-1 font-semibold text-white">Delete account</p>
+        Contact our{" "}
+        <span className="text-blue-400 underline cursor-pointer">
+          support team
+        </span>{" "}
+        to process the deletion of your account.
+      </div>
+    </motion.div>
+
+    {/* Right Panel */}
+    <motion.div
+      initial={{ y: 40, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+      className="flex-1 p-8"
+    >
+      <div className="h-full border border-gray-700 rounded-2xl p-6 text-center">
+        <p className="text-lg text-gray-400">Coming Soon: Streaks & Progress</p>
+      </div>
+    </motion.div>
+  </motion.div>
+);
 };
 
 export default ProfilePage;

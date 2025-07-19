@@ -42,7 +42,7 @@ export const POST = async (req) => {
     await connectDB();
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { profile: uploadResult.secure_url },
+      { profilePic: uploadResult.secure_url },
       { new: true }
     );
 
