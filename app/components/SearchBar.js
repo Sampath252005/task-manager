@@ -186,7 +186,7 @@ useEffect(() => {
             onClick={handleAddTask}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="cursor-pointer hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br md:dark:shadow-lg md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2 w-full"
+            className="cursor-pointer hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br md:dark:shadow-lg md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2 "
           >
             Add Task
           </motion.button>
@@ -194,10 +194,10 @@ useEffect(() => {
           <div className="flex items-center gap-4">
             <div className="relative inline-block text-left" ref={ProfileRef}>
               <span
-                className="flex items-center gap-5 bg-gray-800 border border-blue-500 p-2 text-white rounded-full cursor-pointer"
+                className="flex items-center gap-5 bg-gray-800 border border-blue-500 p-2 text-white rounded-full cursor-pointer w-fit"
                 onClick={() => setOpenProfile(!OpenProfile)}
               >
-                <h2 className="hidden md:block font-bold">
+                <h2 className="hidden md:block md:text-sm font-bold">
                   {user ? capitalizeFirstLetter(user.username) : ""}
                 </h2>
                 <Image

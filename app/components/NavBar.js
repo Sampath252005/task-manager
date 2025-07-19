@@ -84,6 +84,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   alt="Folder"
                   width={25}
                   height={25}
+                  onClick={()=>router.push('/files')}
                 />
               </motion.button>
 
