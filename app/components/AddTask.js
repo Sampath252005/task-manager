@@ -125,6 +125,24 @@ const AddTask = ({ close, selectedDate }) => {
               </p>
             )}
           </div>
+          <div>
+            <label className="font-extrabold">
+              Estimated Time (in minutes)
+            </label>
+            <input
+              {...register("estimatedTime", {
+                required: "Estimated time is required",
+              })}
+              type="number"
+              placeholder="E.g. 60"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+            />
+            {errors.estimatedTime && (
+              <p className="text-red-500 text-sm">
+                {errors.estimatedTime.message}
+              </p>
+            )}
+          </div>
 
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">

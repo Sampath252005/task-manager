@@ -54,9 +54,10 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
               >
                 <Image
                   src="/clock.png"
-                  alt="Messages"
+                  alt="Timer"
                   width={25}
                   height={25}
+                  onClick={() => router.push('/timer')}
                 />
               </motion.button>
 

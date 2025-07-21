@@ -21,18 +21,29 @@ const TaskSchema = new mongoose.Schema(
     dueDate: {
       type: Date,
     },
-    date:{
+    date: {
       type: Date,
-      default: Date.now, // Automatically set to current date if not provided
+      default: Date.now,
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-  },
+
+    // 🔽 Pomodoro Timer Additions
+    estimatedTime: {
+      type: Number, // in minutes
+      default: 25,
+    },
+    timeUsed: {
+      type: Number, // in seconds
+      default: 0,
+    },
+    timeSpent: { type: Number, default: 0 },
+    },
+  
   { timestamps: true }
 );
 
-// ✅ Prevent model overwrite error in development
 export default mongoose.models?.Task || mongoose.model("Task", TaskSchema);
