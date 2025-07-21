@@ -53,7 +53,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 className="text-white bg-transparent rounded cursor-pointer hover:bg-gray-700 p-2"
               >
                 <Image
-                  src="/blue-message.png"
+                  src="/clock.png"
                   alt="Messages"
                   width={25}
                   height={25}
