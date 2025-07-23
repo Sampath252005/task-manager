@@ -50,7 +50,7 @@ const ProfilePage = () => {
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     transition={{ duration: 0.6 }}
-    className="flex flex-col md:flex-row bg-gradient-to-tr from-gray-900 via-slate-800 to-slate-900 min-h-screen w-full md:p-10 text-white mt-5 border border-amber-50"
+    className="flex flex-col md:flex-row bg-gradient-to-tr from-gray-900 via-slate-800 to-slate-900 min-h-screen w-full lg:p-10 text-white mt-5 border border-amber-50"
   >
     {/* Left Panel */}
     <motion.div

@@ -48,7 +48,7 @@ export default function TimerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center gap-6 p-4">
+    <div className="min-h-screen  text-white flex flex-col  items-center justify-center gap-6 p-4">
       <h1 className="text-3xl font-bold">⏳ Task Timer</h1>
 
       <TaskSelector

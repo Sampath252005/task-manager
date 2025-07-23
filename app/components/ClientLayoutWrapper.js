@@ -15,7 +15,7 @@ const ClientLayoutWrapper = ({ children }) => {
     setShouldRender(true);
   }, []);
 
-  if (!shouldRender) return null; // Wait for mount to get pathname
+  if (!shouldRender) return null; 
 
   const shouldHideLayout = hideLayoutFor.includes(pathname);
 
@@ -24,15 +24,13 @@ const ClientLayoutWrapper = ({ children }) => {
   ) : (
     <div className="flex">
       <NavBar NavbarShow={NavbarShow} setNavbarShow={setNavbarShow} />
-      <div
-        className={`flex flex-col bg-gray-900  md:min-h-screen  w-full ${
-          NavbarShow
-            ? "md:ml-20 ml-15 w-[calc(100%-5rem)] md:w-[calc(100%-5rem)] "
-            : "w-full"
-        }`}
-      >
+<div
+  className={`flex flex-col bg-gray-900 md:min-h-screen transition-all duration-300
+    ${NavbarShow ? "ml-15 md:ml-20 w-full" : "ml-0 w-full"}
+  `}
+>
         <div
-          className={`flex justify-between items-center p-4 bg-gray-900 fixed top-0 ${
+          className={`flex justify-between items-center md:p-4 p-2 bg-gray-900 fixed top-0 w-full md:w-auto ${
             NavbarShow ? "left-17 md:left-15" : "left-0"
           } md:right-0  z-10`}
         >

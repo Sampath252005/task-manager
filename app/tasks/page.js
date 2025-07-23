@@ -22,7 +22,7 @@ const page = () => {
         </motion.div>
       )}
 
-    <div className="justify-center items-center w-full h-[80vh] md:h-full  py-5 md:px-5">
+    <div className="justify-center items-center w-full h-screen md:h-full  py-5 md:px-5">
       <div className="backlog p-3 mt-5 bg-[#323643] border-l-2  md:h-full overflow-y-">
         <div className="flex justify-between items-center p5">
         <h1 className="text-2xl font-bold text-red-500 p-3">Tasks</h1>

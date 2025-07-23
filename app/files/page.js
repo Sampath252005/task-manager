@@ -81,7 +81,7 @@ export default function UserFiles() {
   const triggerFileInput = () => fileInputRef.current.click();
 
   return (
-    <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl border border-gray-700 mt-10 sm:mt-20">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl border border-gray-700 md:mt-15 mt-20  h-screen">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-2xl font-semibold">📁 My Files</h2>
         <div className="flex items-center gap-4">
