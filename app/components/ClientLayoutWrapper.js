@@ -30,7 +30,7 @@ const ClientLayoutWrapper = ({ children }) => {
   `}
 >
         <div
-          className={`flex justify-between items-center md:p-4 p-2 bg-gray-900 fixed top-0 w-full md:w-auto ${
+          className={`flex justify-between items-center md:p-4 p-2 pt-5 md:pt-2 bg-gray-900 fixed top-0 w-full md:w-auto ${
             NavbarShow ? "left-17 md:left-15" : "left-0"
           } md:right-0  z-10`}
         >

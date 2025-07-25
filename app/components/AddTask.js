@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useTasks } from "../hooks/useTasks";
+import AddTaskgif from "../components/AddTaskgif";
 
-const AddTask = ({ close, selectedDate }) => {
+const AddTask = ({ close, selectedDate ,setNavbarShow,NavbarShow}) => {
   const { refreshTasks } = useTasks();
   const [showloading, setShowLoading] = useState(false);
 
@@ -25,7 +26,6 @@ const AddTask = ({ close, selectedDate }) => {
     },
   });
 
-  // 🔁 Update form when selectedDate changes
   useEffect(() => {
     reset({
       title: "",
@@ -40,7 +40,7 @@ const AddTask = ({ close, selectedDate }) => {
 
   const onSubmit = async (data) => {
     const { title, description, tag, priority } = data;
-    const date = (selectedDate || new Date()).toISOString(); // 🧠 fallback to now if undefined
+    const date = (selectedDate || new Date()).toISOString();
 
     try {
       setShowLoading(true);
@@ -73,11 +73,16 @@ const AddTask = ({ close, selectedDate }) => {
       reset();
     }
   };
+    useEffect(() => {
+    if (NavbarShow) setNavbarShow(false);
+  }, [setNavbarShow]);
 
   return (
-    <div className="relative bg-gradient-to-r from-cyan-500 to-blue-500 flex flex-col p-5 rounded-lg w-[95%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white z-50 max-h-[90vh] overflow-auto">
+   
+    <div className="relative bg-gradient-to-r from-cyan-500 to-blue-500 p-4 sm:p-6 md:p-8 rounded-lg w-[95%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white z-50 max-h-[90vh] overflow-auto z-50">
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-extrabold text-2xl md:text-3xl pl-2 pb-2 text-blue-900">
+        <h2 className="font-extrabold text-xl sm:text-2xl md:text-3xl text-blue-900">
           Add New Task
         </h2>
         <Image
@@ -85,16 +90,17 @@ const AddTask = ({ close, selectedDate }) => {
           alt="Close"
           width={30}
           height={30}
-          className="cursor-pointer p-2 hover:bg-blue-400 rounded-3xl"
+          className="cursor-pointer p-1 hover:bg-blue-400 rounded-full"
           onClick={close}
         />
       </div>
 
+      {/* Form */}
       <form
-        className="flex flex-col lg:flex-row justify-between bg-white p-4 rounded-3xl text-black gap-6"
+        className="flex flex-col gap-6 md:flex-row bg-white p-4 sm:p-6 rounded-2xl text-black"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {/* Left Side Form */}
+        {/* Left Form */}
         <div className="flex flex-col gap-4 flex-1">
           <div>
             <label className="font-extrabold">Title</label>
@@ -102,7 +108,7 @@ const AddTask = ({ close, selectedDate }) => {
               {...register("title", { required: "Title is required" })}
               type="text"
               placeholder="Enter task title"
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
             />
             {errors.title && (
               <p className="text-red-500 text-sm">{errors.title.message}</p>
@@ -125,10 +131,9 @@ const AddTask = ({ close, selectedDate }) => {
               </p>
             )}
           </div>
+
           <div>
-            <label className="font-extrabold">
-              Estimated Time (in minutes)
-            </label>
+            <label className="font-extrabold">Estimated Time (minutes)</label>
             <input
               {...register("estimatedTime", {
                 required: "Estimated time is required",
@@ -146,26 +151,23 @@ const AddTask = ({ close, selectedDate }) => {
 
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
-              <label className="font-extrabold">Tags</label>
+              <label className="font-extrabold">Tag</label>
               <input
                 {...register("tag", { required: "Tag is required" })}
                 type="text"
-                placeholder="Enter task tag"
+                placeholder="Enter tag"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md"
               />
               {errors.tag && (
                 <p className="text-red-500 text-sm">{errors.tag.message}</p>
               )}
             </div>
-
             <div className="flex-1">
               <label className="font-extrabold">Priority</label>
               <input
-                {...register("priority", {
-                  required: "Priority is required",
-                })}
+                {...register("priority", { required: "Priority is required" })}
                 type="text"
-                placeholder="Enter task priority"
+                placeholder="Enter priority"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md"
               />
               {errors.priority && (
@@ -176,48 +178,44 @@ const AddTask = ({ close, selectedDate }) => {
             </div>
           </div>
 
-          {/* ✅ Hidden input for selected date */}
           <input type="hidden" {...register("date")} />
 
-          <div className="flex justify-between items-center mt-2">
+          <div className="flex justify-between items-center mt-4 gap-4">
             <button
               type="button"
               onClick={close}
-              className="cursor-pointer text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 rounded-lg text-sm px-5 py-2.5"
+              className="flex-1 text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:opacity-90 rounded-lg text-sm px-4 py-2.5"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="cursor-pointer text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 rounded-lg text-sm px-5 py-2.5"
+              className="flex-1 text-white font-bold bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 rounded-lg text-sm px-4 py-2.5"
             >
               Add Task
             </button>
           </div>
         </div>
 
-        {/* Right Side Image */}
-        <div className="flex justify-center items-center flex-1">
+        {/* Right Side Image or Loading */}
+        <div className="flex justify-center items-center flex-1 max-h-[250px]">
           {showloading ? (
             <Image
               src="/loading.gif"
               alt="Loading"
-              width={500}
-              height={500}
-              className="rounded-lg max-h-[250px] object-contain md:max-h-[300px]"
+              width={300}
+              height={300}
+              className="rounded-lg object-contain max-w-full max-h-[200px] md:max-h-[250px]"
             />
           ) : (
-            <Image
-              src="/taskimage1.jpg"
-              alt="Add Task"
-              width={500}
-              height={500}
-              className="rounded-lg max-h-[250px] object-contain md:max-h-[300px]"
-            />
+            <div className="w-full md:w-1xl">
+              <AddTaskgif />
+            </div>
           )}
         </div>
       </form>
     </div>
+    
   );
 };
 

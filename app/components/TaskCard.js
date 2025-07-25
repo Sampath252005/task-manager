@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import UpdateTask from "./UpdateTask";
 import TaskDoneAnimation from "./TaskDoneAnimation";
+import { useRouter } from "next/navigation";
 
 const TaskCard = ({
   taskId,
@@ -13,11 +14,14 @@ const TaskCard = ({
   description,
   image,
   refreshTasks,
+  estimatedTime,
+  totalWorkTime,
+  remainingTime,
 }) => {
   const [showUpdateTask, setShowUpdateTask] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showTaskDoneAnimation, setShowTaskDoneAnimation] = useState(false);
-
+ const router = useRouter();
   const handleTaskDone = async () => {
     setShowTaskDoneAnimation(true);
     setTimeout(async () => {
@@ -180,13 +184,31 @@ const TaskCard = ({
           {description}
         </p>
 
-        <Image
-          src={image || "/taskimage1.jpg"}
-          alt="Task"
-          width={800}
-          height={400}
-          className="rounded-lg w-full object-cover max-h-[250px] sm:max-h-[300px] mb-4"
-        />
+        <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 mb-4 shadow-md">
+  <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2">
+    <strong>Estimated Time:</strong> {estimatedTime || "Not Set"}m
+  </p>
+  <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2">
+    <strong>Remaining Time:</strong> {remainingTime || "Not Tracked"}m
+  </p>
+
+  {estimatedTime && remainingTime && (
+    <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-4 mt-2 overflow-hidden">
+      <div
+        className="bg-blue-500 h-4 transition-all duration-500"
+        style={{ width: `${((estimatedTime - remainingTime) / estimatedTime) * 100}%` }}
+      ></div>
+    </div>
+  )}
+
+  <button
+    className="inline-block mt-4 text-sm sm:text-base text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+    onClick={()=> router.push(`/timer`)}
+  >
+    ⏱ Begin Work Session
+  </button>
+</div>
+
 
         <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
           <div className="flex items-center gap-3 mt-2">

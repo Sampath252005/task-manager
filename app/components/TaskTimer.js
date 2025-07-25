@@ -2,6 +2,7 @@
 import { motion } from "framer-motion"
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import { useEffect, useState } from "react";
+import { useTasks } from "../hooks/useTasks";
 
 export default function TaskTimer({
   keyId,
@@ -11,7 +12,12 @@ export default function TaskTimer({
   color,
   label,
   soundUrl,
-}) {
+  selectedTaskId,
+}) 
+
+
+
+{
   const [audio] = useState(() => new Audio(soundUrl));
 
   useEffect(() => {
@@ -21,6 +27,31 @@ export default function TaskTimer({
     }
   }, [isPlaying]);
 
+  const { tasks, loading, refreshTasks } = useTasks();
+   const updateTaskTime = async (taskId, sessionTime) => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("../api/update-time", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ taskId, sessionTime }),
+        });
+  
+        const data = await response.json();
+        if (response.ok) {
+          console.log("Updated remaining time:", data.remainingTime);
+          // Optionally update UI or state here
+          refreshTasks();
+        } else {
+          console.error(data.message);
+        }
+      } catch (error) {
+        console.error("Failed to update time:", error);
+      }
+    };
   return (
    <motion.div
   className="flex flex-col items-center"
@@ -39,6 +70,7 @@ export default function TaskTimer({
     trailColor="#1E293B"
     onComplete={() => {
       audio.play();
+      updateTaskTime(selectedTaskId, duration / 60); // Convert seconds to minutes
       onComplete();
       return { shouldRepeat: false };
     }}

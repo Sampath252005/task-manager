@@ -14,6 +14,8 @@ export default function TimerPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [key, setKey] = useState(0);
 
+ 
+
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -43,6 +45,7 @@ export default function TimerPage() {
   const startTimer = () => setIsPlaying(true);
   const pauseTimer = () => setIsPlaying(false);
   const resetTimer = () => {
+    setIsWorkTime(!isWorkTime);
     setIsPlaying(false);
     setKey((prev) => prev + 1);
   };
@@ -68,6 +71,7 @@ export default function TimerPage() {
 
           <TaskTimer
             keyId={key}
+            selectedTaskId={selectedTaskId}
             duration={isWorkTime ? workDuration * 60 : breakDuration * 60}
             isPlaying={isPlaying}
             onComplete={handleComplete}
@@ -80,7 +84,6 @@ export default function TimerPage() {
             <button
               onClick={startTimer}
               className="bg-green-500 px-4 py-2 rounded-lg text-amber-50"
-            
             >
               Start
             </button>

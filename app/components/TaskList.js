@@ -13,7 +13,7 @@ const TaskList = () => {
     refreshTasks();
   }, []);
 
-  if (loading) return<div className="flex justify-center items-center w-full h-full"><Loading /></div> ;
+  if (loading) return<div className="flex justify-center items-center  h-full"><Loading /></div> ;
   if (!tasks||tasks.length === 0) return <div className="min-h-[80vh] justify-center items-center"><AddTaskAnimation/></div>;
 
   return (
@@ -25,8 +25,11 @@ const TaskList = () => {
           title={task.title}
           subtitle={task.subtitle}
           tagsList={task.tagsList}
-          description={task.description}
-          refreshTasks={refreshTasks} // pass this down for delete or update
+          description={task.description} 
+          refreshTasks={refreshTasks}
+          estimatedTime={task.estimatedTime} 
+          totalWorkTime={task.totalWorkTime}
+          remainingTime={task.remainingTime}
         />
       ))}
     </div>

@@ -7,10 +7,11 @@ import { useRouter } from "next/navigation";
 import { useMediaQuery } from "react-responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { setSearchQuery } from "../store/searchSlice";
+import { set } from "mongoose";
 
 const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   const [search, setSearch] = useState("");
-
+  const [user, setUser] = useState(null);
   const profilePic = useSelector((state) => state.user.profilePic);
   const isMdOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
 
@@ -21,8 +22,6 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
     : NavbarShow
     ? "1rem"
     : "4rem";
-
-  const [user, setUser] = useState(null);
 
   useEffect(() => {
     try {
@@ -73,6 +72,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
 
   const handleAddTask = () => {
     setShowAddTask(true);
+    setNavbarShow(false);
   };
 
   const handleSignOut = () => {
@@ -80,18 +80,14 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
     localStorage.removeItem("user");
     router.push("/loginPage");
   };
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleSmartSearch(search);
-      setSearch(""); // Optional: clear after search
-    }
-  };
+
+
+
   const handleSmartSearch = (input) => {
     const trimmed = input.trim().toLowerCase();
 
-    // 🧠 Smart matching
     if (trimmed.startsWith("task:")) {
-      router.push(`/tasks}`);
+      router.push(`/tasks`);
     } else if (trimmed.startsWith("timer")) {
       router.push(`/timer`);
     } else if (trimmed.startsWith("calender")) {
@@ -101,7 +97,6 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
     } else if (trimmed === "home") {
       router.push("/");
     } else {
-      // Default fallback to task search
       router.push(`/tasks`);
     }
   };
@@ -110,104 +105,13 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
     <>
       {showAddTask && (
         <motion.div
-          className="fixed inset-10 bg-opacity-10 backdrop-blur-xs flex items-center justify-center z-50 "
+          className="fixed inset-10 bg-opacity-10 backdrop-blur-xs flex items-center justify-center z-50"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
           transition={{ duration: 0.3 }}
         >
-          <form
-            className="max-w-lg mx-auto"
-            onSubmit={(e) => {
-              e.preventDefault(); // ✅ Stop the page from reloading
-              handleSmartSearch(search); // ✅ Trigger your custom logic
-            }}
-          >
-            <div className="flex" ref={SearchBardropdownRef}>
-              <button
-                type="button"
-                onClick={() => setSearchBarDropdownOpen(!SearchBardropdownOpen)}
-                className="shrink-0 z-10 inline-flex items-center py-2 px-1 md:py-0 md:px-2 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-              >
-                <Image
-                  className="shrink-0 w-6 md:w-10 h-6 md:h-10 cursor-pointer"
-                  src="/option.png"
-                  alt="User dropdown"
-                  width={20}
-                  height={20}
-                />
-              </button>
-
-              {SearchBardropdownOpen && (
-                <div className="absolute mt-12 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-                  <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
-                    {["Mockups", "Templates", "Design", "Logos"].map(
-                      (option) => (
-                        <li key={option}>
-                          <button
-                            type="button"
-                            className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                            onClick={() => {
-                              setSelectedCategory(option);
-                              setSearchBarDropdownOpen(false);
-                            }}
-                          >
-                            {option}
-                          </button>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-              )}
-
-              <div className="relative w-full">
-                <input
-                  type="search"
-                  id="search-dropdown"
-                  className="block p-2.5 w-full md:min-w-[50vh] z-20 text-sm text-gray-900 rounded border-s-2 border dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
-                  placeholder={`Search ${selectedCategory}...`}
-                  onChange={(e) => setSearch(e.target.value)}
-                  value={search}
-                  required
-                />
-                <button
-                  type="submit" // ✅ still submit, but now intercepted
-                  className="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                  >
-                    <path
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <span className="sr-only">Search</span>
-                </button>
-              </div>
-            </div>
-          </form>
-
-          <AddTask close={() => setShowAddTask(false)} />
-          {showAddTask && (
-            <motion.div
-              className="fixed inset-10 bg-opacity-10 backdrop-blur-xs flex items-center justify-center z-50"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.3 }}
-            >
-              <AddTask close={() => setShowAddTask(false)} />
-            </motion.div>
-          )}
+          <AddTask close={() => setShowAddTask(false)} setNavbarShow={setNavbarShow} NavbarShow={NavbarShow}/>
         </motion.div>
       )}
 
@@ -222,8 +126,8 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
         <form
           className="max-w-lg mx-auto"
           onSubmit={(e) => {
-            e.preventDefault(); // ✅ Stop the page from reloading
-            handleSmartSearch(search); // ✅ Trigger your custom logic
+            e.preventDefault();
+            handleSmartSearch(search);
           }}
         >
           <div className="flex" ref={SearchBardropdownRef}>
@@ -266,14 +170,14 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
               <input
                 type="search"
                 id="search-dropdown"
-                className="block p-2.5 w-full md:min-w-[50vh] z-20 text-sm text-gray-900 rounded border-s-2 border dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                className="block p-2.5 w-full  md:min-w-[30vh] lg:min-w-[50vh] z-20 text-sm text-gray-900 rounded border-s-2 border dark:bg-gray-700 dark:border-s-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                 placeholder={`Search ${selectedCategory}...`}
                 onChange={(e) => setSearch(e.target.value)}
                 value={search}
                 required
               />
               <button
-                type="submit" // ✅ still submit, but now intercepted
+                type="submit"
                 className="absolute top-0 right-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700"
               >
                 <svg
@@ -297,13 +201,13 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
           </div>
         </form>
 
-        {/* Add Task and Profile Section */}
+        {/* Add Task and Profile */}
         <div className="relative flex items-center gap-2 md:gap-10 justify-center">
           <motion.button
             onClick={handleAddTask}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="cursor-pointer hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br md:dark:shadow-lg md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2 "
+            className="cursor-pointer hidden md:block md:text-white md:bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 md:hover:bg-gradient-to-br md:dark:shadow-lg md:font-medium md:rounded-lg md:text-sm md:px-5 md:py-2.5 md:text-center md:me-2 md:mb-2"
           >
             Add Task
           </motion.button>
@@ -311,14 +215,14 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
           <div className="flex items-center gap-4">
             <div ref={ProfileRef}>
               <span
-                className="sm:hidden md:flex items-center sm:gap-0  md:gap-5 bg-gray-800 border border-blue-500 p-2 text-white rounded-full cursor-pointer "
+                className="hidden md:flex items-center sm:gap-0  md:gap-5 bg-gray-800 border border-blue-500 p-2 text-white rounded-full cursor-pointer"
                 onClick={() => setOpenProfile(!OpenProfile)}
               >
                 <h2 className="hidden md:block md:text-sm font-bold">
                   {user ? capitalizeFirstLetter(user.username) : ""}
                 </h2>
                 <Image
-                  className="w-6 md:w-10 h-6 md:h-10 rounded-full cursor-pointer"
+                  className="hidden md:block w-6 md:w-10 h-6 md:h-10 rounded-full cursor-pointer"
                   src={profilePic || "/profile.png"}
                   alt="User dropdown"
                   width={40}

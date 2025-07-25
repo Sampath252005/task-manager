@@ -36,14 +36,14 @@ const TaskSchema = new mongoose.Schema(
       type: Number, // in minutes
       default: 25,
     },
-    timeUsed: {
+    remainingTime: {
       type: Number, // in seconds
       default: 0,
     },
-    timeSpent: { type: Number, default: 0 },
+     totalWorkTime: { type: Number, default: 0 },
     },
   
-  { timestamps: true }
+  { timestamps: true } 
 );
 
 export default mongoose.models?.Task || mongoose.model("Task", TaskSchema);

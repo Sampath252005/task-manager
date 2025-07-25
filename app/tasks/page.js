@@ -31,7 +31,7 @@ const page = () => {
             onClick={handleAddTask}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="cursor-pointer md:hidden block text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br dark:shadow-lg font-medium rounded-lg md:text-sm px-2 py-2.5 md:text-center md:me-2 md:mb-2"
+            className="cursor-pointer md:hidden block text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br dark:shadow-lg font-medium rounded-lg text-sm px-2 py-2.5 md:text-center md:me-2 md:mb-2"
 
           >
             Add Task
