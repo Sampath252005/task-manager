@@ -29,18 +29,23 @@ export default function Home() {
     }
   }, []);
 
-  
   return (
-      <div className="mt-25 md:mt-20 w-full ">
-      <h1 className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 
-                     text-transparent bg-clip-text text-3xl font-bold">
+    <div className="mt-25 md:mt-20 w-full ">
+      <h1
+        className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700  text-white   dark:text-black
+                    text-3xl font-bold"
+      >
         Welcome to the Task Manager
       </h1>
-      <p className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 
-                    text-transparent bg-clip-text text-sm font-bold mb-3">
+      <p
+        className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 
+                    text-transparent bg-clip-text text-sm font-bold mb-3"
+      >
         Manage your tasks efficiently!
       </p>
-
+      <div className="bg-white text-black dark:bg-black dark:text-white p-4 rounded">
+        <p>This is a test box.</p>
+      </div>
     </div>
   );
 }
