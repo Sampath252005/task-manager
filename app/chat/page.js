@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import socket from "../../lib/socket";
 import React from "react";
 
 const ChatPage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const userName = user?.username;
-
+  const messagesEndRef = useRef(null);
   const [roomName, setRoomName] = useState("");
   const [joined, setJoined] = useState(false);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
+  const [typingUser, setTypingUser] = useState("");
 
   const joinRoom = () => {
     if (roomName && userName) {
@@ -30,10 +31,19 @@ const ChatPage = () => {
     socket.on("userJoined", (info) => {
       setMessages((prev) => [...prev, { message: info, system: true }]);
     });
+    socket.on("user_typing", ({ userName }) => {
+      // Don't show your own name
+      if (userName !== localStorage.getItem("userName")) {
+        setTypingUser(userName);
+        // Clear after 2 seconds
+        setTimeout(() => setTypingUser(""), 2000);
+      }
+    });
 
     return () => {
       socket.off("receive_message");
       socket.off("userJoined");
+      socket.off("user_typing");
     };
   }, [joined]);
 
@@ -42,6 +52,13 @@ const ChatPage = () => {
       socket.emit("send_message", { roomName, message, userName });
       setMessage("");
     }
+  };
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleTyping = () => {
+    socket.emit("typing", { roomName, userName });
   };
 
   return (
@@ -63,14 +80,22 @@ const ChatPage = () => {
         </div>
       ) : (
         <div>
+          <div className="flex flex-row items-center justify-between mb-4">
           <h2 className="font-bold mb-2">Room: {roomName}</h2>
+          {typingUser && (
+            <div className="text-sm text-blue-400 italic mt-1 ml-2 ">
+              {typingUser} is typing...
+            </div>
+          )}
+          </div>
+
           <div className="border h-80 overflow-y-auto p-2 mb-2 space-y-2 bg-gray-100 rounded">
             {messages.map((msg, i) => {
               if (msg.system) {
                 return (
                   <div
                     key={i}
-                    className="text-center text-gray-500 text-sm italic"
+                    className="text-center text-gray-500 text-sm italic overflow-hidden"
                   >
                     {msg.message}
                   </div>
@@ -99,12 +124,16 @@ const ChatPage = () => {
                 </div>
               );
             })}
+            <div ref={messagesEndRef} />
           </div>
 
           <div className="flex gap-2">
             <input
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                handleTyping();
+              }}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               placeholder="Type a message"
               className="border p-2 flex-grow rounded"

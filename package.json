@@ -16,6 +16,7 @@
     "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
+    "emoji-picker-react": "^4.13.2",
     "express": "^5.1.0",
     "framer-motion": "^12.23.6",
     "heroicons": "^2.2.0",

@@ -15,25 +15,32 @@ export function initializeSocket(server) {
   io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
 
-  
+    socket.on("joinRoom", ({ roomName, userName }) => {
+      socket.join(roomName); // Socket.IO joins room
+      console.log(`${userName} joined room: ${roomName}`);
 
-socket.on("joinRoom", ({ roomName, userName }) => {
-    socket.join(roomName); // Socket.IO joins room
-    console.log(`${userName} joined room: ${roomName}`);
+      // Broadcast to others in room
+      socket
+        .to(roomName)
+        .emit("userJoined", `${userName} has joined the room.`);
+    });
 
-    // Broadcast to others in room
-    socket.to(roomName).emit("userJoined", `${userName} has joined the room.`);
+    // When a user sends a message to a room
+    socket.on("send_message", ({ roomName, message, userName }) => {
+      const time = new Intl.DateTimeFormat("default", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(new Date());
+      io.to(roomName).emit("receive_message", { message, userName, time });
+    });
+//listen for typing events
+    socket.on("typing", ({ roomName, userName }) => {
+    // Notify others in the room except the sender
+    socket.to(roomName).emit("user_typing", { userName });
   });
 
-  // When a user sends a message to a room
-  socket.on("send_message", ({ roomName, message, userName }) => {
-      const time = new Date().toLocaleTimeString();
-    io.to(roomName).emit("receive_message", { message, userName,time });
-  });
-
-  socket.on("disconnect", () => {
-    console.log("🚫 A user disconnected:", socket.id);
-  });
-
+    socket.on("disconnect", () => {
+      console.log("🚫 A user disconnected:", socket.id);
+    });
   });
 }
