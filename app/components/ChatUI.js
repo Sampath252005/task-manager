@@ -1,0 +1,166 @@
+"use client";
+
+import { useEffect, useState, useRef } from "react";
+import socket from "../../lib/socket";
+import React from "react";
+import AddEmoji from "../components/AddEmoji";
+
+const ChatUI = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userName = user?.username;
+  const messagesEndRef = useRef(null);
+  const [showPicker, setShowPicker] = useState(false);
+  const [roomName, setRoomName] = useState("");
+  const [joined, setJoined] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [typingUser, setTypingUser] = useState("");
+  const addEmoji = (emojiData) => {
+    setMessage((prev) => prev + emojiData.emoji);
+  };
+
+  const joinRoom = () => {
+    if (roomName && userName) {
+      socket.emit("joinRoom", { roomName, userName });
+      setJoined(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!joined) return;
+
+    socket.on("receive_message", ({ message, userName: sender, time }) => {
+      setMessages((prev) => [...prev, { message, userName: sender, time }]);
+    });
+
+    socket.on("userJoined", (info) => {
+      setMessages((prev) => [...prev, { message: info, system: true }]);
+    });
+    socket.on("user_typing", ({ userName }) => {
+      // Don't show your own name
+      if (userName !== localStorage.getItem("userName")) {
+        setTypingUser(userName);
+        // Clear after 2 seconds
+        setTimeout(() => setTypingUser(""), 2000);
+      }
+    });
+
+    return () => {
+      socket.off("receive_message");
+      socket.off("userJoined");
+      socket.off("user_typing");
+    };
+  }, [joined]);
+
+  const sendMessage = () => {
+    if (message.trim()) {
+      socket.emit("send_message", { roomName, message, userName });
+      setMessage("");
+    }
+  };
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const handleTyping = () => {
+    socket.emit("typing", { roomName, userName });
+  };
+
+  return (
+    <div className="p-4 mt-20 ">
+      {!joined ? (
+        <div className="space-y-4">
+          <input
+            placeholder="Enter room name"
+            value={roomName}
+            onChange={(e) => setRoomName(e.target.value)}
+            className="border p-2 rounded w-full"
+          />
+          <button
+            onClick={joinRoom}
+            className="bg-blue-500 text-white p-2 rounded w-full"
+          >
+            Join Room
+          </button>
+        </div>
+      ) : (
+        <div>
+          <div className="flex flex-row items-center justify-between mb-4">
+          <h2 className="font-bold mb-2">Room: {roomName}</h2>
+          {typingUser && (
+            <div className="text-sm text-blue-400 italic mt-1 ml-2 ">
+              {typingUser} is typing...
+            </div>
+          )}
+          </div>
+
+          <div className="border h-full w-full overflow-y-auto p-2 mb-2 space-y-2 bg-gray-100 rounded">
+            {messages.map((msg, i) => {
+              if (msg.system) {
+                return (
+                  <div
+                    key={i}
+                    className="text-center text-gray-500 text-sm italic overflow-hidden"
+                  >
+                    {msg.message}
+                  </div>
+                );
+              }
+
+              const isMe = msg.userName === userName;
+              return (
+                <div
+                  key={i}
+                  className={`flex ${isMe ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-xs px-3 py-2 rounded-lg ${
+                      isMe
+                        ? "bg-blue-500 text-white rounded-br-none"
+                        : "bg-white text-black border rounded-bl-none"
+                    }`}
+                  >
+                    <div className="text-xs font-semibold">{msg.userName}</div>
+                    <div>{msg.message}</div>
+                    <div className="text-[10px] text-gray-300 text-right">
+                      {msg.time}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="flex gap-2">
+            <input
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                handleTyping();
+              }}
+              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+              placeholder="Type a message"
+              className="border p-2 flex-grow rounded"
+            />
+            <button
+              onClick={sendMessage}
+              className="bg-green-500 text-white px-4 rounded"
+            >
+              Send
+            </button>
+              <button
+                    onClick={() => setShowPicker((prev) => !prev)}
+                    className="text-2xl"
+                  >
+                    😊
+              </button>
+          </div>
+          <AddEmoji showPicker={showPicker} setShowPicker={setShowPicker} addEmoji={addEmoji} />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default ChatUI;

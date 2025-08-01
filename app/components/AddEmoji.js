@@ -1,16 +1,22 @@
-import EmojiPicker from "emoji-picker-react";
+// AddEmoji.jsx
+
 import React, { useState } from "react";
+import EmojiPicker from "emoji-picker-react";
 
-const AddEmoji = (emojiData) => {
-    const [s] = useState(false);
-  setMessage((prev) => prev + emojiData.emoji);
+const AddEmoji = ({ showPicker, setShowPicker,addEmoji }) => {
+  
+
+  
+
+  return (
+    <div className="flex items-center flex-col gap-2">
+    
+      <div className="relative top-5 ">
+
+      {showPicker && <EmojiPicker onEmojiClick={(_, emojiData) => addEmoji(emojiData)} />}
+      </div>
+    </div>
+  );
 };
-return(
-    <div className="flex items-center gap-2">
-  <button onClick={() => setShowPicker((prev) => !prev)} className="text-2xl">😊</button>
-  {showPicker && <EmojiPicker onEmojiClick={addEmoji} />}
-</div>
 
-)
-
-export default  AddEmoji;
+export default AddEmoji;
