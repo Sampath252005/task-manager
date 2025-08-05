@@ -110,6 +110,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   alt="Analytics"
                   width={25}
                   height={25}
+                  onClick={() => router.push('/dashboard')}
                 />
               </motion.button>
             </div>

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const TaskSchema = new mongoose.Schema(
+const CompletedTaskSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -49,5 +49,5 @@ const TaskSchema = new mongoose.Schema(
 
   { timestamps: true }
 );
-
-export default mongoose.models?.Task || mongoose.model("Task", TaskSchema);
+export default mongoose.models?.CompletedTask ||
+  mongoose.model("CompletedTask", CompletedTaskSchema);

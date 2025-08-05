@@ -1,22 +1,28 @@
-// Basic Express + Socket.IO server
+import express from 'express';
+import {createServer} from 'http';
+import {Server} from 'socket.io';
+import cors from 'cors';
 
-import express from "express";
-import http from "http";
-import cors from "cors";
-import { initializeSocket } from "./socket.js";
+const app =express();
+const httpServer = createServer(app);
+const io = new Server(httpServer,{
+  cors:{
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  }
+});
 
-// Setup
-const app = express();
-const server = http.createServer(app);
-
-// Enable CORS for frontend
 app.use(cors());
+app.use(express.json());
 
-// Initialize WebSocket
-initializeSocket(server);
+const users= new Map();
 
-// Start server
-const PORT = 3001;
-server.listen(PORT, () => {
-  console.log(`🚀 Socket.IO server running at http://localhost:${PORT}`);
+io.on('connection',(socket)=>{
+  console.log('A user connected:', socket.id);
+
+
+})
+
+httpServer.listen(3001, () => {
+  console.log('Socket.IO server running on http://localhost:3001');
 });

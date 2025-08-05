@@ -1,46 +1,55 @@
+import express from "express";
+import { createServer } from "http";
 import { Server } from "socket.io";
-/**
- * @param {http.Server} server - The HTTP server to bind Socket.IO
- */
+import cors from "cors";
 
-export function initializeSocket(server) {
-  const io = new Server(server, {
-    cors: {
-      origin: "http://localhost:3000", // Allow your frontend to connect
-      methods: ["GET", "POST"],
-    },
+const app = express();
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+app.use(cors());
+app.use(express.json());
+
+const users = new Map();
+
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  //save user name from the frontend
+  socket.on("register", (username) => {
+    users.set(socket.id, username);
+    console.log(`${username} connected`);
   });
 
-  // Handle connection events
-  io.on("connection", (socket) => {
-    console.log("A user connected:", socket.id);
-
-    socket.on("joinRoom", ({ roomName, userName }) => {
-      socket.join(roomName); // Socket.IO joins room
-      console.log(`${userName} joined room: ${roomName}`);
-
-      // Broadcast to others in room
-      socket
-        .to(roomName)
-        .emit("userJoined", `${userName} has joined the room.`);
-    });
-
-    // When a user sends a message to a room
-    socket.on("send_message", ({ roomName, message, userName }) => {
-      const time = new Intl.DateTimeFormat("default", {
-        hour: "2-digit",
-        minute: "2-digit",
-      }).format(new Date());
-      io.to(roomName).emit("receive_message", { message, userName, time });
-    });
-//listen for typing events
-    socket.on("typing", ({ roomName, userName }) => {
-    // Notify others in the room except the sender
-    socket.to(roomName).emit("user_typing", { userName });
-  });
-
-    socket.on("disconnect", () => {
-      console.log("🚫 A user disconnected:", socket.id);
+  socket.on("joinRoom", (roomName) => {
+    socket.join(roomName);
+    const username = users.get(socket.id);
+    io.to(roomName).emit("chatMessage", {
+      user: "System",
+      text: `${username} has joined ${roomName}`,
     });
   });
-}
+
+  socket.on("sendMessage", ({ room, message }) => {
+    const username = users.get(socket.id);
+    io.to(room).emit("chatMessage", {
+      user: username,
+      text: message,
+    });
+  });
+
+  socket.on("disconnect", () => {
+    const username = users.get(socket.id);
+    console.log(`${username} disconnected`);
+    users.delete(socket.id);
+  });
+});
+
+httpServer.listen(3001, () => {
+  console.log("Socket.IO server running on http://localhost:3001");
+});

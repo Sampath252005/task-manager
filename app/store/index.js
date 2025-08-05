@@ -11,4 +11,8 @@ export const store = configureStore({
     search: searchReducer,
     theme: themeReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: true,
+    }),
 });
