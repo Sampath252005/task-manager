@@ -13,8 +13,8 @@ export default function TimerPage() {
   const [isWorkTime, setIsWorkTime] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [key, setKey] = useState(0);
-
- 
+  const [sessionStartTime, setSessionStartTime] = useState(null);
+  const [totalTime, setTotalTime] = useState(0); // in seconds
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -35,6 +35,12 @@ export default function TimerPage() {
   useEffect(() => {
     const task = tasks.find((t) => t._id === selectedTaskId);
     setSelectedTask(task || null);
+
+    // Load total time for this task from localStorage
+    if (selectedTaskId) {
+      const saved = localStorage.getItem(`task-time-${selectedTaskId}`);
+      setTotalTime(saved ? parseInt(saved) : 0);
+    }
   }, [selectedTaskId, tasks]);
 
   const handleComplete = () => {
@@ -42,16 +48,67 @@ export default function TimerPage() {
     setKey((prev) => prev + 1);
   };
 
-  const startTimer = () => setIsPlaying(true);
-  const pauseTimer = () => setIsPlaying(false);
+  const startTimer = () => {
+    if (isWorkTime) {
+      setSessionStartTime(new Date());
+    }
+    setIsPlaying(true);
+  };
+
+  const pauseTimer = async () => {
+    setIsPlaying(false);
+
+    if (!sessionStartTime || !selectedTaskId || !isWorkTime) return;
+
+    const sessionEndTime = new Date();
+    const duration = Math.floor(
+      (sessionEndTime - new Date(sessionStartTime)) / 1000
+    ); // in seconds
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await fetch(`/api/tasks/${selectedTaskId}/sessions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          start: sessionStartTime.toISOString(),
+          end: sessionEndTime.toISOString(),
+        }),
+      });
+
+      console.log("✅ Session saved");
+
+      // Update total time in localStorage
+      const storageKey = `task-time-${selectedTaskId}`;
+      const previousTime = parseInt(localStorage.getItem(storageKey)) || 0;
+      const updatedTime = previousTime + duration;
+      localStorage.setItem(storageKey, updatedTime);
+      setTotalTime(updatedTime);
+    } catch (err) {
+      console.error("❌ Failed to save session:", err);
+    }
+
+    setSessionStartTime(null);
+  };
+
   const resetTimer = () => {
     setIsWorkTime(!isWorkTime);
     setIsPlaying(false);
     setKey((prev) => prev + 1);
   };
 
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}m ${secs}s`;
+  };
+
   return (
-    <div className="min-h-screen  text-white flex flex-col  items-center justify-center gap-6 p-4">
+    <div className="min-h-screen text-white flex flex-col items-center justify-center gap-6 p-4">
       <h1 className="text-3xl font-bold">⏳ Task Timer</h1>
 
       <TaskSelector
@@ -77,7 +134,7 @@ export default function TimerPage() {
             onComplete={handleComplete}
             color={isWorkTime ? "#22c55e" : "#3b82f6"}
             label={isWorkTime ? "Work Time" : "Break Time"}
-            soundUrl="/alarm.mp3" // ✅ add a sound file to public/
+            soundUrl="/alarm.mp3"
           />
 
           <div className="flex gap-4 mt-4">
@@ -100,6 +157,11 @@ export default function TimerPage() {
               Reset
             </button>
           </div>
+
+          <p className="mt-4 text-lg">
+            ⏱️ Total Time Spent on This Task:{" "}
+            <span className="font-semibold">{formatTime(totalTime)}</span>
+          </p>
         </>
       )}
     </div>

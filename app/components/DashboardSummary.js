@@ -33,6 +33,30 @@ const DashboardSummary = () => {
   console.log("Total Tasks:", totalCount);
   console.log("Completed Tasks:", completedCount);
   console.log("Pending Tasks:", pendingCount);
+  const [todayTime, setTodayTime] = useState(null);
+  const [overallTime, setOverallTime] = useState(null);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    fetch("/api/user/sessions", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setTodayTime(data.today);
+        setOverallTime(data.overall);
+      })
+      .catch((err) => console.error("Error fetching time stats:", err));
+  }, []);
+
+  const formatTime = (time) => {
+    if (!time) return "Loading...";
+    const { hours, minutes, seconds } = time;
+    return `${hours}h ${minutes}m ${seconds}s`;
+  };
   return (
     <div className="bg-white shadow-lg rounded-2xl p-6 transition hover:shadow-xl">
       <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
@@ -56,15 +80,15 @@ const DashboardSummary = () => {
         <div className="flex items-center gap-4 p-4 rounded-xl bg-blue-50">
           <Timer className="text-blue-600 w-6 h-6" />
           <div>
-            <p className="text-sm text-gray-600">Pomodoro Sessions</p>
-            <p className="text-lg font-bold text-blue-700">4</p>
+            <p className="text-sm text-gray-600">Total Time Spent</p>
+            <p className="text-lg font-bold text-blue-700">{formatTime(overallTime)}</p>
           </div>
         </div>
         <div className="flex items-center gap-4 p-4 rounded-xl bg-yellow-50">
           <Clock className="text-yellow-600 w-6 h-6" />
           <div>
             <p className="text-sm text-gray-600">Time Spent Today</p>
-            <p className="text-lg font-bold text-yellow-700">2h 30m</p>
+            <p className="text-lg font-bold text-yellow-700">{formatTime(todayTime)}</p>
           </div>
         </div>
       </div>

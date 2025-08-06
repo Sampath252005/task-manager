@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+const sessionSchema = new mongoose.Schema({
+  start: { type: String, required: true },
+  end: { type: String, required: true },
+});
 const TaskSchema = new mongoose.Schema(
   {
     title: {
@@ -44,6 +48,7 @@ const TaskSchema = new mongoose.Schema(
       type: Number, // in seconds
       default: 0,
     },
+    sessions: [sessionSchema],
     totalWorkTime: { type: Number, default: 0 },
   },
 
