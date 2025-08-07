@@ -17,7 +17,7 @@ export async function GET(req) {
 
     const tasks = await CompletedTask.find({ userId });
 
-    return Response.json({ count: tasks.length });
+    return Response.json({ count: tasks.length,tasks });
   } catch (error) {
     console.error("Completed task fetch error:", error);
     return new Response("Server error", { status: 500 });

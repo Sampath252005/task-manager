@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { motion } from "framer-motion";
 import DashboardSummary from "../components/DashboardSummary";
 import UpcomingTasks from "../components/UpcomingTasks";
@@ -7,14 +7,31 @@ import ProductivityCharts from "../components/ProductivityCharts";
 import QuickActions from "../components/QuickActions";
 import { useTasks } from "../hooks/useTasks";
 
-
-
 const page = () => {
   const { refreshTasks } = useTasks();
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     refreshTasks();
   }, []);
+  useEffect(() => {
+    try {
+      const storedUser = localStorage.getItem("user");
+      console.log("user:",storedUser);
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        setUser(parsed);
+      } else {
+        setUser(null);
+      }
+    } catch (err) {
+      console.error("Failed to parse user from localStorage", err);
+      localStorage.removeItem("user");
+      setUser(null);
+    }
+  }, []);
+  const capitalizeFirstLetter = (val) =>
+    String(val).charAt(0).toUpperCase() + String(val).slice(1);
 
   const fadeUp = {
     initial: { opacity: 0, y: 20 },
@@ -29,7 +46,7 @@ const page = () => {
         {...fadeUp}
         transition={{ duration: 0.5 }}
       >
-        👋 Welcome back, Sampath!
+        👋 Welcome back, {user ? capitalizeFirstLetter(user.username) : ""}
       </motion.h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
