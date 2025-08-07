@@ -1,10 +1,17 @@
-import React from "react";
+"use client"
+import React, { useEffect } from "react";
 import DashboardSummary from "../components/DashboardSummary";
 import UpcomingTasks from "../components/UpcomingTasks";
 import ProductivityCharts from "../components/ProductivityCharts";
 import QuickActions from "../components/QuickActions";
+import { useTasks } from "../hooks/useTasks";
 
 const page = () => {
+  const {  refreshTasks } = useTasks();
+
+  useEffect(() => {
+    refreshTasks();
+  }, []);
   const sampleTasks = [
     { title: "Complete Dashboard UI", due: "Today" },
     { title: "Fix login bug", due: "Tomorrow" },

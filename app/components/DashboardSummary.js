@@ -20,6 +20,7 @@ const DashboardSummary = () => {
         });
         const data = await res.json();
         setCompletedCount(data.count);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching completed count:", error);
       }
@@ -48,6 +49,7 @@ const DashboardSummary = () => {
       .then((data) => {
         setTodayTime(data.today);
         setOverallTime(data.overall);
+        console.log("details:",data.today,data.overall);
       })
       .catch((err) => console.error("Error fetching time stats:", err));
   }, []);

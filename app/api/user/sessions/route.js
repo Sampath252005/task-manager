@@ -13,9 +13,11 @@ export async function GET(request) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log("decoded,",decoded);
     await connectToDB();
 
-    const tasks = await Task.find({ user: decoded.id });
+    const tasks = await Task.find({ userId: decoded.id });
+    // console.log("tasks:",tasks);
 
     let totalMsToday = 0;
     let totalMsOverall = 0;
@@ -53,4 +55,5 @@ export async function GET(request) {
     console.error(err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
+ 
 }
