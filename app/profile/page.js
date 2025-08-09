@@ -88,7 +88,7 @@ const ProfilePage = () => {
         </div>
         <div className="flex flex-col">
           <label className="mb-2 text-sm text-gray-400">Email</label>
-          <div className="relative bg-[#1f2937] p-3 rounded-3xl border border-gray-600 cursor-not-allowed hover:border-red-500 hover:border">
+          <div className=" bg-[#1f2937] p-3 rounded-3xl border border-gray-600 cursor-not-allowed hover:border-red-500 hover:border">
             {user?.email}
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
               🔒

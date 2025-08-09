@@ -104,7 +104,7 @@ const TaskCard = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
-      className="relative bg-white dark:bg-[#071E3D] shadow-md rounded-2xl p-4 m-2 sm:p-6 max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl w-full justify-center items-center"
+      className=" bg-white dark:bg-[#071E3D] shadow-md rounded-2xl p-4 m-2 sm:p-6 max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl w-full justify-center items-center"
     >
       {showTaskDoneAnimation && (
         <div className="absolute inset-0 bg-opacity-80 z-10 flex justify-center items-center">
@@ -250,9 +250,9 @@ const TaskCard = ({
             whileTap={{ scale: 0.9 }}
             transition={{ type: "spring", stiffness: 300 }}
             onClick={handleTaskDone}
-            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+            className=" inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
           >
-            <span className=" cursor-pointer relative px-2 py-2 md:px-5 md:py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+            <span className=" cursor-pointer  px-2 py-2 md:px-5 md:py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md ">
               Task Done
             </span>
           </motion.button>

@@ -25,11 +25,16 @@ export async function POST(req) {
 
     await connectDB();
 
+    const resourceType = file.type.startsWith("image/")
+      ? "image"
+      : file.type.startsWith("video/")
+      ? "video"
+      : "raw";
     const result = await new Promise((resolve, reject) => {
       const stream = cloudinary.uploader.upload_stream(
         {
           folder: `user_files/${userId}`,
-          resource_type: "auto",
+          resource_type: resourceType,
         },
         (error, result) => {
           if (error) {

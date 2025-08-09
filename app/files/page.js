@@ -11,15 +11,32 @@ export default function UserFiles() {
     const selected = Array.from(e.target.files);
     uploadFiles(selected);
   };
+
+  // ✅ Directly open public Cloudinary URL
   const openFile = async (file) => {
-    const res = await fetch(file.url, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    const blob = await res.blob();
-    const fileURL = URL.createObjectURL(blob);
-    window.open(fileURL, "_blank");
+    try {
+      // If it's a public Cloudinary file, just open the direct URL
+      if (file.url.includes("res.cloudinary.com")) {
+        // Ensure the URL ends with the file extension so the browser knows how to open it
+        window.open(file.url, "_blank");
+        return;
+      }
+
+      // If it's from your API (private), fetch it with auth
+      const res = await fetch(file.url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      if (!res.ok) throw new Error(`Failed to fetch file: ${res.status}`);
+
+      const blob = await res.blob();
+      const fileURL = URL.createObjectURL(blob);
+      window.open(fileURL, "_blank");
+    } catch (err) {
+      console.error("Error opening file:", err);
+    }
   };
 
   useEffect(() => {
@@ -32,13 +49,7 @@ export default function UserFiles() {
           return;
         }
 
-        const text = await res.text();
-        if (!text) {
-          console.error("Empty response body");
-          return;
-        }
-
-        const data = JSON.parse(text);
+        const data = await res.json();
         setFiles(data);
       } catch (error) {
         console.error("Error fetching files:", error.message);
@@ -91,7 +102,7 @@ export default function UserFiles() {
   const triggerFileInput = () => fileInputRef.current.click();
 
   return (
-    <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl border border-gray-700 md:mt-15 mt-50  h-screen">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl border border-gray-700 md:mt-15 mt-5 h-screen">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-2xl font-semibold">📁 My Files</h2>
         <div className="flex items-center gap-4">

@@ -113,7 +113,7 @@ export default function Calendar({ selectedDate, onDateSelect,refreshTasks }) {
   };
 
   return (
-    <div className="w-full max-w-[90%] bg-[#1e293b] p-1 rounded-2xl shadow-2xl border border-blue-900 flex flex-col relative">
+    <div className="w-full max-w-[90%] bg-[#1e293b] p-1 rounded-2xl shadow-2xl border border-blue-900 flex flex-col ">
       {renderHeader()}
       {renderDays()}
       {renderCells()}
@@ -127,7 +127,7 @@ export default function Calendar({ selectedDate, onDateSelect,refreshTasks }) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onDateSelect(selectedDate, true)}
-          className="absolute bottom-4 right-4 bg-cyan-500 text-white text-2xl font-bold px-4 py-2 rounded-full shadow-lg hover:bg-cyan-400 transition"
+          className="relative  bottom-2 -right-350 bg-cyan-500 w-20 h-auto text-white text-2xl font-bold px-4 py-2 rounded-full shadow-lg hover:bg-cyan-400 transition"
         >
           +
         </motion.button>
