@@ -62,37 +62,34 @@ const UpcomingTask = () => {
     tasks.map((task) => (
       <motion.div
         key={task._id}
-        className="p-3 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 shadow hover:shadow-md transition-shadow border border-blue-200 min-h-[80px] flex flex-col justify-between"
+        className="p-3 rounded-xl bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900 dark:to-blue-800 shadow hover:shadow-md transition-shadow border border-blue-200 dark:border-blue-700 min-h-[80px] flex flex-col justify-between"
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
         <div className="flex justify-between items-center mb-1">
-          <h3 className="font-semibold text-base text-gray-800 truncate">
+          <h3 className="font-semibold text-base text-gray-800 dark:text-gray-100 truncate">
             {task.title}
           </h3>
-          <Clock size={16} className="text-gray-500" />
+          <Clock size={16} className="text-gray-500 dark:text-gray-300" />
         </div>
-        {task.description && (
-          <p className="text-sm text-gray-600 line-clamp-2">
-            {task.description}
-          </p>
-        )}
       </motion.div>
     ));
 
   const Section = ({ label, tasks, color }) => (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3  bg-blue-950 p-3">
       <h3
-        className={`text-lg font-semibold flex items-center gap-2 text-${color}-700`}
+        className={`text-lg font-semibold flex items-center gap-2 text-${color}-700 dark:text-${color}-400`}
       >
         <CalendarDays size={18} /> {label}
       </h3>
-      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400 h-56 space-y-3">
+      <div className="overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400 dark:scrollbar-thumb-gray-700 hover:dark:scrollbar-thumb-gray-600 h-56 space-y-3">
         {tasks.length ? (
           renderTaskList(tasks)
         ) : (
-          <p className="text-sm text-gray-400 italic">No tasks</p>
+          <p className="text-sm text-gray-400 dark:text-gray-500 italic">
+            No tasks
+          </p>
         )}
       </div>
     </div>
@@ -103,9 +100,9 @@ const UpcomingTask = () => {
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="p-6 bg-white rounded-3xl shadow-2xl w-full h-full max-w-4xl mx-auto"
+      className="p-6 bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full h-full max-w-4xl mx-auto"
     >
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
         📅 Upcoming Tasks
       </h2>
 

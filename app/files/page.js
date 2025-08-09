@@ -11,6 +11,16 @@ export default function UserFiles() {
     const selected = Array.from(e.target.files);
     uploadFiles(selected);
   };
+  const openFile = async (file) => {
+    const res = await fetch(file.url, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    const blob = await res.blob();
+    const fileURL = URL.createObjectURL(blob);
+    window.open(fileURL, "_blank");
+  };
 
   useEffect(() => {
     const fetchFiles = async () => {
@@ -81,7 +91,7 @@ export default function UserFiles() {
   const triggerFileInput = () => fileInputRef.current.click();
 
   return (
-    <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl border border-gray-700 md:mt-15 mt-20  h-screen">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl border border-gray-700 md:mt-15 mt-50  h-screen">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <h2 className="text-2xl font-semibold">📁 My Files</h2>
         <div className="flex items-center gap-4">
@@ -124,20 +134,20 @@ export default function UserFiles() {
                   {file.type.includes("image") ? "🖼️" : "📄"}
                 </span>
                 <div>
-                  <p className="font-medium text-sm sm:text-base">{file.name}</p>
+                  <p className="font-medium text-sm sm:text-base">
+                    {file.name}
+                  </p>
                   <p className="text-xs text-gray-400">{file.date}</p>
                 </div>
               </div>
 
               <div className="flex gap-4 mt-2 sm:mt-0 sm:ml-auto">
-                <a
-                  href={file.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => openFile(file)}
                   className="text-blue-400 hover:underline text-sm"
                 >
                   Open
-                </a>
+                </button>
                 <button
                   className="text-red-500 hover:underline text-sm"
                   onClick={() => deleteFile(file._id, file.public_id)}

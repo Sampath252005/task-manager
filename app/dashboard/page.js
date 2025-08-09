@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import DashboardSummary from "../components/DashboardSummary";
 import UpcomingTasks from "../components/UpcomingTasks";
@@ -7,17 +7,18 @@ import ProductivityCharts from "../components/ProductivityCharts";
 import QuickActions from "../components/QuickActions";
 import { useTasks } from "../hooks/useTasks";
 
-const page = () => {
+const Page = () => {
   const { refreshTasks } = useTasks();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
     refreshTasks();
   }, []);
+
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
-      console.log("user:",storedUser);
+      console.log("user:", storedUser);
       if (storedUser) {
         const parsed = JSON.parse(storedUser);
         setUser(parsed);
@@ -30,6 +31,7 @@ const page = () => {
       setUser(null);
     }
   }, []);
+
   const capitalizeFirstLetter = (val) =>
     String(val).charAt(0).toUpperCase() + String(val).slice(1);
 
@@ -40,9 +42,9 @@ const page = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen mt-10">
+    <div className="p-6 min-h-screen mt-10 bg-gray-100 dark:bg-gray-900">
       <motion.h1
-        className="text-3xl font-bold mb-6 text-black"
+        className="text-2xl md:text-3xl  font-bold mb-6 text-black dark:text-white"
         {...fadeUp}
         transition={{ duration: 0.5 }}
       >
@@ -80,4 +82,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
