@@ -20,11 +20,10 @@ const LoginPage = () => {
   const router = useRouter();
   useEffect(() => {
     const token = localStorage.getItem("token");
-     if (!token) {
+    if (!token) {
       // ❌ Token missing, redirect to login
       router.replace("/loginPage");
-    }
-    else {
+    } else {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
         const isExpired = payload.exp * 1000 < Date.now();
@@ -46,14 +45,21 @@ const LoginPage = () => {
         },
         body: JSON.stringify({ email, password }),
       });
-if (response.ok) {
-  const result = await response.json();
-  localStorage.setItem("token", result.token);
-  localStorage.setItem("user", JSON.stringify({ username: result.username, email })); // ✅ Save as JSON
-  router.push("/");
-}
+      if (response.ok) {
+        const result = await response.json();
+        console.log("result:", result);
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("profilePic", result.profilePic);
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            username: result.username,
+            email: result.email,
+          })
+        );
 
- else {
+        router.push("/");
+      } else {
         console.error("Login failed");
       }
     } catch (error) {

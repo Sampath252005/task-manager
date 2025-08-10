@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
-import Calendar from "../components/Calender";
-import AddTask from "../components/AddTask";
-import TaskCard from "../components/TaskCard";
-import { useTasks } from "../hooks/useTasks";
+import Calendar from "@/app/components/Calender";
+import AddTask from "@/app/components/AddTask";
+import TaskCard from "@/app/components/TaskCard";
+import { useTasks } from "@/app/hooks/useTasks";
 import { AnimatePresence, motion } from "framer-motion";
 import { isSameDay } from "date-fns";
 import Image from "next/image";
-import Searchanimation from "../components/SearchIanimation";
+import Searchanimation from "@/app/components/SearchIanimation";
 
 export default function TaskPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());

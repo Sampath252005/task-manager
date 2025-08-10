@@ -1,8 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
-import TaskSelector from "../components/ TaskSelector";
-import TimerSettings from "../components/TimerSettings";
-import TaskTimer from "../components/TaskTimer";
+import TaskSelector from "@/app/components/ TaskSelector";
+import TimerSettings from "@/app/components/TimerSettings";
+import TaskTimer from "@/app/components/TaskTimer";
 
 export default function TimerPage() {
   const [tasks, setTasks] = useState([]);

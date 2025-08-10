@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import UploadForm from "../components/UploadForm";
+import UploadForm from "@/app/components/UploadForm";
 
 const capitalizeFirstLetter = (str) => {
   if (!str) return "";
@@ -18,7 +18,7 @@ const ProfilePage = () => {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-     localStorage.removeItem("profilePic");
+    localStorage.removeItem("profilePic");
     router.push("/loginPage");
   };
 
@@ -34,7 +34,9 @@ const ProfilePage = () => {
         }
 
         const data = await res.json();
+        console.log("data :",data)
         setUser(data);
+
 
         const localPhoto = localStorage.getItem("profilePic");
         setProfilePic( localPhoto || "/profile.png");
@@ -90,7 +92,7 @@ const ProfilePage = () => {
           <label className="mb-2 text-sm text-gray-400">Email</label>
           <div className=" bg-[#1f2937] p-3 rounded-3xl border border-gray-600 cursor-not-allowed hover:border-red-500 hover:border">
             {user?.email}
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+            <span className="relative  right-4 top-1/2 -translate-y-1/2 text-gray-400">
               🔒
             </span>
           </div>

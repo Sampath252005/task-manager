@@ -1,7 +1,7 @@
 "use client";
 import React ,{useState} from "react";
-import TaskList from "../components/TaskList"; // ✅ Correct import
-import AddTask from "../components/AddTask";
+import TaskList from "@/app/components/TaskList"; // ✅ Correct import
+import AddTask from "@/app/components/AddTask";
 import { motion } from "framer-motion";
 const page = () => {
     const [showAddTask, setShowAddTask] = useState(false);

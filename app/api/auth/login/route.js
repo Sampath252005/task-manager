@@ -16,6 +16,7 @@ export async function POST(req) {
   return Response.json({ 
     token, 
     username: user.username ,
-    email:user.email // ⬅️ Include username here
+    email:user.email ,
+    profilePic: user.profilePic // ⬅️ Include username here
   });
 }

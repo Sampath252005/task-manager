@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import DashboardSummary from "../components/DashboardSummary";
-import UpcomingTasks from "../components/UpcomingTasks";
-import ProductivityCharts from "../components/ProductivityCharts";
-import QuickActions from "../components/QuickActions";
-import { useTasks } from "../hooks/useTasks";
+import DashboardSummary from "../../components/DashboardSummary";
+import UpcomingTasks from "../../components/UpcomingTasks";
+import ProductivityCharts from "../../components/ProductivityCharts";
+import QuickActions from "../../components/QuickActions";
+import { useTasks } from "../../hooks/useTasks";
 
 const Page = () => {
   const { refreshTasks } = useTasks();

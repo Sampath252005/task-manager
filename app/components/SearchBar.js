@@ -12,7 +12,7 @@ import { set } from "mongoose";
 const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   const [search, setSearch] = useState("");
   const [user, setUser] = useState(null);
-  const profilePic = useSelector((state) => state.user.profilePic);
+  const profilePic = localStorage.getItem("profilePic");
   const isMdOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
 
   const paddingLeft = isMdOrLarger
@@ -78,6 +78,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("profilePic");
     router.push("/loginPage");
   };
 
