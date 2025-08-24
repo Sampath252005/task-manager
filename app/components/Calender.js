@@ -127,7 +127,7 @@ export default function Calendar({ selectedDate, onDateSelect,refreshTasks }) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => onDateSelect(selectedDate, true)}
-          className="items-center  bottom-2 -right-350 bg-cyan-500 w-20 h-auto text-white text-2xl font-bold px-4 py-2 rounded-full shadow-lg hover:bg-cyan-400 transition"
+          className=" flex items-center justify-center  bottom-2 -right-350 bg-cyan-500 w-full md:w-20 h-auto text-white text-sm md:text-2xl font-bold px-4 py-2 rounded-full shadow-lg hover:bg-cyan-400 transition"
         >
           +
         </motion.button>

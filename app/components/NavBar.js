@@ -87,7 +87,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   onClick={() => router.push("/files")}
                 />
               </motion.button>
-
+{/* 
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -99,7 +99,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   width={25}
                   height={25}
                 />
-              </motion.button>
+              </motion.button> */}
 
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -114,7 +114,22 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   onClick={() => router.push("/dashboard")}
                 />
               </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
+                onClick={()=>router.push("/profile")}
+              >
+                <Image
+                  src="/profile.png"
+                  alt="Notifications"
+                  width={25}
+                  height={25}
+                />
+              </motion.button>
             </div>
+
 
             {/* Dark Mode Toggle */}
 

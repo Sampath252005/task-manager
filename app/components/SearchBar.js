@@ -82,8 +82,6 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
     router.push("/loginPage");
   };
 
-
-
   const handleSmartSearch = (input) => {
     const trimmed = input.trim().toLowerCase();
 
@@ -112,7 +110,11 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
           exit={{ opacity: 0, scale: 0.9 }}
           transition={{ duration: 0.3 }}
         >
-          <AddTask close={() => setShowAddTask(false)} setNavbarShow={setNavbarShow} NavbarShow={NavbarShow}/>
+          <AddTask
+            close={() => setShowAddTask(false)}
+            setNavbarShow={setNavbarShow}
+            NavbarShow={NavbarShow}
+          />
         </motion.div>
       )}
 
@@ -149,17 +151,22 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
             {SearchBardropdownOpen && (
               <div className="absolute mt-12 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
-                  {["Mockups", "Templates", "Design", "Logos"].map((option) => (
-                    <li key={option}>
+                  {[
+                    { label: "Profile", path: "/profile" },
+                    { label: "Tasks", path: "/tasks" },
+                    { label: "Files", path: "/files" },
+                    { label: "Calendar", path: "/calender" },
+                  ].map((option) => (
+                    <li key={option.label}>
                       <button
                         type="button"
                         className="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                         onClick={() => {
-                          setSelectedCategory(option);
+                          router.push(option.path);
                           setSearchBarDropdownOpen(false);
                         }}
                       >
-                        {option}
+                        {option.label}
                       </button>
                     </li>
                   ))}
@@ -247,7 +254,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
                   <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
                     <li>
                       <a
-                        onClick={()=>router.push("/dashboard")}
+                        onClick={() => router.push("/dashboard")}
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Dashboard
@@ -255,7 +262,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
                     </li>
                     <li>
                       <a
-                         onClick={()=>router.push("/profile")}
+                        onClick={() => router.push("/profile")}
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Settings
