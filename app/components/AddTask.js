@@ -75,7 +75,7 @@ const AddTask = ({ close, selectedDate, setNavbarShow, NavbarShow }) => {
   };
   useEffect(() => {
     if (NavbarShow) setNavbarShow(false);
-  }, [setNavbarShow]);
+  }, [NavbarShow]);
 
   return (
     <div className="relative bg-gradient-to-r from-cyan-500 to-blue-500 p-4 sm:p-6 md:p-8 rounded-lg w-[95%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white max-h-[90vh] overflow-auto z-50">

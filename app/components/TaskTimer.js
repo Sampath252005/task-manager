@@ -21,7 +21,7 @@ export default function TaskTimer({
       audio.pause();
       audio.currentTime = 0;
     }
-  }, [isPlaying]);
+  }, [isPlaying,audio]);
 
   const { tasks, loading, refreshTasks } = useTasks();
   const updateTaskTime = async (taskId, sessionTime) => {

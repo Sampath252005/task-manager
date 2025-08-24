@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import TaskList from "@/app/components/TaskList"; // ✅ Correct import
 import AddTask from "@/app/components/AddTask";
 import { motion } from "framer-motion";
-const page = () => {
+const Page = () => {
   const [showAddTask, setShowAddTask] = useState(false);
   const [view, setView] = useState("pending");
   const handleAddTask = () => {
@@ -70,4 +70,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

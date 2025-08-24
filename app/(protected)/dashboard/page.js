@@ -13,7 +13,7 @@ const Page = () => {
 
   useEffect(() => {
     refreshTasks();
-  }, []);
+  }, [refreshTasks]);
 
   useEffect(() => {
     try {

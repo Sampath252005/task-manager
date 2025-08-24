@@ -34,7 +34,7 @@ const LoginPage = () => {
         console.error("Invalid token:", err);
       }
     }
-  }, []);
+  }, [router]);
   const onSubmit = async (data) => {
     const { email, password } = data;
     try {
@@ -181,7 +181,7 @@ const LoginPage = () => {
                 Login
               </button>
               <p className="text-sm text-center text-gray-500">
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <a
                   href="/register"
                   className="font-semibold text-blue-500 hover:text-blue-700"

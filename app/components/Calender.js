@@ -22,7 +22,7 @@ export default function Calendar({ selectedDate, onDateSelect,refreshTasks }) {
   useEffect(() => {
     setShowAddButton(!!selectedDate);
     refreshTasks();
-  }, [selectedDate]);
+  }, [selectedDate,refreshTasks]);
 
   const renderHeader = () => (
     <div className="flex justify-between items-center mb-4 px-4 text-blue-200">
