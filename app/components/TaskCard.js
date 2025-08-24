@@ -12,10 +12,12 @@ const TaskCard = ({
   taskId,
   title,
   subtitle,
-  tagsList = [],
+  tag,
   description,
+  priority,
   image,
   refreshTasks,
+  refreshCompleted,
   estimatedTime,
   totalWorkTime,
   remainingTime,
@@ -23,6 +25,7 @@ const TaskCard = ({
   const dispatch = useDispatch();
   const [showUpdateTask, setShowUpdateTask] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+
   const [showTaskDoneAnimation, setShowTaskDoneAnimation] = useState(false);
   const router = useRouter();
 
@@ -31,34 +34,32 @@ const TaskCard = ({
 
     setTimeout(async () => {
       const token = localStorage.getItem("token");
-
-      if (!token) {
-        console.error("Token not found");
-        return;
-      }
+      if (!token) return console.error("Token not found");
 
       try {
-        const res = await fetch(`/api/completed-tasks/${taskId}`, {
+        const res = await fetch(`/api/completed-tasks`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
+            taskId, // ✅ include taskId
             title,
+            description, // ✅ add this
             estimatedTime,
-            totalWorkTime,
-            breakTime: 0, // optional
+            timeSpent: totalWorkTime || 0, // ✅ map totalWorkTime to timeSpent
+            breakTime: 0,
           }),
         });
 
-        if (!res.ok) throw new Error("Failed to complete task");
+        if (!res.ok) {
+          const text = await res.text();
+          console.error("Backend error:", text);
+          throw new Error("Failed to complete task");
+        }
 
-        // ❌ don't call deleteTask again, backend already deleted it
-        // dispatch(deleteTask(taskId));
-
- 
-        await refreshTasks() // refresh tasks
+        await refreshTasks(); // refresh task list
       } catch (error) {
         console.error("Error completing task:", error);
       } finally {
@@ -104,17 +105,11 @@ const TaskCard = ({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.4 }}
-      className=" bg-white dark:bg-[#071E3D] shadow-md rounded-2xl p-4 m-2 sm:p-6 max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl w-full justify-center items-center"
+      className="relative bg-white dark:bg-[#071E3D] shadow-md rounded-2xl p-4 m-2 sm:p-6 max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl w-full justify-center items-center"
     >
-      {showTaskDoneAnimation && (
-        <div className="absolute inset-0 bg-opacity-80 z-10 flex justify-center items-center">
-          <TaskDoneAnimation />
-        </div>
-      )}
-
       {confirmDelete && (
-        <div className="absolute inset-0 bg-opacity-40 z-10 flex items-center justify-center rounded-lg">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center w-[90%] sm:w-[70%]">
+        <div className="relative inset-0 bg-opacity-40 z-999 flex items-center justify-center rounded-lg">
+          <div className=" relative  justify-center items-center  bg-white  dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center w-[90%] sm:w-[70%]">
             <p className="mb-4 text-gray-800 dark:text-gray-200 text-sm sm:text-base">
               Are you sure you want to delete <strong>{title}</strong>?
             </p>
@@ -138,6 +133,11 @@ const TaskCard = ({
           </div>
         </div>
       )}
+      {showTaskDoneAnimation && (
+        <div className="relative  inset-0 bg-opacity-80 z-10 flex justify-center items-center">
+          <TaskDoneAnimation />
+        </div>
+      )}
 
       {showUpdateTask && (
         <motion.div
@@ -151,7 +151,35 @@ const TaskCard = ({
         </motion.div>
       )}
 
-      <div className={`${showTaskDoneAnimation ? "hidden" : ""}`}>
+      <div
+        className={`${showTaskDoneAnimation || confirmDelete ? "hidden" : ""}`}
+      >
+        {confirmDelete && (
+          <div className="relative inset-0 bg-opacity-40 z-999 flex items-center justify-center rounded-lg">
+            <div className=" relative  justify-center items-center  bg-white  dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center w-[90%] sm:w-[70%]">
+              <p className="mb-4 text-gray-800 dark:text-gray-200 text-sm sm:text-base">
+                Are you sure you want to delete <strong>{title}</strong>?
+              </p>
+              <div className="flex justify-center gap-4 mt-2">
+                <button
+                  onClick={() => {
+                    DeleteTask(taskId);
+                    setConfirmDelete(false);
+                  }}
+                  className="cursor-pointer bg-red-600 text-white px-4 py-2 text-sm rounded hover:bg-red-700 transition"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => setConfirmDelete(false)}
+                  className="cursor-pointer bg-gray-300 text-black px-4 py-2 text-sm rounded hover:bg-gray-400 dark:bg-gray-600 dark:text-white dark:hover:bg-gray-500 transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="mb-4">
           <div className="flex justify-between items-start gap-4 flex-wrap">
             <div>
@@ -184,30 +212,16 @@ const TaskCard = ({
             </div>
           </div>
         </div>
-
-        {tagsList.length > 0 && (
-          <ul className="flex flex-wrap gap-2 mb-3">
-            {tagsList.map((tag, index) => (
-              <li
-                key={index}
-                className="px-2 py-1 text-xs sm:text-sm bg-blue-100 text-blue-800 rounded dark:bg-blue-900 dark:text-blue-300"
-              >
-                {tag}
-              </li>
-            ))}
-          </ul>
-        )}
-
         <p className="text-gray-700 dark:text-gray-300 text-sm sm:text-base mb-3">
           {description}
         </p>
 
         <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 mb-4 shadow-md">
           <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2">
-            <strong>Estimated Time:</strong> {estimatedTime || "Not Set"}m
+            <strong>Estimated Time:</strong> {estimatedTime || "Not Set "}
           </p>
           <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2">
-            <strong>Remaining Time:</strong> {remainingTime || "Not Tracked"}m
+            <strong>Remaining Time:</strong> {`remainingTime` || "Not Tracked "}
           </p>
 
           {estimatedTime && remainingTime && (
@@ -232,17 +246,26 @@ const TaskCard = ({
         </div>
 
         <div className="flex items-center justify-between text-gray-500 dark:text-gray-400 text-xs sm:text-sm">
-          <div className="flex items-center gap-3 mt-2">
-            <Image
-              src="/profile.png"
-              alt="User"
-              width={36}
-              height={36}
-              className="rounded-full"
-            />
-            <span className="text-sm text-gray-600 dark:text-gray-300">
-              Assigned to Sampath
-            </span>
+          <div className="flex space-x-5">
+            {tag && (
+              <span className="px-2 py-1 text-xs sm:text-sm bg-blue-100 text-blue-800 rounded dark:bg-blue-900 dark:text-blue-300">
+                {tag}
+              </span>
+            )}
+
+            {priority && (
+              <span
+                className={`px-2 py-1 text-xs sm:text-sm rounded ${
+                  priority.toLowerCase() === "low"
+                    ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300"
+                    : priority.toLowerCase() === "medium"
+                    ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300"
+                    : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300"
+                }`}
+              >
+                {priority}
+              </span>
+            )}
           </div>
 
           <motion.button
@@ -252,7 +275,7 @@ const TaskCard = ({
             onClick={handleTaskDone}
             className=" inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
           >
-            <span className=" cursor-pointer  px-2 py-2 md:px-5 md:py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md ">
+            <span className=" cursor-pointer  px-1 py-1 text-sm  md:px-5 md:py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md ">
               Task Done
             </span>
           </motion.button>

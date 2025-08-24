@@ -1,14 +1,22 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import { useTasks } from "../hooks/useTasks";
+import AddTaskgif from "./AddTaskgif";
 
-const UpdateTask = ({ close,taskId }) => {
-  const { tasks, loading, refreshTasks } = useTasks();
-   const task = tasks.find((t) => t._id === taskId);
+const UpdateTask = ({
+  close,
+  taskId,
+  selectedDate,
+  setNavbarShow,
+  NavbarShow,
+}) => {
+  const { tasks, refreshTasks } = useTasks();
+  const task = tasks.find((t) => t._id === taskId);
 
   const [showloading, setShowLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -20,29 +28,60 @@ const UpdateTask = ({ close,taskId }) => {
       description: task?.description || "",
       tag: task?.tag || "nothing",
       priority: task?.priority || "low",
+      estimatedTime: task?.estimatedTime || "",
+      date: selectedDate
+        ? selectedDate.toISOString().split("T")[0]
+        : task?.date
+        ? new Date(task.date).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0],
     },
   });
+
+  useEffect(() => {
+    reset({
+      title: task?.title || "",
+      description: task?.description || "",
+      tag: task?.tag || "nothing",
+      priority: task?.priority || "low",
+      estimatedTime: task?.estimatedTime || "",
+      date: selectedDate
+        ? selectedDate.toISOString().split("T")[0]
+        : task?.date
+        ? new Date(task.date).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0],
+    });
+  }, [task, selectedDate, reset]);
+
+  useEffect(() => {
+    if (NavbarShow) setNavbarShow(false);
+  }, [setNavbarShow, NavbarShow]);
 
   const onSubmit = async (data) => {
     try {
       setShowLoading(true);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
+
       const response = await fetch("/api/tasks", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
-        
         body: JSON.stringify({
-          taskId: task._id, // 🔥 Important: include taskId
+          taskId: task._id,
           ...data,
         }),
       });
-   
+
       if (response.ok) {
         console.log("Task updated successfully");
+        refreshTasks();
         close();
-        refreshTasks(); // Refresh tasks
       } else {
         console.error("Failed to update task");
       }
@@ -55,9 +94,10 @@ const UpdateTask = ({ close,taskId }) => {
   };
 
   return (
-    <div className="relative bg-gradient-to-r from-cyan-500 to-blue-500 flex flex-col p-5 rounded-lg w-[95%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white z-50 max-h-[90vh] overflow-auto">
+    <div className="relative bg-gradient-to-r from-cyan-500 to-blue-500 p-4 sm:p-6 md:p-8 rounded-lg w-[95%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white max-h-[90vh] overflow-auto z-50">
+      {/* Header */}
       <div className="flex items-center justify-between mb-4">
-        <h2 className="font-extrabold text-2xl md:text-3xl pl-2 pb-2 text-blue-900">
+        <h2 className="font-extrabold text-xl sm:text-2xl md:text-3xl text-blue-900">
           Update Task
         </h2>
         <Image
@@ -65,16 +105,17 @@ const UpdateTask = ({ close,taskId }) => {
           alt="Close"
           width={30}
           height={30}
-          className="cursor-pointer p-2 hover:bg-blue-400 rounded-3xl"
+          className="cursor-pointer p-1 hover:bg-blue-400 rounded-full"
           onClick={close}
         />
       </div>
 
+      {/* Form */}
       <form
-        className="flex flex-col lg:flex-row justify-between bg-white p-4 rounded-3xl text-black gap-6"
+        className="flex flex-col gap-6 md:flex-row bg-white p-4 sm:p-6 rounded-2xl text-black"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {/* Left side form */}
+        {/* Left Form */}
         <div className="flex flex-col gap-4 flex-1">
           <div>
             <label className="font-extrabold">Title</label>
@@ -82,7 +123,7 @@ const UpdateTask = ({ close,taskId }) => {
               {...register("title", { required: "Title is required" })}
               type="text"
               placeholder="Enter task title"
-              className="w-full mt-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
             />
             {errors.title && (
               <p className="text-red-500 text-sm">{errors.title.message}</p>
@@ -106,30 +147,48 @@ const UpdateTask = ({ close,taskId }) => {
             )}
           </div>
 
+          <div>
+            <label className="font-extrabold">
+              Expected Completion Time (minutes)
+            </label>
+            <input
+              {...register("estimatedTime", {
+                required: "Estimated time is required",
+              })}
+              type="number"
+              placeholder="E.g. 60"
+              className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+            />
+            {errors.estimatedTime && (
+              <p className="text-red-500 text-sm">
+                {errors.estimatedTime.message}
+              </p>
+            )}
+          </div>
+
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
-              <label className="font-extrabold">Tags</label>
+              <label className="font-extrabold">Tag</label>
               <input
                 {...register("tag", { required: "Tag is required" })}
                 type="text"
-                placeholder="Enter task tag"
+                placeholder="Enter tag"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md"
               />
               {errors.tag && (
                 <p className="text-red-500 text-sm">{errors.tag.message}</p>
               )}
             </div>
-
             <div className="flex-1">
               <label className="font-extrabold">Priority</label>
-              <input
-                {...register("priority", {
-                  required: "Priority is required",
-                })}
-                type="text"
-                placeholder="Enter task priority"
+              <select
+                {...register("priority", { required: "Priority is required" })}
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-              />
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
               {errors.priority && (
                 <p className="text-red-500 text-sm">
                   {errors.priority.message}
@@ -138,41 +197,39 @@ const UpdateTask = ({ close,taskId }) => {
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-2">
+          <input type="hidden" {...register("date")} />
+
+          <div className="flex justify-between items-center mt-4 gap-4">
             <button
               type="button"
               onClick={close}
-              className="cursor-pointer text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 rounded-lg text-sm px-5 py-2.5"
+              className="flex-1 text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:opacity-90 rounded-lg text-sm px-4 py-2.5"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="cursor-pointer text-white font-bold bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 rounded-lg text-sm px-5 py-2.5"
+              className="flex-1 text-white font-bold bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 rounded-lg text-sm px-4 py-2.5"
             >
-              Update
+              Update Task
             </button>
           </div>
         </div>
 
-        {/* Right side image */}
-        <div className="flex justify-center items-center flex-1">
+        {/* Right Side Image or Loading */}
+        <div className="flex justify-center items-center flex-1 max-h-[250px]">
           {showloading ? (
             <Image
               src="/loading.gif"
               alt="Loading"
-              width={500}
-              height={500}
-              className="rounded-lg max-h-[250px] object-contain md:max-h-[300px]"
+              width={300}
+              height={300}
+              className="rounded-lg object-contain max-w-full max-h-[200px] md:max-h-[250px]"
             />
           ) : (
-            <Image
-              src="/taskimage1.jpg"
-              alt="Add Task"
-              width={500}
-              height={500}
-              className="rounded-lg max-h-[250px] object-contain md:max-h-[300px]"
-            />
+            <div className="w-full md:w-1xl">
+              <AddTaskgif />
+            </div>
           )}
         </div>
       </form>

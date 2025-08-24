@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useTasks } from "../hooks/useTasks";
 import AddTaskgif from "../components/AddTaskgif";
 
-const AddTask = ({ close, selectedDate ,setNavbarShow,NavbarShow}) => {
+const AddTask = ({ close, selectedDate, setNavbarShow, NavbarShow }) => {
   const { refreshTasks } = useTasks();
   const [showloading, setShowLoading] = useState(false);
 
@@ -73,12 +73,11 @@ const AddTask = ({ close, selectedDate ,setNavbarShow,NavbarShow}) => {
       reset();
     }
   };
-    useEffect(() => {
+  useEffect(() => {
     if (NavbarShow) setNavbarShow(false);
   }, [setNavbarShow]);
 
   return (
-   
     <div className="relative bg-gradient-to-r from-cyan-500 to-blue-500 p-4 sm:p-6 md:p-8 rounded-lg w-[95%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white max-h-[90vh] overflow-auto z-50">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
@@ -133,7 +132,7 @@ const AddTask = ({ close, selectedDate ,setNavbarShow,NavbarShow}) => {
           </div>
 
           <div>
-            <label className="font-extrabold">Estimated Time (minutes)</label>
+            <label className="font-extrabold">Expected Completion Time (minutes)</label>
             <input
               {...register("estimatedTime", {
                 required: "Estimated time is required",
@@ -164,12 +163,15 @@ const AddTask = ({ close, selectedDate ,setNavbarShow,NavbarShow}) => {
             </div>
             <div className="flex-1">
               <label className="font-extrabold">Priority</label>
-              <input
+              <select
                 {...register("priority", { required: "Priority is required" })}
-                type="text"
-                placeholder="Enter priority"
                 className="w-full mt-1 p-2 border border-gray-300 rounded-md"
-              />
+                defaultValue="low"
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
               {errors.priority && (
                 <p className="text-red-500 text-sm">
                   {errors.priority.message}
@@ -215,7 +217,6 @@ const AddTask = ({ close, selectedDate ,setNavbarShow,NavbarShow}) => {
         </div>
       </form>
     </div>
-    
   );
 };
 

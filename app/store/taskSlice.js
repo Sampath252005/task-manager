@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Async thunk to fetch tasks
+// ✅ Async thunk to fetch ALL tasks
 export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   const token = localStorage.getItem("token");
 
@@ -19,6 +19,30 @@ export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   console.log("Fetched tasks:", data);
   return data;
 });
+
+// ✅ Async thunk to fetch ONLY completed tasks
+export const fetchCompletedTasks = createAsyncThunk(
+  "tasks/fetchCompletedTasks",
+  async () => {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch("/api/completed-tasks", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res);
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch completed tasks");
+    }
+
+    const data = await res.json();
+    console.log("Fetched completed tasks:", data);
+    return data.tasks || []; // assuming your API returns { tasks: [...] }
+  }
+);
 
 // ✅ Async thunk to delete a task
 export const deleteTask = createAsyncThunk(
@@ -39,53 +63,68 @@ export const deleteTask = createAsyncThunk(
       throw new Error("Failed to delete task");
     }
 
-    return taskId; // We return task ID to remove it from Redux store
+    return taskId; // return task ID to remove from Redux
   }
 );
 
 const taskSlice = createSlice({
   name: "tasks",
   initialState: {
-    items: [],
+    items: [], // all tasks
+    completedItems: [], // only completed tasks
     loading: false,
     error: null,
-    completedCount: 0, // ✅ extra state to store completed tasks
   },
-  reducers: {
-    // Optional: You can add non-async reducers here later
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
+      // 📌 Fetch all tasks
       .addCase(fetchTasks.pending, (state) => {
         state.loading = true;
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.items = action.payload;
         state.loading = false;
-        // ✅ Update completedCount when tasks are fetched
-        state.completedCount = action.payload.filter(
-          (task) => task.completed
-        ).length;
       })
       .addCase(fetchTasks.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
+
+      // 📌 Fetch completed tasks
+      .addCase(fetchCompletedTasks.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchCompletedTasks.fulfilled, (state, action) => {
+        state.completedItems = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchCompletedTasks.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      // 📌 Delete task
       .addCase(deleteTask.fulfilled, (state, action) => {
         const taskId = action.payload;
-        const wasCompleted = state.items.find(
-          (task) => task._id === taskId
-        )?.completed;
 
-        // Remove task
+        // remove from all items
         state.items = state.items.filter((task) => task._id !== taskId);
 
-        // Adjust completed count
-        if (wasCompleted) {
-          state.completedCount -= 1;
-        }
+        // remove from completed items
+        state.completedItems = state.completedItems.filter(
+          (task) => task._id !== taskId
+        );
       });
   },
 });
 
 export default taskSlice.reducer;
+
+// ✅ Selectors
+export const selectTasks = (state) => state.tasks.items;
+export const selectCompletedTasks = (state) => state.tasks.completedItems;
+export const selectCompletedCount = (state) =>
+  state.tasks.completedItems.length;
+export const selectPendingCount = (state) =>
+  state.tasks.items.length - state.tasks.completedItems.length;

@@ -36,7 +36,7 @@ export async function POST(req) {
 
     const userId = decoded.userId;
 
-    const { taskId, title, estimatedTime, timeSpent, breakTime } =
+    const { taskId, title, estimatedTime, timeSpent, breakTime,description } =
       await req.json();
 
     const task = await Task.findOne({ _id: taskId, userId });
@@ -44,6 +44,7 @@ export async function POST(req) {
 
     await CompletedTask.create({
       title,
+      description, 
       estimatedTime,
       timeSpent,
       breakTime,
