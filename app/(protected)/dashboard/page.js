@@ -44,7 +44,7 @@ const Page = () => {
   return (
     <div className="p-6 min-h-screen mt-10 bg-gray-100 dark:bg-gray-900">
       <motion.h1
-        className="text-2xl md:text-3xl  font-bold mb-6 text-black dark:text-white"
+        className="text-[20px] md:text-3xl  font-bold mb-6 text-black dark:text-white"
         {...fadeUp}
         transition={{ duration: 0.5 }}
       >

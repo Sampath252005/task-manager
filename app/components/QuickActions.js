@@ -14,7 +14,7 @@ const QuickActions = () => {
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       <motion.h2
-        className="text-2xl font-semibold mb-8 text-black dark:text-gray-100"
+        className="text-[18px] md:text-2xl font-semibold mb-8 text-black dark:text-gray-100"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}

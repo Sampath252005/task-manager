@@ -88,8 +88,8 @@ const DashboardSummary = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2 text-gray-800 dark:text-gray-100">
-        📊 Today's Summary
+      <h2 className=" text-[18px] md:text-2xl font-semibold mb-6 flex items-center gap-2 text-gray-800 dark:text-gray-100">
+        📊 OVerAll Summary
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">

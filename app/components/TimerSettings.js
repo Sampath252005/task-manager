@@ -10,7 +10,7 @@ export default function TimerSettings({
 }) {
   return (
     <motion.div
-      className="flex gap-6 w-full max-w-md text-white mt-4 bg-gray-800/60 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-gray-700"
+      className="flex gap-6 w-full max-w-md text-white mt-4 bg-gray-800/60  p-4 rounded-xl shadow-lg border border-gray-700"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
@@ -36,7 +36,7 @@ export default function TimerSettings({
           onChange={(e) => setWorkDuration(Number(e.target.value))}
           placeholder="Work (min)"
           className="w-full p-2 rounded-lg bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all duration-200"
-          whileFocus={{ scale: 1.04 }}
+          // whileFocus={{ scale: 1.04 }}
           whileHover={{ scale: 1.03 }}
         />
       </motion.div>
@@ -61,7 +61,7 @@ export default function TimerSettings({
           onChange={(e) => setBreakDuration(Number(e.target.value))}
           placeholder="Break (min)"
           className="w-full p-2 rounded-lg bg-gray-900 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-400 transition-all duration-200"
-          whileFocus={{ scale: 1.04 }}
+          // whileFocus={{ scale: 1.04 }}
           whileHover={{ scale: 1.03 }}
         />
       </motion.div>

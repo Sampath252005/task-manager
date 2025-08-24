@@ -9,13 +9,13 @@ const ClientLayoutWrapper = ({ children }) => {
   const pathname = usePathname();
   const [NavbarShow, setNavbarShow] = useState(true);
   const hideLayoutFor = ["/loginPage", "/register"];
-  const [shouldRender, setShouldRender] = useState(false); // ensure client mount
+  const [shouldRender, setShouldRender] = useState(false);
 
   useEffect(() => {
     setShouldRender(true);
   }, []);
 
-  if (!shouldRender) return null; 
+  if (!shouldRender) return null;
 
   const shouldHideLayout = hideLayoutFor.includes(pathname);
 
@@ -24,22 +24,21 @@ const ClientLayoutWrapper = ({ children }) => {
   ) : (
     <div className="flex">
       <NavBar NavbarShow={NavbarShow} setNavbarShow={setNavbarShow} />
-<div
-  className={`flex flex-col bg-gray-900 md:min-h-screen transition-all duration-300
-    ${NavbarShow ? "ml-15 md:ml-20 w-full" : "ml-0 w-full"}
-  `}
->
+      <div
+        className={`flex flex-col bg-gray-900 md:min-h-screen transition-all duration-300 w-full
+          ${NavbarShow ? "ml-15 md:20" : "ml-0"}`}
+      >
+        {/* Fixed top search bar */}
         <div
-          className={`flex justify-between items-center md:p-4 p-2 pt-5 md:pt-2 bg-grey-800 fixed top-0 w-full md:w-auto bg-slate-900 ${
-            NavbarShow ? "left-17 md:left-15" : "left-0"
-          } md:right-0  `}
+          className={`flex justify-between items-center md:p-4 p-2 pt-3 md:pt-2 
+            bg-slate-900 fixed top-0 z-50
+            ${NavbarShow ? "left-20" : "left-0"} right-0`}
         >
-          <SearchBar
-            NavbarShow={NavbarShow}
-            setNavbarShow={setNavbarShow}
-          />
+          <SearchBar NavbarShow={NavbarShow} setNavbarShow={setNavbarShow} />
         </div>
-        <div className="mt-10 md:px-4 pl-4 pr-1">{children}</div>
+
+        {/* Content */}
+        <div className="mt-14 md:px-4 pl-4 pr-1">{children}</div>
       </div>
     </div>
   );

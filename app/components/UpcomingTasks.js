@@ -102,7 +102,7 @@ const UpcomingTask = () => {
       transition={{ duration: 0.5 }}
       className="p-6 bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full h-full max-w-4xl mx-auto"
     >
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
+      <h2 className="text-[18px] md:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">
         📅 Upcoming Tasks
       </h2>
 

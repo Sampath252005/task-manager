@@ -18,7 +18,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
   const paddingLeft = isMdOrLarger
     ? NavbarShow
       ? "2.5rem"
-      : "4.5rem"
+      : "2rem"
     : NavbarShow
     ? "1rem"
     : "4rem";
@@ -117,7 +117,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
       )}
 
       <motion.div
-        className={`flex justify-between flex-wrap gap-10 relative min-w-full items-center transition duration-300 ${
+        className={`flex justify-between  gap-10 relative min-w-full items-center transition duration-300 ${
           showAddTask ? "blur-sm pointer-events-none select-none" : ""
         }`}
         animate={{ paddingLeft }}

@@ -2,21 +2,22 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import ToggleButton from "../components/ToggleButton";
 
 const NavBar = ({ NavbarShow, setNavbarShow }) => {
   const router = useRouter();
 
-
   return (
     <>
       {/* Toggle Button - Always Visible */}
       <div
-        className="fixed top-2 md:top-4 left-2  md:left-4 z-50 p-2 mb-5 mt-3 md:mt-0  bg-gray-900 cursor-pointer hover:bg-gray-700 rounded-2xl"
+        className="fixed top-2 md:top-4 left-2 md:left-4 z-[9999] 
+             p-2 mb-5 mt-3 md:mt-0 bg-gray-900 cursor-pointer 
+             hover:bg-gray-700 rounded-2xl"
         onClick={() => setNavbarShow(!NavbarShow)}
       >
-        <Image src="/layers.png" alt="Toggle Sidebar" width={25} height={25}  />
+        <Image src="/layers.png" alt="Toggle Sidebar" width={25} height={25} />
       </div>
 
       {/* Sidebar with smooth animation */}
@@ -34,7 +35,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="  text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
-                onClick={() => router.push('/tasks')}
+                onClick={() => router.push("/tasks")}
               >
                 <Image
                   src="/blue-file.png"
@@ -55,7 +56,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   alt="Timer"
                   width={25}
                   height={25}
-                  onClick={() => router.push('/timer')}
+                  onClick={() => router.push("/timer")}
                 />
               </motion.button>
 
@@ -69,7 +70,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   alt="Calendar"
                   width={25}
                   height={25}
-                  onClick={()=>router.push('/calender')}
+                  onClick={() => router.push("/calender")}
                 />
               </motion.button>
 
@@ -83,7 +84,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   alt="Folder"
                   width={25}
                   height={25}
-                  onClick={()=>router.push('/files')}
+                  onClick={() => router.push("/files")}
                 />
               </motion.button>
 
@@ -110,13 +111,13 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   alt="Analytics"
                   width={25}
                   height={25}
-                  onClick={() => router.push('/dashboard')}
+                  onClick={() => router.push("/dashboard")}
                 />
               </motion.button>
             </div>
 
             {/* Dark Mode Toggle */}
-            
+
             <ToggleButton />
           </motion.div>
         )}
