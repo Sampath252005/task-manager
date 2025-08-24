@@ -16,7 +16,7 @@ export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async () => {
   }
 
   const data = await res.json();
-  console.log("Fetched tasks:", data);
+  // console.log("Fetched tasks:", data);
   return data;
 });
 
@@ -32,14 +32,14 @@ export const fetchCompletedTasks = createAsyncThunk(
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log(res);
+    // console.log(res);
 
     if (!res.ok) {
       throw new Error("Failed to fetch completed tasks");
     }
 
     const data = await res.json();
-    console.log("Fetched completed tasks:", data);
+    // console.log("Fetched completed tasks:", data);
     return data.tasks || []; // assuming your API returns { tasks: [...] }
   }
 );

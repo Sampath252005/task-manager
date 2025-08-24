@@ -25,6 +25,7 @@ export default function TimerPage() {
         });
         const data = await res.json();
         setTasks(data);
+        console.log(data);
       } catch (err) {
         console.error("Error fetching tasks:", err);
       }
@@ -54,7 +55,6 @@ export default function TimerPage() {
     }
     setIsPlaying(true);
   };
-
   const pauseTimer = async () => {
     setIsPlaying(false);
 
@@ -68,21 +68,23 @@ export default function TimerPage() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch(`/api/tasks/${selectedTaskId}/sessions`, {
+      await fetch(`/api/update-time`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
+          taskId: selectedTaskId,
           start: sessionStartTime.toISOString(),
           end: sessionEndTime.toISOString(),
+          sessionTime: duration, // ✅ now sending duration
         }),
       });
 
       console.log("✅ Session saved");
 
-      // Update total time in localStorage
+      // Update local storage
       const storageKey = `task-time-${selectedTaskId}`;
       const previousTime = parseInt(localStorage.getItem(storageKey)) || 0;
       const updatedTime = previousTime + duration;

@@ -29,11 +29,11 @@ const ProductivityCharts = () => {
         }
 
         const data = await res.json();
-        console.log("Fetched tasks:", data);
+        // console.log("Fetched tasks:", data);
         setTasks(data);
 
         const grouped = groupCompletedTasksByDate(data.tasks || []);
-        console.log("grouped", grouped);
+        // console.log("grouped", grouped);
         setGroupedData(grouped);
       } catch (err) {
         console.error("Error fetching tasks:", err);

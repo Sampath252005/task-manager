@@ -18,7 +18,7 @@ const Page = () => {
   useEffect(() => {
     try {
       const storedUser = localStorage.getItem("user");
-      console.log("user:", storedUser);
+      // console.log("user:", storedUser);
       if (storedUser) {
         const parsed = JSON.parse(storedUser);
         setUser(parsed);

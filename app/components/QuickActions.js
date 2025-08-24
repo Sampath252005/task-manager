@@ -26,22 +26,22 @@ const QuickActions = () => {
         {[
           {
             label: "+ Add file",
-            className: "bg-blue-600 hover:bg-blue-700",
+            className: "bg-blue-600 hover:bg-blue-700 cursor-pointer",
             url: "/files",
           },
           {
             label: "🎯 Start Focus Timer",
-            className: "bg-green-600 hover:bg-green-700",
+            className: "bg-green-600 hover:bg-green-700 cursor-pointer",
             url: "/timer",
           },
           {
             label: "📅 View Calendar",
-            className: "bg-gray-700 hover:bg-gray-800",
+            className: "bg-gray-700 hover:bg-gray-800 cursor-pointer",
             url: "/calender",
           },
           {
             label: "🗒 Open Tasks",
-            className: "bg-sky-900 hover:bg-sky-950",
+            className: "bg-sky-900 hover:bg-sky-950 cursor-pointer",
             url: "/tasks",
           },
         ].map((btn, idx) => (

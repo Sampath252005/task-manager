@@ -34,7 +34,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="  text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
+                className="relative group  text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
                 onClick={() => router.push("/tasks")}
               >
                 <Image
@@ -44,12 +44,15 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   height={25}
                   className="tasks"
                 />
+                <span className="absolute top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+                  files
+                </span>
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="text-white bg-transparent rounded cursor-pointer hover:bg-gray-700 p-2"
+                className="relative group text-white bg-transparent rounded cursor-pointer hover:bg-gray-700 p-2"
               >
                 <Image
                   src="/clock.png"
@@ -58,12 +61,16 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   height={25}
                   onClick={() => router.push("/timer")}
                 />
+                {/* Tooltip */}
+                <span className="absolute top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+                  Timer
+                </span>
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
+                className="relative group text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
               >
                 <Image
                   src="/color-calendar.png"
@@ -72,12 +79,15 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   height={25}
                   onClick={() => router.push("/calender")}
                 />
+                <span className="absolute top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+                  Timer
+                </span>
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
+                className=" relative group text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
               >
                 <Image
                   src="/blue-open-folder.png"
@@ -86,8 +96,11 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   height={25}
                   onClick={() => router.push("/files")}
                 />
+                <span className="absolute top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+                  file
+                </span>
               </motion.button>
-{/* 
+              {/* 
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -104,7 +117,7 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
+                className="relative group text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
               >
                 <Image
                   src="/pie-chart.png"
@@ -113,23 +126,28 @@ const NavBar = ({ NavbarShow, setNavbarShow }) => {
                   height={25}
                   onClick={() => router.push("/dashboard")}
                 />
+                <span className="absolute top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+                  Dashboard
+                </span>
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
-                onClick={()=>router.push("/profile")}
+                className="relative group text-white bg-transparent rounded cursor-pointer  hover:bg-gray-700 p-2"
+                onClick={() => router.push("/profile")}
               >
                 <Image
                   src="/profile.png"
-                  alt="Notifications"
+                  alt="profile"
                   width={25}
                   height={25}
                 />
+                <span className="absolute top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+                  Profile
+                </span>
               </motion.button>
             </div>
-
 
             {/* Dark Mode Toggle */}
 

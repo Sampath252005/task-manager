@@ -108,7 +108,7 @@ export default function UserFiles() {
         <div className="flex items-center gap-4">
           <button
             onClick={triggerFileInput}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm cursor-pointer"
           >
             Upload File
           </button>
@@ -155,12 +155,12 @@ export default function UserFiles() {
               <div className="flex gap-4 mt-2 sm:mt-0 sm:ml-auto">
                 <button
                   onClick={() => openFile(file)}
-                  className="text-blue-400 hover:underline text-sm"
+                  className="text-blue-400 hover:underline text-sm cursor-pointer"
                 >
                   Open
                 </button>
                 <button
-                  className="text-red-500 hover:underline text-sm"
+                  className="text-red-500 hover:underline text-sm cursor-pointer"
                   onClick={() => deleteFile(file._id, file.public_id)}
                 >
                   Delete

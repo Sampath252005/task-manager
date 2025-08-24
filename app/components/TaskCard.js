@@ -218,10 +218,10 @@ const TaskCard = ({
 
         <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 mb-4 shadow-md">
           <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2">
-            <strong>Estimated Time:</strong> {estimatedTime || "Not Set "}
+            <strong>Estimated Time:</strong> {estimatedTime || "Not Set "} m
           </p>
           <p className="text-sm sm:text-base text-gray-800 dark:text-gray-200 mb-2">
-            <strong>Remaining Time:</strong> {`remainingTime` || "Not Tracked "}
+            <strong>Remaining Time:</strong> {remainingTime || "Not Tracked "} mf
           </p>
 
           {estimatedTime && remainingTime && (

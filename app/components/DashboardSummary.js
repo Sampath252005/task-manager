@@ -30,13 +30,23 @@ const DashboardSummary = () => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("⚠️ No token found, user not logged in");
+      return;
+    }
+
     fetch("/api/user/sessions", {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {
-        setTodayTime(data.today);
-        setOverallTime(data.overall);
+        console.log("📊 Sessions API response:", data);
+        if (data.today && data.overall) {
+          setTodayTime(data.today);
+          setOverallTime(data.overall);
+        } else {
+          console.error("⚠️ Unexpected API response:", data);
+        }
       })
       .catch((err) => console.error("Error fetching time stats:", err));
   }, []);

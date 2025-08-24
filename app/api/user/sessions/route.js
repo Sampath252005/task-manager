@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Task from "@/models/Task";
 import connectToDB from "@/lib/db";
+import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 
 export async function GET(request) {
@@ -13,17 +14,27 @@ export async function GET(request) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log("decoded,",decoded);
     await connectToDB();
 
-    const tasks = await Task.find({ userId: decoded.id });
-    // console.log("tasks:",tasks);
+    // ✅ Ensure userId is a valid ObjectId
+    if (!mongoose.isValidObjectId(decoded.userId)) {
+      return NextResponse.json({ error: "Invalid userId" }, { status: 400 });
+    }
+
+    const tasks = await Task.find({
+      userId: new mongoose.Types.ObjectId(decoded.userId),
+    });
+
+    console.log("tasks fetched:", tasks.length);
 
     let totalMsToday = 0;
     let totalMsOverall = 0;
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // start of today
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+
+    const todayEnd = new Date();
+    todayEnd.setHours(23, 59, 59, 999);
 
     tasks.forEach((task) => {
       task.sessions.forEach((session) => {
@@ -33,8 +44,10 @@ export async function GET(request) {
 
         totalMsOverall += duration;
 
-        if (start >= today) {
-          totalMsToday += duration;
+        if (end >= todayStart && start <= todayEnd) {
+          const effectiveStart = start < todayStart ? todayStart : start;
+          const effectiveEnd = end > todayEnd ? todayEnd : end;
+          totalMsToday += effectiveEnd - effectiveStart;
         }
       });
     });
@@ -52,8 +65,7 @@ export async function GET(request) {
       overall: msToHMS(totalMsOverall),
     });
   } catch (err) {
-    console.error(err);
+    console.error("❌ Error in /api/user/sessions:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
- 
 }
