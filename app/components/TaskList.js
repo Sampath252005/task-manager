@@ -19,7 +19,7 @@ const TaskList = ({ view }) => {
 
       refreshTasks();
  
-  }, [refreshTasks]);
+  }, []);
 
   if (loading)
     return (
