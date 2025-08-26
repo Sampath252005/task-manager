@@ -22,7 +22,7 @@ export default function UploadForm({ userId, onUpload, currentPhoto }) {
     if (image) {
       handleUpload();
     }
-  }, [image,handleUpload]);
+  }, [image]);
 
   // Upload photo to Cloudinary via API
   const handleUpload = async () => {
