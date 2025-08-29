@@ -111,7 +111,7 @@ export default function TimerPage() {
 
   return (
     <div className="min-h-screen text-white flex flex-col items-center justify-center gap-6 p-4 mt-10">
-      <h1 className="text-3xl font-bold">⏳ Task Timer</h1>
+      <h1 className="text-3xl font-bold dark:text-white text-black">⏳ Task Timer</h1>
 
       <TaskSelector
         tasks={tasks}
@@ -160,7 +160,7 @@ export default function TimerPage() {
             </button>
           </div>
 
-          <p className="mt-4 text-lg">
+          <p className="mt-4 darK:text-white text-black text-lg">
             ⏱️ Total Time Spent on This Task:{" "}
             <span className="font-semibold">{formatTime(totalTime)}</span>
           </p>

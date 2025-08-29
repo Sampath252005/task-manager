@@ -9,11 +9,11 @@ export default function TaskSelector({ tasks, selectedTaskId, onSelect }) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
-      className="w-full max-w-md flex flex-col items-center bg-gray-900 p-6 rounded-lg "
+      className="w-full max-w-md flex flex-col items-center dark:bg-gray-900 bg-white border-2 border-black p-6 rounded-lg "
     >
       <label
         htmlFor="taskSelect"
-        className="block text-white mb-2 font-semibold text-lg"
+        className="block text-black dark:text-white mb-2 font-semibold text-lg"
       >
         📝 Select a Task
       </label>

@@ -10,7 +10,7 @@ export default function TimerSettings({
 }) {
   return (
     <motion.div
-      className="flex gap-6 w-full max-w-md text-white mt-4 bg-gray-800/60  p-4 rounded-xl shadow-lg border border-gray-700"
+      className="flex gap-6 w-full max-w-md text-white mt-4 dark:bg-gray-800/60  p-4 rounded-xl shadow-lg border border-gray-700"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}

@@ -81,7 +81,7 @@ const UpcomingTask = () => {
     ));
 
   const Section = ({ label, tasks, color }) => (
-    <div className="flex flex-col gap-3 bg-blue-950 p-3">
+    <div className="flex flex-col gap-3 bg-blue-200 rounded-2xl dark:bg-blue-950 p-3">
       <h3
         className={`text-lg font-semibold flex items-center gap-2 text-${color}-700 dark:text-${color}-400`}
       >

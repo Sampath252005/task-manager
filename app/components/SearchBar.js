@@ -223,7 +223,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
           <div className="flex items-center gap-4">
             <div ref={ProfileRef}>
               <span
-                className="hidden md:flex items-center sm:gap-0  md:gap-5 bg-gray-800 border border-blue-500 p-2 text-white rounded-full cursor-pointer"
+                className="hidden md:flex items-center sm:gap-0  md:gap-5 bg-blue-800 dark:bg-gray-800 border border-blue-500 p-2 text-white rounded-full cursor-pointer"
                 onClick={() => setOpenProfile(!OpenProfile)}
               >
                 <h2 className="hidden md:block md:text-sm font-bold">

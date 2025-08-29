@@ -79,7 +79,7 @@ export default function TaskTimer({
             initial={{ scale: 0.8 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 300 }}
-            className="text-3xl font-extrabold text-white"
+            className="text-3xl font-extrabold dark:text-white text-black"
           >
             {remainingTime}s
           </motion.div>
@@ -87,7 +87,7 @@ export default function TaskTimer({
       </CountdownCircleTimer>
 
       <motion.p
-        className="mt-4 text-white text-lg font-medium"
+        className="mt-4 text-black dark:text-white text-lg font-medium"
         initial={{ opacity: 0, y: 5 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}

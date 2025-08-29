@@ -33,7 +33,7 @@ const ToggleButton = () => {
 
   return (
     <div
-      className="flex flex-col items-center space-y-2 bg-gray-700 cursor-pointer rounded-full p-1 mb-3 md:mb-0"
+      className="flex flex-col items-center space-y-2 bg-white dark:bg-gray-700 cursor-pointer rounded-full p-1 mb-3 md:mb-0"
       onClick={handleToggle}
     >
       <AnimatePresence mode="wait">

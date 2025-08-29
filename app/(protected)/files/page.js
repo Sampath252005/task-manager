@@ -102,9 +102,9 @@ export default function UserFiles() {
   const triggerFileInput = () => fileInputRef.current.click();
 
   return (
-    <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-xl border border-gray-700 md:mt-15 mt-5 h-screen">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto bg-[#e1e5f2] dark:bg-gray-900 text-white rounded-xl border border-gray-700 md:mt-15 mt-5 h-screen">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h2 className="text-2xl font-semibold">📁 My Files</h2>
+        <h2 className="text-2xl font-semibold dark:text-white text-black">📁 My Files</h2>
         <div className="flex items-center gap-4">
           <button
             onClick={triggerFileInput}
@@ -123,12 +123,12 @@ export default function UserFiles() {
       </div>
 
       {uploading && (
-        <p className="text-sm text-yellow-300 mb-3">Uploading files...</p>
+        <p className="text-sm text-red-500 dark:text-yellow-300 mb-3">Uploading files...</p>
       )}
 
       <div className="space-y-4">
         {files.length === 0 && (
-          <p className="text-gray-400 text-sm">No files uploaded yet.</p>
+          <p className="dark:text-gray-400 text-blue-500 text-sm">No files uploaded yet.</p>
         )}
 
         {files.map((file, idx) => (
@@ -137,7 +137,7 @@ export default function UserFiles() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.05 }}
-            className="bg-gray-800 p-4 rounded-lg space-y-2"
+            className="dark:bg-gray-800 bg-white border-2 border-black p-4 rounded-lg space-y-2"
           >
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
               <div className="flex items-start sm:items-center gap-4">
@@ -145,7 +145,7 @@ export default function UserFiles() {
                   {file.type.includes("image") ? "🖼️" : "📄"}
                 </span>
                 <div>
-                  <p className="font-medium text-sm sm:text-base">
+                  <p className="font-medium text-sm sm:text-base dark:text-white text-black">
                     {file.name}
                   </p>
                   <p className="text-xs text-gray-400">{file.date}</p>

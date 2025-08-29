@@ -24,7 +24,7 @@ const Page = () => {
       )}
 
       <div className="justify-center items-center w-full h-screen md:h-full  py-5 md:px-5">
-        <div className="backlog p-3 mt-5 bg-blue-100 dark:bg-[#323643] border-l-2  md:h-full overflow-y-">
+        <div className="backlog p-3 mt-5 bg-[#b6ccfe] dark:bg-[#323643] border-l-2  md:h-full overflow-y-">
           <div className="flex justify-between items-center p5">
             <h1 className="text-2xl font-bold text-red-500 p-3">Tasks</h1>
             {/* <div className="flex gap-3">

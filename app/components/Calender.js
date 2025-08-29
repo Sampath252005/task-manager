@@ -22,10 +22,10 @@ export default function Calendar({ selectedDate, onDateSelect,refreshTasks }) {
   useEffect(() => {
     setShowAddButton(!!selectedDate);
     refreshTasks();
-  }, [selectedDate,refreshTasks]);
+  }, [selectedDate]);
 
   const renderHeader = () => (
-    <div className="flex justify-between items-center mb-4 px-4 text-blue-200">
+    <div className="flex justify-between items-center mb-4 px-4 dark:text-blue-200 text-blue-500">
       <button
         onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
         className="hover:text-cyan-400 transition"
@@ -47,7 +47,7 @@ export default function Calendar({ selectedDate, onDateSelect,refreshTasks }) {
   const renderDays = () => {
     const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     return (
-      <div className="grid grid-cols-7 text-xs text-center text-blue-300 font-semibold  mb-1">
+      <div className="grid grid-cols-7 text-xs text-center dark:text-blue-300 text-blue-700 font-semibold  mb-1">
         {days.map((day) => (
           <div key={day} className="py-1 tracking-wide uppercase">
             {day}
@@ -78,7 +78,7 @@ export default function Calendar({ selectedDate, onDateSelect,refreshTasks }) {
           "flex flex-col items-center justify-center md:h-14 md:w-14 h-10 w-10  mx-auto rounded-full cursor-pointer transition duration-200";
         const notCurrentMonthStyle = !isSameMonth(day, monthStart)
           ? "text-gray-500"
-          : "text-blue-100";
+          : "dark:text-blue-100 text-blue-600";
 
         const todayStyle = isToday
           ? "border-2 border-cyan-400 text-cyan-300 font-bold"
@@ -113,7 +113,7 @@ export default function Calendar({ selectedDate, onDateSelect,refreshTasks }) {
   };
 
   return (
-    <div className="w-full max-w-[90%] bg-[#1e293b] p-1 rounded-2xl shadow-2xl border border-blue-900 flex flex-col ">
+    <div className="w-full max-w-[90%] bg-white dark:bg-[#1e293b] p-1 rounded-2xl shadow-2xl border border-blue-900 flex flex-col ">
       {renderHeader()}
       {renderDays()}
       {renderCells()}

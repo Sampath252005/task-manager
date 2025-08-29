@@ -27,7 +27,7 @@ export default function PomodoroTimer() {
 
   return (
     <motion.div
-      className="flex flex-col items-center justify-center p-4 rounded-xl shadow-xl bg-gray-800 text-white max-w-sm mx-auto mt-10 sm:mt-20"
+      className="flex flex-col items-center justify-center p-4 rounded-xl shadow-xl  dark:bg-gray-800 text-white max-w-sm mx-auto mt-10 sm:mt-20"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
     >

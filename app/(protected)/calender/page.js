@@ -38,8 +38,8 @@ export default function TaskPage() {
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className="min-h-screen bg-[#0f172a] text-white flex flex-col items-center md:p-6">
-        <h1 className="text-3xl font-bold mb-6 mt-15">🗓️ Task Calendar</h1>
+      <div className="min-h-screen bg-[#b6ccfe]] dark:bg-[#0f172a] text-white flex flex-col items-center md:p-6">
+        <h1 className="text-3xl font-bold mb-6 mt-15 dark:text-white text-black">🗓️ Task Calendar</h1>
         {/* Calendar */}
         <Calendar
           selectedDate={selectedDate}
@@ -50,7 +50,7 @@ export default function TaskPage() {
           }}
         />
         {/* Selected Date Display */}
-        <h2 className="mt-6 text-xl md:2 font-semibold text-blue-300">
+        <h2 className="mt-6 text-xl md:2 font-semibold dark:text-blue-300 text-blue-600">
           Tasks for {selectedDate.toDateString()}
         </h2>
 
@@ -74,7 +74,7 @@ export default function TaskPage() {
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
                   whileHover={{ scale: 1.02, backgroundColor: "#22d3ee" }} // tailwind's cyan-400
-                  className="text-white text-sm md:text-lg p-3 border-l-4 border-cyan-400 border-1 rounded-md shadow-md transition-colors duration-300 cursor-pointer hover:text-white"
+                  className="dark:text-white text-black text-sm md:text-lg p-3 border-l-4 border-cyan-400 border-1 rounded-md shadow-md transition-colors duration-300 cursor-pointer hover:text-white"
                 >
                   📌 {task.title}
                 </motion.div>
