@@ -25,7 +25,7 @@ const ClientLayoutWrapper = ({ children }) => {
     <div className="flex">
       <NavBar NavbarShow={NavbarShow} setNavbarShow={setNavbarShow} />
       <div
-        className={`flex flex-col bg-gray-900 md:min-h-screen transition-all duration-300 w-full
+        className={`flex flex-col bg-white dark:bg-gray-900 md:min-h-screen transition-all duration-300 w-full
           ${NavbarShow ? "ml-15 md:20" : "ml-0"}`}
       >
         {/* Fixed top search bar */}

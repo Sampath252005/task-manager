@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { CalendarDays, Clock } from "lucide-react";
@@ -8,6 +8,7 @@ const UpcomingTask = () => {
   const [todayTasks, setTodayTasks] = useState([]);
   const [tomorrowTasks, setTomorrowTasks] = useState([]);
   const [dayAfterTasks, setDayAfterTasks] = useState([]);
+  const fetchedRef = useRef(false); // ✅ guard against double calls in dev
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -55,7 +56,10 @@ const UpcomingTask = () => {
       }
     };
 
-    fetchTasks();
+    if (!fetchedRef.current) {
+      fetchTasks();
+      fetchedRef.current = true; // ✅ run only once
+    }
   }, []);
 
   const renderTaskList = (tasks) =>
@@ -77,7 +81,7 @@ const UpcomingTask = () => {
     ));
 
   const Section = ({ label, tasks, color }) => (
-    <div className="flex flex-col gap-3  bg-blue-950 p-3">
+    <div className="flex flex-col gap-3 bg-blue-950 p-3">
       <h3
         className={`text-lg font-semibold flex items-center gap-2 text-${color}-700 dark:text-${color}-400`}
       >

@@ -40,7 +40,7 @@ const DashboardSummary = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("📊 Sessions API response:", data);
+        // console.log("📊 Sessions API response:", data);
         if (data.today && data.overall) {
           setTodayTime(data.today);
           setOverallTime(data.overall);

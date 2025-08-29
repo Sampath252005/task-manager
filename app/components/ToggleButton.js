@@ -20,7 +20,7 @@ const ToggleButton = () => {
       document.documentElement.classList.remove("dark");
     }
     setHasMounted(true);
-  }, [dispatch]);
+  }, []);
 
   const handleToggle = () => {
     const newMode = !isDarkMode;
