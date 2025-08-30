@@ -151,7 +151,7 @@ const Register = () => {
       )}
 
       <h1 className="absolute top-10 text-3xl md:text-4xl font-extrabold text-white drop-shadow-md tracking-wide text-center">
-        TaskVault
+        Personal Task Manager
       </h1>
 
       <motion.div

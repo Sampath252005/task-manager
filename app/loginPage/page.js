@@ -82,7 +82,7 @@ const LoginPage = () => {
         style={{ fontFamily: "'Poppins', sans-serif" }}
       >
         <h1 className="absolute top-20 md:top-40 text-4xl font-extrabold text-white drop-shadow-md tracking-wide">
-          TaskVault
+          Personal Task Manager
         </h1>
 
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row max-w-4xl w-full">
