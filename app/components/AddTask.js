@@ -78,7 +78,7 @@ const AddTask = ({ close, selectedDate, setNavbarShow, NavbarShow }) => {
   }, [NavbarShow]);
 
   return (
-    <div className="relative bg-gradient-to-r from-cyan-500 to-blue-500 p-4 sm:p-6 md:p-8 rounded-lg w-[95%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white max-h-[90vh] overflow-auto z-50">
+    <div className="relative bg-gradient-to-r from-cyan-200 to-blue-400 p-4 sm:p-6 md:p-8 rounded-lg w-[95%] md:w-3/4 lg:w-2/3 xl:w-1/2 text-white max-h-[90vh] overflow-auto z-50">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-extrabold text-xl sm:text-2xl md:text-3xl text-blue-900">
