@@ -160,7 +160,7 @@ export default function TimerPage() {
             </button>
           </div>
 
-          <p className="mt-4 darK:text-white text-black text-lg">
+          <p className="mt-4 darK:text-white text-black dark:text-white text-lg">
             ⏱️ Total Time Spent on This Task:{" "}
             <span className="font-semibold">{formatTime(totalTime)}</span>
           </p>
