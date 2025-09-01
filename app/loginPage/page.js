@@ -57,6 +57,8 @@ const LoginPage = () => {
             email: result.email,
           })
         );
+        localStorage.setItem("userId", result.userId || result._id); // ensure _id exists
+        localStorage.setItem("profilePic", result.profilePic || "");
 
         router.push("/");
       } else {

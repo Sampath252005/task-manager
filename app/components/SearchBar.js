@@ -79,6 +79,7 @@ const SearchBar = ({ NavbarShow, setNavbarShow }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("profilePic");
+    localStorage.removeItem("userId");
     router.push("/loginPage");
   };
 

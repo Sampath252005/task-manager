@@ -15,6 +15,7 @@ export async function GET(request) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     await connectToDB();
+    console.log("userId:",decoded);
 
     // ✅ Ensure userId is a valid ObjectId
     if (!mongoose.isValidObjectId(decoded.userId)) {

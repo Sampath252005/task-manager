@@ -16,6 +16,7 @@ export async function GET(req) {
     await connectDB();
 
     const files = await File.find({ userId: new mongoose.Types.ObjectId(userId) });
+    console.log("files",files);
 
     return new Response(JSON.stringify(files), {
       status: 200,

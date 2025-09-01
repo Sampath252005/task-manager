@@ -15,6 +15,7 @@ export async function POST(req) {
   const token = signToken(user);
   return Response.json({ 
     token, 
+     _id: user._id,
     username: user.username ,
     email:user.email ,
     profilePic: user.profilePic // ⬅️ Include username here
