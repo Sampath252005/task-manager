@@ -19,6 +19,7 @@ const ProfilePage = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     localStorage.removeItem("profilePic");
+    localStorage.removeItem("userid");
     router.push("/loginPage");
   };
 
